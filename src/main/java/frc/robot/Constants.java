@@ -15,5 +15,15 @@ package frc.robot;
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+  
   }
+  /*
+  All changes in the constants file are for testing and will be integrated into the larger constants file
+  further down the line by the programming team :)
+  */
+  
+  public static final int INTAKEMOTOR = 9; 
+  public static final int A_BUTTON = 1;
+  public static final int DRIVER_CONTROLLER = 0;
+  public static final double INTAKESPEED = 1;
 }
