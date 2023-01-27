@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.VisionCommand;
 import frc.robot.subsystems.Vision;
 
 /**
@@ -41,7 +40,6 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    vision.setDefaultCommand(new VisionCommand(vision));
 
   }
 
