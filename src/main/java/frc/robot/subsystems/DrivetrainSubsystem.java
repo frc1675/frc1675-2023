@@ -1,11 +1,33 @@
 package frc.robot.subsystems;
 
-import static frc.robot.Constants.*;
+import static frc.robot.Constants.BACK_LEFT_MODULE_DRIVE_MOTOR;
+import static frc.robot.Constants.BACK_LEFT_MODULE_STEER_ENCODER;
+import static frc.robot.Constants.BACK_LEFT_MODULE_STEER_MOTOR;
+import static frc.robot.Constants.BACK_LEFT_MODULE_STEER_OFFSET;
+import static frc.robot.Constants.BACK_RIGHT_MODULE_DRIVE_MOTOR;
+import static frc.robot.Constants.BACK_RIGHT_MODULE_STEER_ENCODER;
+import static frc.robot.Constants.BACK_RIGHT_MODULE_STEER_MOTOR;
+import static frc.robot.Constants.BACK_RIGHT_MODULE_STEER_OFFSET;
+import static frc.robot.Constants.DERIVATIVE_COEFFICENT;
+import static frc.robot.Constants.DRIVETRAIN_TRACKWIDTH_METERS;
+import static frc.robot.Constants.DRIVETRAIN_WHEELBASE_METERS;
+import static frc.robot.Constants.FRONT_LEFT_MODULE_DRIVE_MOTOR;
+import static frc.robot.Constants.FRONT_LEFT_MODULE_STEER_ENCODER;
+import static frc.robot.Constants.FRONT_LEFT_MODULE_STEER_MOTOR;
+import static frc.robot.Constants.FRONT_LEFT_MODULE_STEER_OFFSET;
+import static frc.robot.Constants.FRONT_RIGHT_MODULE_DRIVE_MOTOR;
+import static frc.robot.Constants.FRONT_RIGHT_MODULE_STEER_ENCODER;
+import static frc.robot.Constants.FRONT_RIGHT_MODULE_STEER_MOTOR;
+import static frc.robot.Constants.FRONT_RIGHT_MODULE_STEER_OFFSET;
+import static frc.robot.Constants.INTEGRAL_COEFFICENT;
+import static frc.robot.Constants.PROPORTIONAL_COEFFICENT;
+
 import com.kauailabs.navx.frc.AHRS;
 import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -51,6 +73,16 @@ public class DrivetrainSubsystem extends SubsystemBase {
         private DoublePublisher rotation = topic.publish();
 
         private ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
+
+        private boolean updateDriftTarget = true;
+        private Rotation2d rotationTarget;
+
+        private PIDController yPID = new PIDController(PROPORTIONAL_COEFFICENT, INTEGRAL_COEFFICENT,
+                        DERIVATIVE_COEFFICENT);
+        private PIDController xPID = new PIDController(PROPORTIONAL_COEFFICENT, INTEGRAL_COEFFICENT,
+                        DERIVATIVE_COEFFICENT);
+        private PIDController rotationPID = new PIDController(PROPORTIONAL_COEFFICENT, INTEGRAL_COEFFICENT,
+                        DERIVATIVE_COEFFICENT);
 
         public DrivetrainSubsystem() {
                 ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
@@ -113,6 +145,30 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 this.chassisSpeeds = chassisSpeeds;
         }
 
+        public void driveAtAngle(double x, double y, Rotation2d target) {
+                drive(ChassisSpeeds.fromFieldRelativeSpeeds(x, y, -rotationPID.calculate(getGyroscopeRotation().minus(target).getRadians()), getGyroscopeRotation()));
+        }
+
+        public void driftCorrectionDrive(double x, double y, double rotation) {
+                updateDriftCorrectionTarget(rotation);
+                if (rotation == 0 && (x != 0 || y != 0)) {
+                        drive(ChassisSpeeds.fromFieldRelativeSpeeds(x, y, -rotationPID.calculate(getGyroscopeRotation().minus(rotationTarget).getRadians()), getGyroscopeRotation()));
+                }else {
+                        drive(ChassisSpeeds.fromFieldRelativeSpeeds(x,y, rotation, getGyroscopeRotation()));
+                }
+        }
+
+        private void updateDriftCorrectionTarget(double rotation) {
+                if (rotation == 0) {
+                    if (updateDriftTarget) {
+                        rotationTarget = getGyroscopeRotation();
+                        updateDriftTarget = false;
+                    }
+                } else {
+                    updateDriftTarget = true;
+                }
+            }
+
         @Override
         public void periodic() {
                 SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(chassisSpeeds);
@@ -130,7 +186,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 rotation.set(getGyroscopeRotation().getDegrees());
         }
 
-        public void rotate(double radiansPerSecond) {
-                drive(new ChassisSpeeds(0, 0, radiansPerSecond));
+        public void rotate(Rotation2d target) {
+                drive(new ChassisSpeeds(0, 0,
+                                -rotationPID.calculate(getGyroscopeRotation().minus(target).getRadians())));
         }
 }
