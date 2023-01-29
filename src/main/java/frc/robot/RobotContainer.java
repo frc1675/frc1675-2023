@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.DriveAtAngle;
 import frc.robot.commands.RotateCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Vision;
@@ -23,6 +24,7 @@ public class RobotContainer {
   private final Joystick driverController = new Joystick(Constants.DRIVER_CONTROLLER);
   private final JoystickButton aButton = new JoystickButton(driverController, Constants.A_BUTTON);
   private final JoystickButton backButton = new JoystickButton(driverController, Constants.BACK_BUTTON);
+  private final JoystickButton bButton = new JoystickButton(driverController, Constants.B_BUTTON);
 
   public RobotContainer() {
     configureBindings();
@@ -40,6 +42,13 @@ public class RobotContainer {
 
     backButton.onTrue(new InstantCommand(drivetrainSubsystem::zeroGyroscope));
     aButton.whileTrue(new RotateCommand(drivetrainSubsystem, new Rotation2d(0)));
+    
+    bButton.whileTrue(new DriveAtAngle(drivetrainSubsystem,
+        () -> -mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_Y_AXIS))
+            * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+        () -> -mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_X_AXIS))
+            * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+        new Rotation2d(0)));
   }
 
   public Command getAutonomousCommand() {
