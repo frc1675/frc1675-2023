@@ -74,7 +74,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         private ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
-        private boolean updateDriftTarget = true;
+        private boolean updateRotationTarget = true;
         private boolean forceRotationTarget = false;
         private Rotation2d rotationTarget = new Rotation2d(0);
 
@@ -164,12 +164,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
         public void periodic() {
                 if (chassisSpeeds.omegaRadiansPerSecond == 0 && (chassisSpeeds.vxMetersPerSecond != 0 || chassisSpeeds.vyMetersPerSecond != 0)) {
                         chassisSpeeds.omegaRadiansPerSecond = -rotationPID.calculate(getGyroscopeRotation().minus(rotationTarget).getRadians());
-                        if (updateDriftTarget && !forceRotationTarget) {
+                        if (updateRotationTarget && !forceRotationTarget) {
                                 rotationTarget = getGyroscopeRotation();
-                                updateDriftTarget = false;
+                                updateRotationTarget = false;
                         }
                 } else {
-                        updateDriftTarget = true;
+                        updateRotationTarget = true;
                 }
 
                 SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(chassisSpeeds);
@@ -185,10 +185,5 @@ public class DrivetrainSubsystem extends SubsystemBase {
                                 states[3].angle.getRadians());
 
                 rotation.set(getGyroscopeRotation().getDegrees());
-        }
-
-        public void rotate(Rotation2d target) {
-                drive(new ChassisSpeeds(0, 0,
-                                -rotationPID.calculate(getGyroscopeRotation().minus(target).getRadians())));
         }
 }
