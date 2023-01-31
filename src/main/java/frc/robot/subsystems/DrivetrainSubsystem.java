@@ -75,7 +75,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
         private ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
         private boolean updateDriftTarget = true;
-        private Rotation2d rotationTarget;
+        private boolean forceRotationTarget = false;
+        private Rotation2d rotationTarget = new Rotation2d(0);
 
         private PIDController yPID = new PIDController(PROPORTIONAL_COEFFICENT, INTEGRAL_COEFFICENT,
                         DERIVATIVE_COEFFICENT);
@@ -145,32 +146,32 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 this.chassisSpeeds = chassisSpeeds;
         }
 
-        public void driveAtAngle(double x, double y, Rotation2d target) {
-                drive(ChassisSpeeds.fromFieldRelativeSpeeds(x, y, -rotationPID.calculate(getGyroscopeRotation().minus(target).getRadians()), getGyroscopeRotation()));
+        /* Convience method, calls drive. Uses field relative controls. */
+        public void drive(double x, double y, double rotation) {
+                drive(ChassisSpeeds.fromFieldRelativeSpeeds(x, y, rotation, getGyroscopeRotation()));
         }
 
-        public void driftCorrectionDrive(double x, double y, double rotation) {
-                updateDriftCorrectionTarget(rotation);
-                if (rotation == 0 && (x != 0 || y != 0)) {
-                        drive(ChassisSpeeds.fromFieldRelativeSpeeds(x, y, -rotationPID.calculate(getGyroscopeRotation().minus(rotationTarget).getRadians()), getGyroscopeRotation()));
-                }else {
-                        drive(ChassisSpeeds.fromFieldRelativeSpeeds(x,y, rotation, getGyroscopeRotation()));
-                }
+        public void setRotationTarget(Rotation2d rotationTarget) {
+                this.rotationTarget = rotationTarget;
+                forceRotationTarget = true;
         }
 
-        private void updateDriftCorrectionTarget(double rotation) {
-                if (rotation == 0) {
-                    if (updateDriftTarget) {
-                        rotationTarget = getGyroscopeRotation();
-                        updateDriftTarget = false;
-                    }
-                } else {
-                    updateDriftTarget = true;
-                }
-            }
+        public void unsetRotationTarget() {
+                forceRotationTarget = false;
+        }
 
         @Override
         public void periodic() {
+                if (chassisSpeeds.omegaRadiansPerSecond == 0 && (chassisSpeeds.vxMetersPerSecond != 0 || chassisSpeeds.vyMetersPerSecond != 0)) {
+                        chassisSpeeds.omegaRadiansPerSecond = -rotationPID.calculate(getGyroscopeRotation().minus(rotationTarget).getRadians());
+                        if (updateDriftTarget && !forceRotationTarget) {
+                                rotationTarget = getGyroscopeRotation();
+                                updateDriftTarget = false;
+                        }
+                } else {
+                        updateDriftTarget = true;
+                }
+
                 SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(chassisSpeeds);
                 SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
 
