@@ -16,19 +16,11 @@ public class Intake extends SubsystemBase {
 
   }
 
-  public void conePickup(double speed){
+  public void conePickCubePut(double speed){
     intakeMotor.set(speed * -1);
   }
 
-  public void conePut(double speed){
-    intakeMotor.set(speed * 1);
-  }
-
-  public void cubePut(double speed){
-    intakeMotor.set(speed * -1);
-  }
-
-  public void cubePickup(double speed){
+  public void conePutCubePick(double speed){
     intakeMotor.set(speed * 1);
   }
 

@@ -5,11 +5,16 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
+import frc.robot.subsystems.Intake;
 
 public class ConeUtil extends CommandBase {
   /** Creates a new ConeUtil. */
-  public ConeUtil() {
+  private final Intake intake;
+  public ConeUtil(Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.intake = intake;
+    addRequirements(this.intake);
   }
 
   // Called when the command is initially scheduled.
@@ -18,7 +23,9 @@ public class ConeUtil extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    intake.conePickCubePut(Constants.INTAKESPEED);
+  }
 
   // Called once the command ends or is interrupted.
   @Override

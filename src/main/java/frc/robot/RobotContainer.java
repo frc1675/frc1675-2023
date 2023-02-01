@@ -17,8 +17,11 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
+import frc.robot.commands.ConeUtil;
+import frc.robot.commands.CubeUtil;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 /**
@@ -30,7 +33,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 public class RobotContainer {
   private final Joystick driverController = new Joystick(Constants.DRIVER_CONTROLLER);
   private final JoystickButton driverControllerAButton = new JoystickButton(driverController, Constants.A_BUTTON);
-
+  private final JoystickButton driverControllerBButton = new JoystickButton(driverController, Constants.B_BUTTON);
+  private final Intake intake = new Intake();
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
@@ -61,7 +65,9 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-    driverControllerAButton.
+    driverControllerAButton.onTrue(new ConeUtil(intake));
+    driverControllerBButton.onTrue(new CubeUtil(intake));
+
   }
 
   /**

@@ -24,6 +24,7 @@ public final class Constants {
   
   public static final int INTAKEMOTOR = 9; 
   public static final int A_BUTTON = 1;
+  public static final int B_BUTTON = 2;
   public static final int DRIVER_CONTROLLER = 0;
   public static final double INTAKESPEED = 1;
 }
