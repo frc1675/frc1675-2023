@@ -22,7 +22,7 @@ public final class Constants {
   further down the line by the programming team :)
   */
   
-  public static final int INTAKEMOTOR = 9; 
+  public static final int INTAKE_MOTOR = 9; 
   public static final int A_BUTTON = 1;
   public static final int B_BUTTON = 2;
   public static final int DRIVER_CONTROLLER = 0;

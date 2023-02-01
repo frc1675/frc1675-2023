@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Intake;
 
-public class ConeUtil extends CommandBase {
+public class IntakeConeOutputCube extends CommandBase {
   /** Creates a new ConeUtil. */
   private final Intake intake;
-  public ConeUtil(Intake intake) {
+  public IntakeConeOutputCube(Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = intake;
     addRequirements(this.intake);
