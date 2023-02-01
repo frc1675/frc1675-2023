@@ -1,27 +1,5 @@
 package frc.robot.subsystems;
 
-import static frc.robot.Constants.BACK_LEFT_MODULE_DRIVE_MOTOR;
-import static frc.robot.Constants.BACK_LEFT_MODULE_STEER_ENCODER;
-import static frc.robot.Constants.BACK_LEFT_MODULE_STEER_MOTOR;
-import static frc.robot.Constants.BACK_LEFT_MODULE_STEER_OFFSET;
-import static frc.robot.Constants.BACK_RIGHT_MODULE_DRIVE_MOTOR;
-import static frc.robot.Constants.BACK_RIGHT_MODULE_STEER_ENCODER;
-import static frc.robot.Constants.BACK_RIGHT_MODULE_STEER_MOTOR;
-import static frc.robot.Constants.BACK_RIGHT_MODULE_STEER_OFFSET;
-import static frc.robot.Constants.DERIVATIVE_COEFFICENT;
-import static frc.robot.Constants.DRIVETRAIN_TRACKWIDTH_METERS;
-import static frc.robot.Constants.DRIVETRAIN_WHEELBASE_METERS;
-import static frc.robot.Constants.FRONT_LEFT_MODULE_DRIVE_MOTOR;
-import static frc.robot.Constants.FRONT_LEFT_MODULE_STEER_ENCODER;
-import static frc.robot.Constants.FRONT_LEFT_MODULE_STEER_MOTOR;
-import static frc.robot.Constants.FRONT_LEFT_MODULE_STEER_OFFSET;
-import static frc.robot.Constants.FRONT_RIGHT_MODULE_DRIVE_MOTOR;
-import static frc.robot.Constants.FRONT_RIGHT_MODULE_STEER_ENCODER;
-import static frc.robot.Constants.FRONT_RIGHT_MODULE_STEER_MOTOR;
-import static frc.robot.Constants.FRONT_RIGHT_MODULE_STEER_OFFSET;
-import static frc.robot.Constants.INTEGRAL_COEFFICENT;
-import static frc.robot.Constants.PROPORTIONAL_COEFFICENT;
-
 import com.kauailabs.navx.frc.AHRS;
 import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
@@ -42,6 +20,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class DrivetrainSubsystem extends SubsystemBase {
         public static final double MAX_VOLTAGE = 12;
@@ -49,17 +28,17 @@ public class DrivetrainSubsystem extends SubsystemBase {
                         SdsModuleConfigurations.MK4_L3.getDriveReduction() *
                         SdsModuleConfigurations.MK4_L3.getWheelDiameter() * Math.PI;
         public static final double MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND = MAX_VELOCITY_METERS_PER_SECOND /
-                        Math.hypot(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0);
+                        Math.hypot(Constants.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, Constants.DRIVETRAIN_WHEELBASE_METERS / 2.0);
 
         private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
                         // Front left
-                        new Translation2d(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0),
+                        new Translation2d(Constants.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, Constants.DRIVETRAIN_WHEELBASE_METERS / 2.0),
                         // Front right
-                        new Translation2d(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0),
+                        new Translation2d(Constants.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -Constants.DRIVETRAIN_WHEELBASE_METERS / 2.0),
                         // Back left
-                        new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0),
+                        new Translation2d(-Constants.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, Constants.DRIVETRAIN_WHEELBASE_METERS / 2.0),
                         // Back right
-                        new Translation2d(-DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -DRIVETRAIN_WHEELBASE_METERS / 2.0));
+                        new Translation2d(-Constants.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -Constants.DRIVETRAIN_WHEELBASE_METERS / 2.0));
 
         private final AHRS navx = new AHRS(SPI.Port.kMXP, (byte) 200);
 
@@ -78,12 +57,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
         private boolean forceRotationTarget = false;
         private Rotation2d rotationTarget = new Rotation2d(0);
 
-        private PIDController yPID = new PIDController(PROPORTIONAL_COEFFICENT, INTEGRAL_COEFFICENT,
-                        DERIVATIVE_COEFFICENT);
-        private PIDController xPID = new PIDController(PROPORTIONAL_COEFFICENT, INTEGRAL_COEFFICENT,
-                        DERIVATIVE_COEFFICENT);
-        private PIDController rotationPID = new PIDController(PROPORTIONAL_COEFFICENT, INTEGRAL_COEFFICENT,
-                        DERIVATIVE_COEFFICENT);
+        private PIDController yPID = new PIDController(Constants.PROPORTIONAL_COEFFICENT, Constants.INTEGRAL_COEFFICENT,
+        Constants.DERIVATIVE_COEFFICENT);
+        private PIDController xPID = new PIDController(Constants.PROPORTIONAL_COEFFICENT, Constants.INTEGRAL_COEFFICENT,
+        Constants.DERIVATIVE_COEFFICENT);
+        private PIDController rotationPID = new PIDController(Constants.PROPORTIONAL_COEFFICENT, Constants.INTEGRAL_COEFFICENT,
+        Constants.DERIVATIVE_COEFFICENT);
 
         public DrivetrainSubsystem() {
                 ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
@@ -93,40 +72,40 @@ public class DrivetrainSubsystem extends SubsystemBase {
                                                 .withSize(2, 4)
                                                 .withPosition(0, 0),
                                 Mk4SwerveModuleHelper.GearRatio.L3,
-                                FRONT_LEFT_MODULE_DRIVE_MOTOR,
-                                FRONT_LEFT_MODULE_STEER_MOTOR,
-                                FRONT_LEFT_MODULE_STEER_ENCODER,
-                                FRONT_LEFT_MODULE_STEER_OFFSET);
+                                Constants.FRONT_LEFT_MODULE_DRIVE_MOTOR,
+                                Constants.FRONT_LEFT_MODULE_STEER_MOTOR,
+                                Constants.FRONT_LEFT_MODULE_STEER_ENCODER,
+                                Constants.FRONT_LEFT_MODULE_STEER_OFFSET);
 
                 frontRightModule = Mk4SwerveModuleHelper.createNeo(
                                 tab.getLayout("Front Right Module", BuiltInLayouts.kList)
                                                 .withSize(2, 4)
                                                 .withPosition(2, 0),
                                 Mk4SwerveModuleHelper.GearRatio.L3,
-                                FRONT_RIGHT_MODULE_DRIVE_MOTOR,
-                                FRONT_RIGHT_MODULE_STEER_MOTOR,
-                                FRONT_RIGHT_MODULE_STEER_ENCODER,
-                                FRONT_RIGHT_MODULE_STEER_OFFSET);
+                                Constants.FRONT_RIGHT_MODULE_DRIVE_MOTOR,
+                                Constants.FRONT_RIGHT_MODULE_STEER_MOTOR,
+                                Constants.FRONT_RIGHT_MODULE_STEER_ENCODER,
+                                Constants.FRONT_RIGHT_MODULE_STEER_OFFSET);
 
                 backLeftModule = Mk4SwerveModuleHelper.createNeo(
                                 tab.getLayout("Back Left Module", BuiltInLayouts.kList)
                                                 .withSize(2, 4)
                                                 .withPosition(4, 0),
                                 Mk4SwerveModuleHelper.GearRatio.L3,
-                                BACK_LEFT_MODULE_DRIVE_MOTOR,
-                                BACK_LEFT_MODULE_STEER_MOTOR,
-                                BACK_LEFT_MODULE_STEER_ENCODER,
-                                BACK_LEFT_MODULE_STEER_OFFSET);
+                                Constants.BACK_LEFT_MODULE_DRIVE_MOTOR,
+                                Constants.BACK_LEFT_MODULE_STEER_MOTOR,
+                                Constants.BACK_LEFT_MODULE_STEER_ENCODER,
+                                Constants.BACK_LEFT_MODULE_STEER_OFFSET);
 
                 backRightModule = Mk4SwerveModuleHelper.createNeo(
                                 tab.getLayout("Back Right Module", BuiltInLayouts.kList)
                                                 .withSize(2, 4)
                                                 .withPosition(6, 0),
                                 Mk4SwerveModuleHelper.GearRatio.L3,
-                                BACK_RIGHT_MODULE_DRIVE_MOTOR,
-                                BACK_RIGHT_MODULE_STEER_MOTOR,
-                                BACK_RIGHT_MODULE_STEER_ENCODER,
-                                BACK_RIGHT_MODULE_STEER_OFFSET);
+                                Constants.BACK_RIGHT_MODULE_DRIVE_MOTOR,
+                                Constants.BACK_RIGHT_MODULE_STEER_MOTOR,
+                                Constants.BACK_RIGHT_MODULE_STEER_ENCODER,
+                                Constants.BACK_RIGHT_MODULE_STEER_OFFSET);
         }
 
         public void zeroGyroscope() {
@@ -134,7 +113,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
         }
 
         public Rotation2d getGyroscopeRotation() {
-
                 if (navx.isMagnetometerCalibrated()) {
                         return Rotation2d.fromDegrees(navx.getFusedHeading());
                 }
