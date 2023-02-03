@@ -4,29 +4,59 @@
 
 package frc.robot;
 
-/**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants. This class should not be used for any other purpose. All constants should be declared
- * globally (i.e. public static). Do not put anything functional in this class.
- *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
- * constants are needed, to reduce verbosity.
- */
 public final class Constants {
-  public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
+      //drivetrain constants
+      public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.5969; //Measured on robot
+      public static final double DRIVETRAIN_WHEELBASE_METERS = 0.5969;
+      public static final double DRIVE_ROTATE_TOLERANCE_DEGREES = 1.0;
+      public static final double DRIVE_ROTATION_TARGET_DEGREES = 0.0;
   
-  }
-  /*
-  All changes in the constants file are for testing and will be integrated into the larger constants file
-  further down the line by the programming team :)
-  */
+      //PID constants
+      public static final double PROPORTIONAL_COEFFICENT = 3.0;
+      public static final double INTEGRAL_COEFFICENT = 0.5;
+      public static final double DERIVATIVE_COEFFICENT = 0.5;
   
-  public static final int INTAKE_MOTOR = 9; 
-  public static final int A_BUTTON = 1;
-  public static final int B_BUTTON = 2;
-  public static final int X_BUTTON = 3;
-  public static final int Y_BUTTON = 4;
-  public static final int DRIVER_CONTROLLER = 0;
-  public static final double INTAKE_SPEED = 1;
+      //swerve module constants
+      public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 3;
+      public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 4;
+      public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 12; 
+      public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(141.59);
+  
+      public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 1;
+      public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 2; 
+      public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 10; 
+      public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(286.52);
+  
+      public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 7; 
+      public static final int BACK_LEFT_MODULE_STEER_MOTOR = 8; 
+      public static final int BACK_LEFT_MODULE_STEER_ENCODER = 11; 
+      public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(304.17);
+  
+      public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 5; 
+      public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 6; 
+      public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 9; 
+      public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(314.47);
+  
+      //controller constants
+      public static final int DRIVER_CONTROLLER = 0;
+      public static final int OPERATOR_CONTROLLER = 1;
+  
+      public static final int LEFT_X_AXIS = 0;
+      public static final int LEFT_Y_AXIS= 1;
+      public static final int RIGHT_X_AXIS = 4;
+      public static final int RIGHT_Y_AXIS = 5;
+  
+      public static final int A_BUTTON = 1;
+      public static final int B_BUTTON = 2;
+      public static final int X_BUTTON = 3;
+      public static final int Y_BUTTON = 4;
+  
+      public static final int LEFT_BUMPER = 5;
+      public static final int RIGHT_BUMPER = 6;
+      public static final int BACK_BUTTON = 7;
+      public static final int START_BUTTON = 8;
+      public static final int LEFT_JOYSTICK_BUTTON = 9;
+      public static final int RIGHT_JOYSTICK_BUTTON = 10;
+  
+      public static final double INTAKE_SPEED = 1;
 }

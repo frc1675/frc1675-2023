@@ -4,10 +4,12 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj2.command.CommandBase;
+
 public final class Autos {
   /** Example static factory for an autonomous command. */
-  public static void exampleAuto() {
-
+  public static CommandBase exampleAuto() {
+    return null;
   }
 
   private Autos() {
