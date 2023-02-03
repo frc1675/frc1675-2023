@@ -3,26 +3,17 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-import frc.robot.Constants;
-
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.IntakeConeOutputCube;
-import frc.robot.commands.IntakeCubeOutputCone;
-import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.IntakeCone;
+import frc.robot.commands.IntakeCube;
+import frc.robot.commands.DropCube;
+import frc.robot.commands.DropCone;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Intake;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -34,6 +25,8 @@ public class RobotContainer {
   private final Joystick driverController = new Joystick(Constants.DRIVER_CONTROLLER);
   private final JoystickButton driverControllerAButton = new JoystickButton(driverController, Constants.A_BUTTON);
   private final JoystickButton driverControllerBButton = new JoystickButton(driverController, Constants.B_BUTTON);
+  private final JoystickButton driverControllerXButton = new JoystickButton(driverController, Constants.X_BUTTON);
+  private final JoystickButton driverControllerYButton = new JoystickButton(driverController, Constants.Y_BUTTON);
   private final Intake intake = new Intake();
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
@@ -58,25 +51,21 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
-
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-    driverControllerAButton.onTrue(new IntakeConeOutputCube(intake));
-    driverControllerBButton.onTrue(new IntakeCubeOutputCone(intake));
+    driverControllerAButton.onTrue(new DropCone(intake));
+    driverControllerBButton.onTrue(new DropCube(intake));
+    driverControllerXButton.onTrue(new IntakeCone(intake));
+    driverControllerYButton.onTrue(new IntakeCube(intake));
 
   }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
+  public void getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    
   }
 }
