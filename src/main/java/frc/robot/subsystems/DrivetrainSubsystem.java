@@ -11,6 +11,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.BooleanPublisher;
+import edu.wpi.first.networktables.BooleanTopic;
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.DoubleTopic;
 import edu.wpi.first.networktables.NetworkTable;
@@ -27,18 +29,22 @@ public class DrivetrainSubsystem extends SubsystemBase {
         public static final double MAX_VELOCITY_METERS_PER_SECOND = 6380.0 / 60.0 *
                         SdsModuleConfigurations.MK4_L3.getDriveReduction() *
                         SdsModuleConfigurations.MK4_L3.getWheelDiameter() * Math.PI;
-        public static final double MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND = MAX_VELOCITY_METERS_PER_SECOND /
-                        Math.hypot(Constants.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, Constants.DRIVETRAIN_WHEELBASE_METERS / 2.0);
+        public static final double MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND = MAX_VELOCITY_METERS_PER_SECOND / Math.hypot(Constants.DRIVETRAIN_TRACKWIDTH_METERS / 2.0,
+                                        Constants.DRIVETRAIN_WHEELBASE_METERS / 2.0);
 
         private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
                         // Front left
-                        new Translation2d(Constants.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, Constants.DRIVETRAIN_WHEELBASE_METERS / 2.0),
+                        new Translation2d(Constants.DRIVETRAIN_TRACKWIDTH_METERS / 2.0,
+                                        Constants.DRIVETRAIN_WHEELBASE_METERS / 2.0),
                         // Front right
-                        new Translation2d(Constants.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -Constants.DRIVETRAIN_WHEELBASE_METERS / 2.0),
+                        new Translation2d(Constants.DRIVETRAIN_TRACKWIDTH_METERS / 2.0,
+                                        -Constants.DRIVETRAIN_WHEELBASE_METERS / 2.0),
                         // Back left
-                        new Translation2d(-Constants.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, Constants.DRIVETRAIN_WHEELBASE_METERS / 2.0),
+                        new Translation2d(-Constants.DRIVETRAIN_TRACKWIDTH_METERS / 2.0,
+                                        Constants.DRIVETRAIN_WHEELBASE_METERS / 2.0),
                         // Back right
-                        new Translation2d(-Constants.DRIVETRAIN_TRACKWIDTH_METERS / 2.0, -Constants.DRIVETRAIN_WHEELBASE_METERS / 2.0));
+                        new Translation2d(-Constants.DRIVETRAIN_TRACKWIDTH_METERS / 2.0,
+                                        -Constants.DRIVETRAIN_WHEELBASE_METERS / 2.0));
 
         private final AHRS navx = new AHRS(SPI.Port.kMXP, (byte) 200);
 
@@ -48,8 +54,18 @@ public class DrivetrainSubsystem extends SubsystemBase {
         private final SwerveModule backRightModule;
 
         private NetworkTable table = NetworkTableInstance.getDefault().getTable("Drivetrain");
-        private DoubleTopic topic = table.getDoubleTopic("Gyro Rotation");
-        private DoublePublisher rotation = topic.publish();
+
+        private BooleanTopic BalanceTargetTopic = table.getBooleanTopic("Has Balance Target");
+        private BooleanPublisher hasBalanceTarget = BalanceTargetTopic.publish();
+
+        private DoubleTopic rotationTopic = table.getDoubleTopic("Gyro Rotation");
+        private DoublePublisher rotation = rotationTopic.publish();
+
+        private DoubleTopic pitchTopic = table.getDoubleTopic("Gyro Pitch");
+        private DoublePublisher pitch = pitchTopic.publish();
+
+        private DoubleTopic rollTopic = table.getDoubleTopic("Gyro Roll");
+        private DoublePublisher roll = rollTopic.publish();
 
         private ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
@@ -57,12 +73,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
         private boolean forceRotationTarget = false;
         private Rotation2d rotationTarget = new Rotation2d(0);
 
+        private Rotation2d balanceTarget = null;
+
         private PIDController yPID = new PIDController(Constants.PROPORTIONAL_COEFFICENT, Constants.INTEGRAL_COEFFICENT,
-        Constants.DERIVATIVE_COEFFICENT);
+                        Constants.DERIVATIVE_COEFFICENT);
         private PIDController xPID = new PIDController(Constants.PROPORTIONAL_COEFFICENT, Constants.INTEGRAL_COEFFICENT,
-        Constants.DERIVATIVE_COEFFICENT);
-        private PIDController rotationPID = new PIDController(Constants.PROPORTIONAL_COEFFICENT, Constants.INTEGRAL_COEFFICENT,
-        Constants.DERIVATIVE_COEFFICENT);
+                        Constants.DERIVATIVE_COEFFICENT);
+        private PIDController rotationPID = new PIDController(Constants.PROPORTIONAL_COEFFICENT,
+                        Constants.INTEGRAL_COEFFICENT,
+                        Constants.DERIVATIVE_COEFFICENT);
 
         public DrivetrainSubsystem() {
                 ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
@@ -120,6 +139,22 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 return Rotation2d.fromDegrees(360.0 - navx.getYaw());
         }
 
+        public Rotation2d getGyroscopePitch() {
+                return Rotation2d.fromDegrees(navx.getPitch());
+        }
+
+        public Rotation2d getGyroscopeRoll() {
+                return Rotation2d.fromDegrees(navx.getRoll());
+        }
+
+        public void toggleBalanceTarget() {
+                if (balanceTarget == null) {
+                        balanceTarget = Rotation2d.fromDegrees(Constants.AUTO_BALANCE_TARGET_DEGREES);
+                } else {
+                        balanceTarget = null;
+                }
+        }
+
         public void drive(ChassisSpeeds chassisSpeeds) {
                 this.chassisSpeeds = chassisSpeeds;
         }
@@ -140,14 +175,25 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         @Override
         public void periodic() {
-                if (chassisSpeeds.omegaRadiansPerSecond == 0 && (chassisSpeeds.vxMetersPerSecond != 0 || chassisSpeeds.vyMetersPerSecond != 0)) {
-                        chassisSpeeds.omegaRadiansPerSecond = -rotationPID.calculate(getGyroscopeRotation().minus(rotationTarget).getRadians());
+                if (chassisSpeeds.omegaRadiansPerSecond == 0
+                                && (chassisSpeeds.vxMetersPerSecond != 0 || chassisSpeeds.vyMetersPerSecond != 0)) {
+                        chassisSpeeds.omegaRadiansPerSecond = -rotationPID
+                                        .calculate(getGyroscopeRotation().minus(rotationTarget).getRadians());
                         if (updateRotationTarget && !forceRotationTarget) {
                                 rotationTarget = getGyroscopeRotation();
                                 updateRotationTarget = false;
                         }
                 } else {
                         updateRotationTarget = true;
+                }
+
+                if (balanceTarget != null) {
+                        if (Math.abs(getGyroscopePitch().getDegrees()) >= Constants.AUTO_BALANCE_TOLERANCE_DEGREES) {
+                                chassisSpeeds.vyMetersPerSecond = MAX_VELOCITY_METERS_PER_SECOND * 0.25;
+                        } else if (Math.abs(
+                                        getGyroscopeRoll().getDegrees()) >= Constants.AUTO_BALANCE_TOLERANCE_DEGREES) {
+                                chassisSpeeds.vxMetersPerSecond = MAX_VELOCITY_METERS_PER_SECOND * 0.25;
+                        }
                 }
 
                 SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(chassisSpeeds);
@@ -163,5 +209,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
                                 states[3].angle.getRadians());
 
                 rotation.set(getGyroscopeRotation().getDegrees());
+                pitch.set(getGyroscopePitch().getDegrees());
+                roll.set(getGyroscopeRoll().getDegrees());
+                hasBalanceTarget.set(balanceTarget != null);
         }
 }

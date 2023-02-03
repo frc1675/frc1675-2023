@@ -22,6 +22,7 @@ public class RobotContainer {
   private final Joystick driverController = new Joystick(Constants.DRIVER_CONTROLLER);
   private final JoystickButton backButton = new JoystickButton(driverController, Constants.BACK_BUTTON);
   private final JoystickButton bButton = new JoystickButton(driverController, Constants.B_BUTTON);
+  private final JoystickButton yButton = new JoystickButton(driverController, Constants.Y_BUTTON);
 
   public RobotContainer() {
     configureBindings();
@@ -48,6 +49,8 @@ public class RobotContainer {
         () -> -mod.modifyAxis(driverController.getRawAxis(Constants.RIGHT_X_AXIS))
             * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
         new Rotation2d(Constants.DRIVE_ROTATION_TARGET_DEGREES)));
+
+    yButton.onTrue(new InstantCommand(drivetrainSubsystem::toggleBalanceTarget));
   }
 
   public Command getAutonomousCommand() {

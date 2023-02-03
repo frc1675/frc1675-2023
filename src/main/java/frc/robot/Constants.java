@@ -10,6 +10,8 @@ public final class Constants {
       public static final double DRIVETRAIN_WHEELBASE_METERS = 0.5969;
       public static final double DRIVE_ROTATE_TOLERANCE_DEGREES = 1.0;
       public static final double DRIVE_ROTATION_TARGET_DEGREES = 0.0;
+      public static final double AUTO_BALANCE_TARGET_DEGREES = 0;
+      public static final double AUTO_BALANCE_TOLERANCE_DEGREES = 3;
   
       //PID constants
       public static final double PROPORTIONAL_COEFFICENT = 3.0;
