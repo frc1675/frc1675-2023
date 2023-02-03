@@ -128,7 +128,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         }
 
         public void zeroGyroscope() {
-                navx.zeroYaw();
+                navx.zeroYaw(); 
         }
 
         public Rotation2d getGyroscopeRotation() {
@@ -189,10 +189,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
                 if (balanceTarget != null) {
                         if (Math.abs(getGyroscopePitch().getDegrees()) >= Constants.AUTO_BALANCE_TOLERANCE_DEGREES) {
-                                chassisSpeeds.vyMetersPerSecond = MAX_VELOCITY_METERS_PER_SECOND * 0.25;
-                        } else if (Math.abs(
-                                        getGyroscopeRoll().getDegrees()) >= Constants.AUTO_BALANCE_TOLERANCE_DEGREES) {
-                                chassisSpeeds.vxMetersPerSecond = MAX_VELOCITY_METERS_PER_SECOND * 0.25;
+                                chassisSpeeds.vyMetersPerSecond = yPID.calculate(getGyroscopePitch().minus(balanceTarget).getRadians());
+                        } else if (Math.abs(getGyroscopeRoll().getDegrees()) >= Constants.AUTO_BALANCE_TOLERANCE_DEGREES) {
+                                chassisSpeeds.vxMetersPerSecond = xPID.calculate(getGyroscopeRoll().minus(balanceTarget).getRadians());
                         }
                 }
 
