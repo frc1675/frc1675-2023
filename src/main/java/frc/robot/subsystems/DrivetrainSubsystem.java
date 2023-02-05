@@ -163,7 +163,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         @Override
         public void periodic() {
                 if (chassisSpeeds.omegaRadiansPerSecond == 0 && (chassisSpeeds.vxMetersPerSecond != 0 || chassisSpeeds.vyMetersPerSecond != 0)) {
-                        chassisSpeeds.omegaRadiansPerSecond = -rotationPID.calculate(getGyroscopeRotation().minus(rotationTarget).getRadians());
+                        chassisSpeeds.omegaRadiansPerSecond = rotationPID.calculate(getGyroscopeRotation().minus(rotationTarget).getRadians());
                         if (updateRotationTarget && !forceRotationTarget) {
                                 rotationTarget = getGyroscopeRotation();
                                 updateRotationTarget = false;
