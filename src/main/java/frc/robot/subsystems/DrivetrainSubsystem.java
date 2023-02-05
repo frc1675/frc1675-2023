@@ -58,6 +58,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
         private BooleanTopic BalanceTargetTopic = table.getBooleanTopic("Has Balance Target");
         private BooleanPublisher hasBalanceTarget = BalanceTargetTopic.publish();
 
+        private BooleanTopic stickyDriveTopic = table.getBooleanTopic("Sticky Drive Enabled");
+        private BooleanPublisher stickyDrivePublisher = stickyDriveTopic.publish();
+
         private DoubleTopic rotationTopic = table.getDoubleTopic("Gyro Rotation");
         private DoublePublisher rotation = rotationTopic.publish();
 
@@ -74,6 +77,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         private Rotation2d rotationTarget = new Rotation2d(0);
 
         private Rotation2d balanceTarget = null;
+        private boolean stickyDriveEnabled = false;
 
         private PIDController yPID = new PIDController(Constants.PROPORTIONAL_COEFFICENT, Constants.INTEGRAL_COEFFICENT,
                         Constants.DERIVATIVE_COEFFICENT);
@@ -155,6 +159,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 }
         }
 
+        public double getAverageVelocity() {
+                return (frontLeftModule.getDriveVelocity() + frontRightModule.getDriveVelocity() + backLeftModule.getDriveVelocity() + backRightModule.getDriveVelocity()) / 4.0;
+        }
+
+        public void toggleStickyDrive() {
+                stickyDriveEnabled = !stickyDriveEnabled;       
+        }
+
         public void drive(ChassisSpeeds chassisSpeeds) {
                 this.chassisSpeeds = chassisSpeeds;
         }
@@ -195,6 +207,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
                         }
                 }
 
+                if (stickyDriveEnabled && chassisSpeeds.vxMetersPerSecond == 0 && getAverageVelocity() > Constants.STICKY_DRIVE_TOLERANCE_METERS_PER_SECOND) {
+                        chassisSpeeds.vxMetersPerSecond = -getAverageVelocity();
+                        chassisSpeeds.vyMetersPerSecond = 0;
+                        //chassisSpeeds.vxMetersPerSecond = xPID.calculate(getAverageVelocity);
+                }
+                                
                 SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(chassisSpeeds);
                 SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
 
@@ -211,5 +229,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 pitch.set(getGyroscopePitch().getDegrees());
                 roll.set(getGyroscopeRoll().getDegrees());
                 hasBalanceTarget.set(balanceTarget != null);
+                stickyDrivePublisher.set(stickyDriveEnabled);
         }
 }

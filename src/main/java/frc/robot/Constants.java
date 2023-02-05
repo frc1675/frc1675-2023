@@ -12,6 +12,7 @@ public final class Constants {
       public static final double DRIVE_ROTATION_TARGET_DEGREES = 0.0;
       public static final double AUTO_BALANCE_TARGET_DEGREES = 0;
       public static final double AUTO_BALANCE_TOLERANCE_DEGREES = 3;
+      public static final double STICKY_DRIVE_TOLERANCE_METERS_PER_SECOND = 0.1;
   
       //PID constants
       public static final double PROPORTIONAL_COEFFICENT = 3.0;

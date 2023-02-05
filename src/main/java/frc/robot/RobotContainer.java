@@ -50,7 +50,8 @@ public class RobotContainer {
             * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
         new Rotation2d(Constants.DRIVE_ROTATION_TARGET_DEGREES)));
 
-    yButton.onTrue(new InstantCommand(drivetrainSubsystem::toggleBalanceTarget));
+    //yButton.onTrue(new InstantCommand(drivetrainSubsystem::toggleBalanceTarget));
+    yButton.onTrue(new InstantCommand(drivetrainSubsystem::toggleStickyDrive));
   }
 
   public Command getAutonomousCommand() {
