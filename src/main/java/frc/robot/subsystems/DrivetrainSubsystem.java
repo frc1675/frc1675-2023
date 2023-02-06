@@ -33,6 +33,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.BooleanPublisher;
+import edu.wpi.first.networktables.BooleanTopic;
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.DoubleTopic;
 import edu.wpi.first.networktables.NetworkTable;
@@ -69,8 +71,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
         private final SwerveModule backRightModule;
 
         private NetworkTable table = NetworkTableInstance.getDefault().getTable("Drivetrain");
-        private DoubleTopic topic = table.getDoubleTopic("Gyro Rotation");
-        private DoublePublisher rotation = topic.publish();
+        private DoubleTopic gyroTopic = table.getDoubleTopic("Gyro Rotation");
+        private DoublePublisher gyroReading = gyroTopic.publish();
+
+        private BooleanTopic rotationTargetTopic = table.getBooleanTopic("Has Rotation Target");
+        private BooleanPublisher hasRotationTarget = rotationTargetTopic.publish(); 
 
         private ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
@@ -151,13 +156,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 drive(ChassisSpeeds.fromFieldRelativeSpeeds(x, y, rotation, getGyroscopeRotation()));
         }
 
-        public void setRotationTarget(Rotation2d rotationTarget) {
+        public void toggleRotationTarget(Rotation2d rotationTarget) {
                 this.rotationTarget = rotationTarget;
-                forceRotationTarget = true;
-        }
-
-        public void unsetRotationTarget() {
-                forceRotationTarget = false;
+                forceRotationTarget = !forceRotationTarget;
         }
 
         @Override
@@ -184,6 +185,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE,
                                 states[3].angle.getRadians());
 
-                rotation.set(getGyroscopeRotation().getDegrees());
+                gyroReading.set(getGyroscopeRotation().getDegrees());
+                hasRotationTarget.set(forceRotationTarget);
         }
 }
