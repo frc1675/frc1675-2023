@@ -59,4 +59,5 @@ public final class Constants {
       public static final int RIGHT_JOYSTICK_BUTTON = 10;
   
       public static final double INTAKE_SPEED = 1;
+      public static final int INTAKE_MOTOR = 9;
 }

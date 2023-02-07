@@ -61,6 +61,7 @@ public class RobotContainer {
         driverControllerAButton.onTrue(new DropCone(intake));
         driverControllerBButton.onTrue(new DropCube(intake));
         driverControllerXButton.onTrue(new IntakeCone(intake));
+        driverControllerYButton.onTrue(new IntakeCube(intake));
   }
 
   public Command getAutonomousCommand() {
