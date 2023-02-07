@@ -4,12 +4,12 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.ToggleRotationTarget;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Vision;
 import frc.robot.util.JoystickModification;
@@ -22,6 +22,7 @@ public class RobotContainer {
   private final Joystick driverController = new Joystick(Constants.DRIVER_CONTROLLER);
   private final JoystickButton backButton = new JoystickButton(driverController, Constants.BACK_BUTTON);
   private final JoystickButton bButton = new JoystickButton(driverController, Constants.B_BUTTON);
+  private final JoystickButton yButton = new JoystickButton(driverController, Constants.Y_BUTTON);
 
   public RobotContainer() {
     configureBindings();
@@ -38,16 +39,9 @@ public class RobotContainer {
             * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND));
 
     backButton.onTrue(new InstantCommand(drivetrainSubsystem::zeroGyroscope));
-
-    bButton.toggleOnTrue(new DefaultDriveCommand(
-        drivetrainSubsystem,
-        () -> -mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_Y_AXIS))
-            * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-        () -> -mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_X_AXIS))
-            * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-        () -> -mod.modifyAxis(driverController.getRawAxis(Constants.RIGHT_X_AXIS))
-            * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
-        new Rotation2d(Constants.DRIVE_ROTATION_TARGET_DEGREES)));
+  
+    yButton.onTrue(new ToggleRotationTarget(drivetrainSubsystem, () -> vision.getTargetXOffsetDegrees()));
+    bButton.onTrue(new ToggleRotationTarget(drivetrainSubsystem, () -> Constants.DRIVE_ROTATION_TARGET_DEGREES));
   }
 
   public Command getAutonomousCommand() {
