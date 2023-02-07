@@ -156,9 +156,17 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 drive(ChassisSpeeds.fromFieldRelativeSpeeds(x, y, rotation, getGyroscopeRotation()));
         }
 
-        public void toggleRotationTarget(Rotation2d rotationTarget) {
+        public void enableRotationTarget(Rotation2d rotationTarget) {
                 this.rotationTarget = rotationTarget;
-                forceRotationTarget = !forceRotationTarget;
+                forceRotationTarget = true;
+        }
+
+        public void disableRotationTarget() {
+                forceRotationTarget = false;
+        }
+
+        public boolean getRotationTargetEnabled() {
+                return forceRotationTarget;
         }
 
         @Override

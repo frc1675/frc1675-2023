@@ -13,17 +13,22 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Vision extends SubsystemBase {
   private NetworkTable table;
-  private NetworkTableEntry validTarget;
-  private NetworkTableEntry xOffset;
+  private NetworkTableEntry targetValid;
+  private NetworkTableEntry targetXOffset;
   private NetworkTableEntry targetArea; // proxy for distance from target
   private NetworkTableEntry targetID;
   private NetworkTableEntry botpose;
 
+  public static enum CamMode {
+    VISION,
+    DRIVER
+  }
+
   public Vision() {
     table = NetworkTableInstance.getDefault().getTable("limelight-ups");
-    validTarget = table.getEntry("tv");
+    targetValid = table.getEntry("tv");
     targetID  = table.getEntry("tid");
-    xOffset = table.getEntry("tx");
+    targetXOffset = table.getEntry("tx");
     targetArea = table.getEntry("ta");
     botpose = table.getEntry("botpose");
   }
@@ -41,12 +46,12 @@ public class Vision extends SubsystemBase {
     return targetArea.getDouble(0);
   }
 
-  public Rotation2d getXOffset() {
-    return Rotation2d.fromDegrees(xOffset.getDouble(0));
+  public double getTargetXOffsetDegrees() {
+    return targetXOffset.getDouble(0);
   }
 
   public boolean hasTarget() {
-    return validTarget.getDouble(0) == 1;
+    return targetValid.getDouble(0) == 1;
   }
 
   public void setMode(CamMode mode) {
@@ -55,11 +60,6 @@ public class Vision extends SubsystemBase {
     }else {
       table.getEntry("camMode").setNumber(1);
     }
-  }
-
-  public static enum CamMode {
-    VISION,
-    DRIVER
   }
 
 }

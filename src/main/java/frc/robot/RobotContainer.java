@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -40,9 +39,9 @@ public class RobotContainer {
             * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND));
 
     backButton.onTrue(new InstantCommand(drivetrainSubsystem::zeroGyroscope));
-    
-    yButton.onTrue(new ToggleRotationTarget(drivetrainSubsystem, vision.getXOffset()));
-    bButton.onTrue(new ToggleRotationTarget(drivetrainSubsystem, Rotation2d.fromDegrees(Constants.DRIVE_ROTATION_TARGET_DEGREES)));
+  
+    yButton.onTrue(new ToggleRotationTarget(drivetrainSubsystem, () -> vision.getTargetXOffsetDegrees()));
+    bButton.onTrue(new ToggleRotationTarget(drivetrainSubsystem, () -> Constants.DRIVE_ROTATION_TARGET_DEGREES));
   }
 
   public Command getAutonomousCommand() {
