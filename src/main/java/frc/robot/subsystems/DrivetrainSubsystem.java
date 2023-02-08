@@ -28,16 +28,20 @@ import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.DoubleTopic;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -51,7 +55,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         public static final double MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND = MAX_VELOCITY_METERS_PER_SECOND /
                         Math.hypot(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0);
 
-        private final SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(
+        private final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
                         // Front left
                         new Translation2d(DRIVETRAIN_TRACKWIDTH_METERS / 2.0, DRIVETRAIN_WHEELBASE_METERS / 2.0),
                         // Front right
@@ -67,6 +71,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
         private final SwerveModule frontRightModule;
         private final SwerveModule backLeftModule;
         private final SwerveModule backRightModule;
+
+        private double positionMeters = 0;
+        private double lastUpdateTime = 0;
+
+        private SwerveModuleState[] states;
+        private SwerveDriveOdometry odometry;
+        private Pose2d robotPose;
 
         private NetworkTable table = NetworkTableInstance.getDefault().getTable("Drivetrain");
         private DoubleTopic topic = table.getDoubleTopic("Gyro Rotation");
@@ -127,10 +138,45 @@ public class DrivetrainSubsystem extends SubsystemBase {
                                 BACK_RIGHT_MODULE_STEER_MOTOR,
                                 BACK_RIGHT_MODULE_STEER_ENCODER,
                                 BACK_RIGHT_MODULE_STEER_OFFSET);
+                
+                odometry = new SwerveDriveOdometry(
+                        kinematics,
+                        getGyroscopeRotation(),
+                        getModulePositions()
+                );
         }
 
         public void zeroGyroscope() {
                 navx.zeroYaw();
+        }
+
+        private SwerveModulePosition[] getModulePositions() {
+                return new SwerveModulePosition[] {
+                        new SwerveModulePosition(positionMeters, states[0].angle),
+                        new SwerveModulePosition(positionMeters, states[1].angle),
+                        new SwerveModulePosition(positionMeters, states[2].angle),
+                        new SwerveModulePosition(positionMeters, states[3].angle)
+                };
+        }
+
+        public void resetGyroscope(Pose2d pose) {
+                odometry.resetPosition(
+                        getGyroscopeRotation(),
+                        getModulePositions(), 
+                        pose
+                );
+        }
+
+        public SwerveDriveKinematics getKinematics() {
+                return kinematics;
+        }
+
+        public Pose2d getPose() {
+                return robotPose;
+        }
+
+        public void setSwerveStates(SwerveModuleState[] states) {
+                this.states = states;
         }
 
         public Rotation2d getGyroscopeRotation() {
@@ -171,8 +217,18 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 } else {
                         updateRotationTarget = true;
                 }
+                
+                positionMeters += frontLeftModule.getDriveVelocity() * Timer.getFPGATimestamp() - lastUpdateTime; // (m / s) * delta t = m
+                lastUpdateTime = Timer.getFPGATimestamp();
 
-                SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(chassisSpeeds);
+                robotPose = odometry.update(
+                        getGyroscopeRotation(),
+                        getModulePositions()
+                );
+
+                if(chassisSpeeds.omegaRadiansPerSecond + chassisSpeeds.vxMetersPerSecond + chassisSpeeds.vxMetersPerSecond == 0) {
+                        states = kinematics.toSwerveModuleStates(chassisSpeeds);
+                }
                 SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
 
                 frontLeftModule.set(states[0].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE,
