@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Vision;
+import frc.robot.util.AutoGenerator;
 import frc.robot.util.JoystickModification;
 
 public class RobotContainer {
@@ -51,6 +52,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return null;
+    return new AutoGenerator(drivetrainSubsystem).getAutoCommand();
   }
 }
