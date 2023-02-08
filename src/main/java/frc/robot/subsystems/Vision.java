@@ -61,5 +61,9 @@ public class Vision extends SubsystemBase {
     VISION,
     DRIVER
   }
+  @Override
+  public void periodic() {
+   
+  }
 
 }

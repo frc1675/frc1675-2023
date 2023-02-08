@@ -7,24 +7,49 @@
     }
   },
   "NetworkTables": {
+    "FMSInfo": {
+      "open": true
+    },
+    "LiveWindow": {
+      "open": true
+    },
+    "Persistent Values": {
+      "open": false
+    },
+    "Shuffleboard": {
+      "open": true
+    },
+    "precision": 3,
     "properties": true,
+    "retained": {
+      "limelight-ups": {
+        "open": true
+      }
+    },
+    "timestamp": true,
     "transitory": {
       "LiveWindow": {
         ".status": {
           "open": true
-        }
+        },
+        "open": true
       },
       "Shuffleboard": {
-        ".metadata": {
-          "open": true
-        },
-        ".recording": {
+        "Drivetrain": {
           "open": true
         }
       },
       "SmartDashboard": {
         "open": true
       }
+    }
+  },
+  "NetworkTables Info": {
+    "Connections": {
+      "open": true
+    },
+    "Server": {
+      "open": true
     }
   }
 }
