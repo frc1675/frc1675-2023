@@ -8,9 +8,13 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.ToggleFloorIntake;
+import frc.robot.commands.FloorIntakeIn;
+import frc.robot.commands.FloorIntakeOut;
 import frc.robot.commands.DefaultDriveCommand;
 import frc.robot.commands.ToggleRotationTarget;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.FloorIntake;
 import frc.robot.subsystems.Vision;
 import frc.robot.util.JoystickModification;
 
@@ -27,13 +31,20 @@ public class RobotContainer {
   */
 
   private final Joystick driverController = new Joystick(Constants.DRIVER_CONTROLLER);
-  private final JoystickButton backButton = new JoystickButton(driverController, Constants.BACK_BUTTON);
-  private final JoystickButton bButton = new JoystickButton(driverController, Constants.B_BUTTON);
-  private final JoystickButton yButton = new JoystickButton(driverController, Constants.Y_BUTTON);
-  
+  private final JoystickButton driverControllerBackButton = new JoystickButton(driverController, Constants.BACK_BUTTON);
+  private final JoystickButton driverControllerBButton = new JoystickButton(driverController, Constants.B_BUTTON);
+  private final JoystickButton driverControllerYButton = new JoystickButton(driverController, Constants.Y_BUTTON);
+  private final JoystickButton driverControllerAButton = new JoystickButton(driverController, Constants.A_BUTTON);
+  private final JoystickButton driverControllerXButton = new JoystickButton(driverController, Constants.X_BUTTON);
+  private final FloorIntake floorIntake = new FloorIntake();
 
   public RobotContainer() {
     configureBindings();
+  }
+
+  private boolean floorIntakeButtonListen(){
+
+    
   }
 
   private void configureBindings() {
@@ -46,10 +57,11 @@ public class RobotContainer {
         () -> -mod.modifyAxis(driverController.getRawAxis(Constants.RIGHT_X_AXIS))
             * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND));
 
-    backButton.onTrue(new InstantCommand(drivetrainSubsystem::zeroGyroscope));
+    driverControllerBackButton.onTrue(new InstantCommand(drivetrainSubsystem::zeroGyroscope));
   
-    yButton.onTrue(new ToggleRotationTarget(drivetrainSubsystem, () -> vision.getTargetXOffsetDegrees()));
-    bButton.onTrue(new ToggleRotationTarget(drivetrainSubsystem, () -> Constants.DRIVE_ROTATION_TARGET_DEGREES));
+    driverControllerYButton.onTrue(new ToggleRotationTarget(drivetrainSubsystem, () -> vision.getTargetXOffsetDegrees()));
+    driverControllerBButton.onTrue(new ToggleRotationTarget(drivetrainSubsystem, () -> Constants.DRIVE_ROTATION_TARGET_DEGREES));
+    driverControllerXButton.onTrue(floorIntakeButtonListen());
   }
 
   public Command getAutonomousCommand() {
