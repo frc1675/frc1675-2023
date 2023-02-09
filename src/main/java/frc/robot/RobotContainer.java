@@ -8,20 +8,20 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.DefaultDriveUpdatePose;
+import frc.robot.commands.DropCone;
+import frc.robot.commands.DropCube;
 import frc.robot.commands.FloorIntakeIn;
 import frc.robot.commands.FloorIntakeOut;
-import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.IntakeCone;
+import frc.robot.commands.IntakeCube;
 import frc.robot.commands.ToggleRotationTarget;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.FloorIntake;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Vision;
 import frc.robot.util.AutoGenerator;
 import frc.robot.util.JoystickModification;
-import frc.robot.commands.IntakeCone;
-import frc.robot.commands.IntakeCube;
-import frc.robot.commands.DropCube;
-import frc.robot.commands.DropCone;
-import frc.robot.subsystems.Intake;
 
 public class RobotContainer {
   private final Vision vision = new Vision();
@@ -55,39 +55,27 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
+    drivetrainSubsystem.setDefaultCommand(new DefaultDriveUpdatePose(
+        vision, 
         drivetrainSubsystem,
         () -> -mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_Y_AXIS))
-            * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+        * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
         () -> -mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_X_AXIS))
-            * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+        * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
         () -> -mod.modifyAxis(driverController.getRawAxis(Constants.RIGHT_X_AXIS))
-            * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND));
+        * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)
+    );
 
     driverControllerBackButton.onTrue(new InstantCommand(drivetrainSubsystem::zeroGyroscope));
-  
-    driverControllerYButton.onTrue(new ToggleRotationTarget(drivetrainSubsystem, () -> vision.getTargetXOffsetDegrees()));
-    driverControllerBButton.onTrue(new ToggleRotationTarget(drivetrainSubsystem, () -> Constants.DRIVE_ROTATION_TARGET_DEGREES));
     operatorControllerXButton.onTrue(new FloorIntakeIn(floorIntake));
     operatorControllerAButton.onTrue(new FloorIntakeOut(floorIntake));
-    
-    driverControllerBButton.toggleOnTrue(new DefaultDriveCommand(
-        drivetrainSubsystem,
-        () -> -mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_Y_AXIS))
-            * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-        () -> -mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_X_AXIS))
-            * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-        () -> -mod.modifyAxis(driverController.getRawAxis(Constants.RIGHT_X_AXIS))
-            * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
-        new Rotation2d(Constants.DRIVE_ROTATION_TARGET_DEGREES)));
-
-        operatorControllerAButton.onTrue(new DropCone(intake));
-        operatorControllerBButton.onTrue(new DropCube(intake));
-        operatorControllerXButton.onTrue(new IntakeCone(intake));
-        operatorControllerYButton.onTrue(new IntakeCube(intake));
-  
     driverControllerYButton.onTrue(new ToggleRotationTarget(drivetrainSubsystem, () -> vision.getTargetXOffsetDegrees()));
     driverControllerBButton.onTrue(new ToggleRotationTarget(drivetrainSubsystem, () -> Constants.DRIVE_ROTATION_TARGET_DEGREES));
+
+    operatorControllerAButton.onTrue(new DropCone(intake));
+    operatorControllerBButton.onTrue(new DropCube(intake));
+    operatorControllerXButton.onTrue(new IntakeCone(intake));
+    operatorControllerYButton.onTrue(new IntakeCube(intake));
   }
 
   public Command getAutonomousCommand() {

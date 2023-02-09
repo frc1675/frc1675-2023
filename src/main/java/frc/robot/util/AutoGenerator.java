@@ -46,7 +46,7 @@ public class AutoGenerator {
 
         builder = new SwerveAutoBuilder(
             this.drivetrainSubsystem::getPose,
-            this.drivetrainSubsystem::resetGyroscope,
+            this.drivetrainSubsystem::resetPose,
             kinematics,
             new PIDConstants(0, 0, 0),
             new PIDConstants(0, 0, 0),
