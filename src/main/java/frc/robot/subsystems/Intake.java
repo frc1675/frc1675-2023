@@ -16,6 +16,10 @@ public class Intake extends SubsystemBase {
 
   }
 
+  public void intakeStop(){
+    intakeMotor.set(0);
+  }
+
   public void conePickup(double speed){
     intakeMotor.set(speed * -1);
   }
