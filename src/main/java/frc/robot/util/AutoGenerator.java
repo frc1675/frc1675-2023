@@ -25,7 +25,21 @@ public class AutoGenerator {
     private SendableChooser<AutoActions> actionSelector = new SendableChooser<AutoActions>();
     private SendableChooser<StartLocation> locationSelector = new SendableChooser<StartLocation>();
 
-    public AutoGenerator(DrivetrainSubsystem drivetrainSubsystem) {
+    public enum AutoActions {
+        EXIT_AND_BALANCE
+    } 
+
+    public enum StartLocation {
+        ONE(1),
+        TWO(2);
+
+        public final int value;
+        private StartLocation(int value) {
+            this.value = value;
+        }
+    }
+
+    public AutoGenerator(DrivetrainSubsystem drivetrainSubsystem) {   
 
         this.drivetrainSubsystem = drivetrainSubsystem;
         SwerveDriveKinematics kinematics = this.drivetrainSubsystem.getKinematics();
@@ -50,13 +64,13 @@ public class AutoGenerator {
 
     public Command getAutoCommand() {
         if(actionSelector.getSelected() == AutoActions.EXIT_AND_BALANCE) {
-            return getExitAndBalance(locationSelector.getSelected().value);
+            return getExitAndBalance(locationSelector.getSelected());
         }
         return null;
     }
 
-    public Command getExitAndBalance(int startArea) {
-        if(startArea == 1 || startArea == 2) {
+    public Command getExitAndBalance(StartLocation startArea) {
+        if(startArea.value == 1 || startArea.value == 2) {
             PathPlannerTrajectory path = PathPlanner.loadPath("ExitAndBalance A" + startArea, defaulPathConstraints);
             eventMap.put("autoBalance", new PrintCommand("Auto balance begin"));
             return builder.fullAuto(path);
@@ -65,17 +79,4 @@ public class AutoGenerator {
         }
     }
 
-    public enum AutoActions {
-        EXIT_AND_BALANCE
-    } 
-
-    public enum StartLocation {
-        ONE(1),
-        TWO(2);
-
-        public final int value;
-        private StartLocation(int value) {
-            this.value = value;
-        }
-    }
 }

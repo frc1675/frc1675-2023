@@ -72,7 +72,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         private final SwerveModule backLeftModule;
         private final SwerveModule backRightModule;
 
-        private double positionMeters = 0;
+        private double[] positionMeters = new double[4];
         private double lastUpdateTime = 0;
 
         private SwerveModuleState[] states;
@@ -152,10 +152,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         private SwerveModulePosition[] getModulePositions() {
                 return new SwerveModulePosition[] {
-                        new SwerveModulePosition(positionMeters, states[0].angle),
-                        new SwerveModulePosition(positionMeters, states[1].angle),
-                        new SwerveModulePosition(positionMeters, states[2].angle),
-                        new SwerveModulePosition(positionMeters, states[3].angle)
+                        new SwerveModulePosition(positionMeters[0], states[0].angle),
+                        new SwerveModulePosition(positionMeters[1], states[1].angle),
+                        new SwerveModulePosition(positionMeters[2], states[2].angle),
+                        new SwerveModulePosition(positionMeters[3], states[3].angle)
                 };
         }
 
@@ -218,7 +218,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
                         updateRotationTarget = true;
                 }
                 
-                positionMeters += frontLeftModule.getDriveVelocity() * Timer.getFPGATimestamp() - lastUpdateTime; // (m / s) * delta t = m
+                positionMeters[0] += frontLeftModule.getDriveVelocity() * Timer.getFPGATimestamp() - lastUpdateTime; // (m / s) * delta t = m
+                positionMeters[1] += frontRightModule.getDriveVelocity() * Timer.getFPGATimestamp() - lastUpdateTime;
+                positionMeters[2] += backLeftModule.getDriveVelocity() * Timer.getFPGATimestamp() - lastUpdateTime;
+                positionMeters[3] += backRightModule.getDriveVelocity() * Timer.getFPGATimestamp() - lastUpdateTime;
                 lastUpdateTime = Timer.getFPGATimestamp();
 
                 robotPose = odometry.update(
