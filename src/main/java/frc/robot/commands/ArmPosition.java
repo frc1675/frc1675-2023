@@ -4,44 +4,58 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.ArmSubsystem;
 
-public class MoveArm extends CommandBase {
-  /** Creates a new moveArm. */
- private ArmSubsystem armSpeed;
- private DoubleSupplier armValue;
+public class ArmPosition extends CommandBase {
+  /** Creates a new ArmPosition. */
+  private ArmSubsystem arm;
+  private DoubleSupplier armValue;
+  
+  
+  
 
-  public MoveArm(ArmSubsystem armSpeed,DoubleSupplier armValue ) {
+  public ArmPosition(ArmSubsystem arm, double armPosition, boolean canBeFinished) {
+      new PIDController (0, 0, 0);
+
+
     // Use addRequirements() here to declare subsystem dependencies.
-    this.armSpeed = armSpeed; 
-    this.armValue = armValue;
-    addRequirements(this.armSpeed);
-
+    
+    addRequirements(arm);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    armSpeed.unlock();
+    arm.unlock();
+  }
+  public boolean ReachedSetPoint(double armPosition){
+    if(armPosition==Constants.SET_POINT){
+      return true;
+    }
+    else{
+      return false;
+    }
   }
     
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+  
     double armPower = armValue.getAsDouble()*Constants.ARM_POWER_SCALING;
-    armSpeed.moveArm(armPower);
+    arm.moveArm(armPower);
   }
-
+  
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    armSpeed.moveArm(0);
-    armSpeed.lock();
+    if (ReachedSetPoint(0)==true) {
+      arm.lock();
+    }
   }
 
   // Returns true when the command should end.

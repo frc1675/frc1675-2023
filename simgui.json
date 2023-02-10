@@ -9,10 +9,14 @@
   "NetworkTables": {
     "properties": true,
     "transitory": {
+      "FMSInfo": {
+        "open": true
+      },
       "LiveWindow": {
         ".status": {
           "open": true
-        }
+        },
+        "open": true
       },
       "Shuffleboard": {
         ".metadata": {
