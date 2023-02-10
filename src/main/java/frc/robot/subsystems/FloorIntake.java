@@ -15,7 +15,7 @@ public class FloorIntake extends SubsystemBase {
 
   }
 
-  public void intakePowerCycle(){
+  public void intakePowerKill(){
     intakeMotor.set(0);
   }
 

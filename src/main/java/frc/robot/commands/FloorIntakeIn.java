@@ -3,13 +3,17 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
+import frc.robot.subsystems.FloorIntake;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class FloorIntakeIn extends CommandBase {
   /** Creates a new FloorIntakeIn. */
-  public FloorIntakeIn() {
+  FloorIntake floorIntake = new FloorIntake();
+  public FloorIntakeIn(FloorIntake floorIntake) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.floorIntake = floorIntake;
+    addRequirements(this.floorIntake);
   }
 
   // Called when the command is initially scheduled.
@@ -18,11 +22,15 @@ public class FloorIntakeIn extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    floorIntake.intakeInwards(Constants.FLOOR_INTAKE_SPEED);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    floorIntake.intakePowerKill();
+  }
 
   // Returns true when the command should end.
   @Override
