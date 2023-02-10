@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.DefaultDriveUpdatePose;
 import frc.robot.commands.ToggleRotationTarget;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Vision;
@@ -41,14 +41,16 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    drivetrainSubsystem.setDefaultCommand(new DefaultDriveCommand(
+    drivetrainSubsystem.setDefaultCommand(new DefaultDriveUpdatePose(
+        vision, 
         drivetrainSubsystem,
         () -> -mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_Y_AXIS))
-            * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+        * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
         () -> -mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_X_AXIS))
-            * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+        * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
         () -> -mod.modifyAxis(driverController.getRawAxis(Constants.RIGHT_X_AXIS))
-            * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND));
+        * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)
+    );
 
     driverControllerBackButton.onTrue(new InstantCommand(drivetrainSubsystem::zeroGyroscope));
 

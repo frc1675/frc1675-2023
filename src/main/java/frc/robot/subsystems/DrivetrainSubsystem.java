@@ -164,7 +164,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 };
         }
 
-        public void resetGyroscope(Pose2d pose) {
+        public void resetPose(Pose2d pose) {
                 odometry.resetPosition(
                         getGyroscopeRotation(),
                         getModulePositions(), 
