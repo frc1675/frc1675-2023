@@ -5,6 +5,11 @@
 package frc.robot;
 
 public final class Constants {
+      //auto constants
+      public static final double AUTO_MAX_VELOCITY = 3;
+      public static final double AUTO_MAX_ACCELERATION = 3;
+
+
       //drivetrain constants
       public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.5969; //Measured on robot
       public static final double DRIVETRAIN_WHEELBASE_METERS = 0.5969;
@@ -57,7 +62,8 @@ public final class Constants {
       public static final int START_BUTTON = 8;
       public static final int LEFT_JOYSTICK_BUTTON = 9;
       public static final int RIGHT_JOYSTICK_BUTTON = 10;
-      
+      public static final double INTAKE_SPEED = 1;
+      public static final int INTAKE_MOTOR = 9;
       public static final double FLOOR_INTAKE_SPEED = 1;
       public static final int FLOOR_INTAKE_MOTOR = 8;
 }
