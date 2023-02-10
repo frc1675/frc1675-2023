@@ -22,8 +22,7 @@ public class VisionPoseUpdate extends CommandBase {
   @Override
   public void execute() {
     if(vision.hasTarget()) {
-      //TODO wait for code review...
-      //drivetrainSubsystem.resetGyroscope(vision.getBotpose());
+      drivetrainSubsystem.resetGyroscope(vision.getBotpose());
     }
   }
 
