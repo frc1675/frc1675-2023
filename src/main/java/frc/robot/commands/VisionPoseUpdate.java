@@ -16,13 +16,12 @@ public class VisionPoseUpdate extends CommandBase {
   public VisionPoseUpdate(Vision vision, DrivetrainSubsystem drivetrainSubsystem) {
     this.vision = vision;
     this.drivetrainSubsystem = drivetrainSubsystem;
-    addRequirements(this.vision);
   }
   
   @Override
   public void execute() {
     if(vision.hasTarget()) {
-      drivetrainSubsystem.resetGyroscope(vision.getBotpose());
+      drivetrainSubsystem.resetPose(vision.getBotpose());
     }
   }
 
