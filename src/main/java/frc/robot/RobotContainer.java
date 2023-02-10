@@ -53,24 +53,13 @@ public class RobotContainer {
     );
 
     driverControllerBackButton.onTrue(new InstantCommand(drivetrainSubsystem::zeroGyroscope));
-
-    driverControllerBButton.toggleOnTrue(new DefaultDriveCommand(
-        drivetrainSubsystem,
-        () -> -mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_Y_AXIS))
-            * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-        () -> -mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_X_AXIS))
-            * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-        () -> -mod.modifyAxis(driverController.getRawAxis(Constants.RIGHT_X_AXIS))
-            * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
-        new Rotation2d(Constants.DRIVE_ROTATION_TARGET_DEGREES)));
-
-        operatorControllerAButton.onTrue(new DropCone(intake));
-        operatorControllerBButton.onTrue(new DropCube(intake));
-        operatorControllerXButton.onTrue(new IntakeCone(intake));
-        operatorControllerYButton.onTrue(new IntakeCube(intake));
-  
     driverControllerYButton.onTrue(new ToggleRotationTarget(drivetrainSubsystem, () -> vision.getTargetXOffsetDegrees()));
     driverControllerBButton.onTrue(new ToggleRotationTarget(drivetrainSubsystem, () -> Constants.DRIVE_ROTATION_TARGET_DEGREES));
+
+    operatorControllerAButton.onTrue(new DropCone(intake));
+    operatorControllerBButton.onTrue(new DropCube(intake));
+    operatorControllerXButton.onTrue(new IntakeCone(intake));
+    operatorControllerYButton.onTrue(new IntakeCube(intake));
   }
 
   public Command getAutonomousCommand() {
