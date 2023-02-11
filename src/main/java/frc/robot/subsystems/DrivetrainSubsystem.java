@@ -208,9 +208,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 }
 
                 if (stickyDriveEnabled && chassisSpeeds.vxMetersPerSecond == 0 && getAverageVelocity() > Constants.STICKY_DRIVE_TOLERANCE_METERS_PER_SECOND) {
-                        chassisSpeeds.vxMetersPerSecond = -getAverageVelocity();
+                        chassisSpeeds.vxMetersPerSecond = xPID.calculate(getAverageVelocity());
                         chassisSpeeds.vyMetersPerSecond = 0;
-                        //chassisSpeeds.vxMetersPerSecond = xPID.calculate(getAverageVelocity);
                 }
                                 
                 SwerveModuleState[] states = m_kinematics.toSwerveModuleStates(chassisSpeeds);

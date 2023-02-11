@@ -39,18 +39,8 @@ public class RobotContainer {
             * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND));
 
     backButton.onTrue(new InstantCommand(drivetrainSubsystem::zeroGyroscope));
-
-    bButton.toggleOnTrue(new DefaultDriveCommand(
-        drivetrainSubsystem,
-        () -> -mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_Y_AXIS))
-            * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-        () -> -mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_X_AXIS))
-            * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-        () -> -mod.modifyAxis(driverController.getRawAxis(Constants.RIGHT_X_AXIS))
-            * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
-        new Rotation2d(Constants.DRIVE_ROTATION_TARGET_DEGREES)));
-
-    //yButton.onTrue(new InstantCommand(drivetrainSubsystem::toggleBalanceTarget));
+    
+    yButton.onTrue(new InstantCommand(drivetrainSubsystem::toggleBalanceTarget));
     yButton.onTrue(new InstantCommand(drivetrainSubsystem::toggleStickyDrive));
   }
 
