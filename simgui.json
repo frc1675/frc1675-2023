@@ -2,8 +2,36 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/LiveWindow/Ungrouped/PIDController[16]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[17]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[18]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[28]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[29]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[2]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[30]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[31]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[32]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[33]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[3]": "PIDController",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
-      "/LiveWindow/Vision": "Subsystem"
+      "/LiveWindow/Ungrouped/navX-Sensor[4]": "Gyro",
+      "/LiveWindow/Vision": "Subsystem",
+      "/SmartDashboard/Field Sim": "Field2d"
+    },
+    "windows": {
+      "/SmartDashboard/Field Sim": {
+        "bottom": 544,
+        "height": 8.013679504394531,
+        "image": "2023-field.png",
+        "left": 46,
+        "right": 1088,
+        "top": 36,
+        "width": 16.541748046875,
+        "window": {
+          "visible": true
+        }
+      }
     }
   },
   "NetworkTables": {
@@ -12,17 +40,34 @@
       "LiveWindow": {
         ".status": {
           "open": true
-        }
+        },
+        "Intake": {
+          "open": true
+        },
+        "Vision": {
+          "open": true
+        },
+        "open": true
       },
       "Shuffleboard": {
         ".metadata": {
+          "Drivetrain": {
+            "open": true
+          },
           "open": true
         },
         ".recording": {
           "open": true
-        }
+        },
+        "open": true
       },
       "SmartDashboard": {
+        "Field Sim": {
+          "open": true
+        },
+        "PPSwerveControllerCommand": {
+          "open": true
+        },
         "open": true
       }
     }
