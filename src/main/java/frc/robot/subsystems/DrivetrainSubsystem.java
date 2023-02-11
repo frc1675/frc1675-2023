@@ -42,6 +42,7 @@ import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.DoubleTopic;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
@@ -84,6 +85,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
         private SwerveModuleState[] states;
         private SwerveDriveOdometry odometry;
         private Pose2d robotPose;
+        private Field2d field = new Field2d();
+        private double simRotation = 0;
 
         private NetworkTable table = NetworkTableInstance.getDefault().getTable("Drivetrain");
         private DoubleTopic gyroTopic = table.getDoubleTopic("Gyro Rotation");
@@ -91,9 +94,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         private BooleanTopic rotationTargetTopic = table.getBooleanTopic("Has Rotation Target");
         private BooleanPublisher hasRotationTarget = rotationTargetTopic.publish(); 
-
-        private Field2d field = new Field2d();
-        private double simRotation = 0;
 
         private ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
@@ -187,9 +187,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
         }
 
         public Pose2d getPose() {
-                if(Robot.isSimulation() && !DriverStationSim.getAutonomous()) {
-                        return new Pose2d(new Translation2d(-robotPose.getY(), robotPose.getX()), robotPose.getRotation());
-                }
                 return robotPose;
         }
 
@@ -245,12 +242,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 }
 
                 if(Robot.isSimulation()) {
+                        if(!DriverStationSim.getAutonomous()) {
+                                states = kinematics.toSwerveModuleStates(chassisSpeeds);
+                        }
                         positionMeters[0] += states[0].speedMetersPerSecond * (Timer.getFPGATimestamp() - lastUpdateTime);
                         positionMeters[1] += states[1].speedMetersPerSecond * (Timer.getFPGATimestamp() - lastUpdateTime);
                         positionMeters[2] += states[2].speedMetersPerSecond * (Timer.getFPGATimestamp() - lastUpdateTime);
                         positionMeters[3] += states[3].speedMetersPerSecond * (Timer.getFPGATimestamp() - lastUpdateTime);
                         simRotation += chassisSpeeds.omegaRadiansPerSecond * (Timer.getFPGATimestamp() - lastUpdateTime);
-
+                        
                 }else {
                         positionMeters[0] += frontLeftModule.getDriveVelocity() * (Timer.getFPGATimestamp() - lastUpdateTime); // (m / s) * delta t = m
                         positionMeters[1] += frontRightModule.getDriveVelocity() * (Timer.getFPGATimestamp() - lastUpdateTime);
@@ -265,7 +265,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                         getModulePositions()
                 );
 
-                if(chassisSpeeds.omegaRadiansPerSecond + chassisSpeeds.vxMetersPerSecond + chassisSpeeds.vxMetersPerSecond == 0 || Robot.isSimulation()) {
+                if(chassisSpeeds.omegaRadiansPerSecond + chassisSpeeds.vxMetersPerSecond + chassisSpeeds.vxMetersPerSecond != 0 && !DriverStation.isAutonomous()) {
                         states = kinematics.toSwerveModuleStates(chassisSpeeds);
                 }
                 SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);

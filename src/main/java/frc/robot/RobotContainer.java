@@ -14,7 +14,6 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Vision;
 import frc.robot.util.AutoGenerator;
 import frc.robot.util.JoystickModification;
-import frc.robot.util.AutoGenerator.StartLocation;
 import frc.robot.commands.IntakeCone;
 import frc.robot.commands.IntakeCube;
 import frc.robot.commands.DropCube;
@@ -24,6 +23,9 @@ import frc.robot.subsystems.Intake;
 public class RobotContainer {
   private final Vision vision = new Vision();
   private final DrivetrainSubsystem drivetrainSubsystem = new DrivetrainSubsystem();
+  private final Intake intake = new Intake();
+  private final AutoGenerator autoGenerator = new AutoGenerator(drivetrainSubsystem);
+
   private final JoystickModification mod = new JoystickModification();
   private final Joystick operatorController = new Joystick(Constants.OPERATOR_CONTROLLER);
   private final Joystick driverController = new Joystick(Constants.DRIVER_CONTROLLER);
@@ -31,7 +33,6 @@ public class RobotContainer {
   private final JoystickButton operatorControllerBButton = new JoystickButton(operatorController, Constants.B_BUTTON);
   private final JoystickButton operatorControllerXButton = new JoystickButton(operatorController, Constants.X_BUTTON);
   private final JoystickButton operatorControllerYButton = new JoystickButton(operatorController, Constants.Y_BUTTON);
-  private final Intake intake = new Intake();
 
   private final JoystickButton driverControllerBackButton = new JoystickButton(driverController, Constants.BACK_BUTTON);
   private final JoystickButton driverControllerBButton = new JoystickButton(driverController, Constants.B_BUTTON);
@@ -45,9 +46,9 @@ public class RobotContainer {
     drivetrainSubsystem.setDefaultCommand(new DefaultDriveUpdatePose(
         vision, 
         drivetrainSubsystem,
-        () -> -mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_Y_AXIS))
+        () -> mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_X_AXIS))
         * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-        () -> -mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_X_AXIS))
+        () -> -mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_Y_AXIS))
         * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
         () -> -mod.modifyAxis(driverController.getRawAxis(Constants.RIGHT_X_AXIS))
         * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)
@@ -64,10 +65,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    if(Robot.isSimulation()) {
-      //drivetrainSubsystem.resetPose(new Pose2d(new Translation2d(4, -7), Rotation2d.fromRadians(0.0)));
-      return new AutoGenerator(drivetrainSubsystem).getExitAndBalance(StartLocation.ONE);
-    }
-    return new AutoGenerator(drivetrainSubsystem).getAutoCommand();
+    return autoGenerator.getAutoCommand();
   }
 }
