@@ -13,35 +13,35 @@ import frc.robot.subsystems.ArmSubsystem;
 
 public class MoveArm extends CommandBase {
   /** Creates a new moveArm. */
- private ArmSubsystem armSpeed;
- private DoubleSupplier armValue;
+ private ArmSubsystem arm;
+ private DoubleSupplier armSpeed;
 
-  public MoveArm(ArmSubsystem armSpeed,DoubleSupplier armValue ) {
+  public MoveArm(ArmSubsystem arm,DoubleSupplier armSpeed ) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.armSpeed = armSpeed; 
-    this.armValue = armValue;
-    addRequirements(this.armSpeed);
+    this.arm = arm; 
+    this.armSpeed = armSpeed;
+    addRequirements(this.arm);
 
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    armSpeed.unlock();
+    arm.unlock();
   }
     
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double armPower = armValue.getAsDouble()*Constants.ARM_POWER_SCALING;
-    armSpeed.moveArm(armPower);
+    double armPower = armSpeed.getAsDouble()*Constants.ARM_POWER_SCALING;
+    arm.moveArm(armPower);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    armSpeed.moveArm(0);
-    armSpeed.lock();
+    arm.moveArm(0);
+    arm.lock();
   }
 
   // Returns true when the command should end.

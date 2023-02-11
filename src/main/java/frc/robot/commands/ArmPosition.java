@@ -20,7 +20,7 @@ public class ArmPosition extends CommandBase {
   
 
   public ArmPosition(ArmSubsystem arm, double armPosition, boolean canBeFinished) {
-      new PIDController (0, 0, 0);
+
 
 
     // Use addRequirements() here to declare subsystem dependencies.
@@ -33,14 +33,7 @@ public class ArmPosition extends CommandBase {
   public void initialize() {
     arm.unlock();
   }
-  public boolean ReachedSetPoint(double armPosition){
-    if(armPosition==Constants.SET_POINT){
-      return true;
-    }
-    else{
-      return false;
-    }
-  }
+
     
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -53,9 +46,7 @@ public class ArmPosition extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if (ReachedSetPoint(0)==true) {
-      arm.lock();
-    }
+   
   }
 
   // Returns true when the command should end.

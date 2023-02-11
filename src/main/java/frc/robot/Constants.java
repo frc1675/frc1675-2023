@@ -62,6 +62,5 @@ public final class Constants {
       public static final double ARM_POWER_SCALING = 0;
       public static final int ARM_MOTOR = 9;
       public static final double ARM_VALUE = 0;
-      public static final double SET_POINT=0;
   
 }

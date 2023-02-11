@@ -20,10 +20,9 @@
       },
       "Shuffleboard": {
         ".metadata": {
-          "open": true
-        },
-        ".recording": {
-          "open": true
+          "Drivetrain": {
+            "open": true
+          }
         }
       },
       "SmartDashboard": {
