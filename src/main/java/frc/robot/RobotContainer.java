@@ -14,6 +14,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Vision;
 import frc.robot.util.AutoGenerator;
 import frc.robot.util.JoystickModification;
+import frc.robot.util.AutoGenerator.StartLocation;
 import frc.robot.commands.IntakeCone;
 import frc.robot.commands.IntakeCube;
 import frc.robot.commands.DropCube;
@@ -63,6 +64,10 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
+    if(Robot.isSimulation()) {
+      //drivetrainSubsystem.resetPose(new Pose2d(new Translation2d(4, -7), Rotation2d.fromRadians(0.0)));
+      return new AutoGenerator(drivetrainSubsystem).getExitAndBalance(StartLocation.ONE);
+    }
     return new AutoGenerator(drivetrainSubsystem).getAutoCommand();
   }
 }
