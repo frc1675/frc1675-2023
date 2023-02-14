@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class FloorPickup extends CommandBase {
   /** Creates a new FloorIntakeIn. */
-  FloorIntake floorIntake = new FloorIntake();
+  FloorIntake floorIntake;
   public FloorPickup(FloorIntake floorIntake) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.floorIntake = floorIntake;

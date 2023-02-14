@@ -66,11 +66,11 @@ public final class Constants {
       //arm constants
       public static final int ARM_SOLENOID_CHANNEL = 0;
       public static final double ARM_POWER_SCALING = 0;
-      public static final int ARM_MOTOR = 9;
+      public static final int ARM_MOTOR = 13;
       public static final double ARM_VALUE = 0;
   
       public static final double INTAKE_SPEED = 1;
-      public static final int INTAKE_MOTOR = 9;
+      public static final int INTAKE_MOTOR = 14;
       public static final double FLOOR_INTAKE_SPEED = 1;
-      public static final int FLOOR_INTAKE_MOTOR = 8;
+      public static final int FLOOR_INTAKE_MOTOR = 15;
 }

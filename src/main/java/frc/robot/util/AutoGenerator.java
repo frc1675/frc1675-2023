@@ -71,7 +71,7 @@ public class AutoGenerator {
 
     public Command getExitAndBalance(StartLocation startArea) {
         if(startArea == StartLocation.ONE || startArea == StartLocation.TWO) {
-            PathPlannerTrajectory path = PathPlanner.loadPath("ExitAndBalance A" + startArea, defaulPathConstraints);
+            PathPlannerTrajectory path = PathPlanner.loadPath("ExitAndBalance A" + startArea.value, defaulPathConstraints);
             eventMap.put("autoBalance", new PrintCommand("Auto balance begin"));
             return builder.fullAuto(path);
         }else {

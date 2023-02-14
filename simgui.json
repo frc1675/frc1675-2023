@@ -2,32 +2,7 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
-      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
-      "/LiveWindow/Vision": "Subsystem"
-    }
-  },
-  "NetworkTables": {
-    "properties": true,
-    "transitory": {
-      "FMSInfo": {
-        "open": true
-      },
-      "LiveWindow": {
-        ".status": {
-          "open": true
-        },
-        "open": true
-      },
-      "Shuffleboard": {
-        ".metadata": {
-          "Drivetrain": {
-            "open": true
-          }
-        }
-      },
-      "SmartDashboard": {
-        "open": true
-      }
+      "/SmartDashboard/Field Sim": "Field2d"
     }
   }
 }

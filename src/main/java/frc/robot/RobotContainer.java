@@ -26,6 +26,9 @@ import frc.robot.util.JoystickModification;
 public class RobotContainer {
   private final Vision vision = new Vision();
   private final DrivetrainSubsystem drivetrainSubsystem = new DrivetrainSubsystem();
+  private final Intake intake = new Intake();
+  private final AutoGenerator autoGenerator = new AutoGenerator(drivetrainSubsystem);
+
   private final JoystickModification mod = new JoystickModification();
 
   private final Joystick driverController = new Joystick(Constants.DRIVER_CONTROLLER);
@@ -40,7 +43,6 @@ public class RobotContainer {
   private final JoystickButton operatorControllerAButton = new JoystickButton(operatorController, Constants.A_BUTTON);
   private final JoystickButton operatorControllerXButton = new JoystickButton(operatorController, Constants.X_BUTTON);
   private final FloorIntake floorIntake = new FloorIntake();
-  private final Intake intake = new Intake();
 
 
   public RobotContainer() {
@@ -51,9 +53,9 @@ public class RobotContainer {
     drivetrainSubsystem.setDefaultCommand(new DefaultDriveUpdatePose(
         vision, 
         drivetrainSubsystem,
-        () -> -mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_Y_AXIS))
+        () -> mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_X_AXIS))
         * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-        () -> -mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_X_AXIS))
+        () -> -mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_Y_AXIS))
         * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
         () -> -mod.modifyAxis(driverController.getRawAxis(Constants.RIGHT_X_AXIS))
         * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)
@@ -72,6 +74,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return new AutoGenerator(drivetrainSubsystem).getAutoCommand();
+    return autoGenerator.getAutoCommand();
   }
 }
