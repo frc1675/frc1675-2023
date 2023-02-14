@@ -9,14 +9,13 @@
   "NetworkTables": {
     "properties": true,
     "transitory": {
-      "FMSInfo": {
+      "Drivetrain": {
         "open": true
       },
       "LiveWindow": {
         ".status": {
           "open": true
-        },
-        "open": true
+        }
       },
       "Shuffleboard": {
         ".metadata": {
