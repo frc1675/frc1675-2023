@@ -20,11 +20,15 @@ public class ToggleRotationTarget extends CommandBase{
 
     @Override
     public void initialize() {
-        if(drivetrainSubsystem.getRotationTargetEnabled()) {
-            drivetrainSubsystem.disableRotationTarget();
+        if(drivetrainSubsystem.isRotationTargetForced()) {
+            drivetrainSubsystem.setRotationTarget(null);
+            drivetrainSubsystem.setForceRotationTarget(false);
+
         }else {
-            drivetrainSubsystem.enableRotationTarget(target);
+            drivetrainSubsystem.setRotationTarget(target);
+            drivetrainSubsystem.setForceRotationTarget(true);
         }
+         
     }
 
     @Override
