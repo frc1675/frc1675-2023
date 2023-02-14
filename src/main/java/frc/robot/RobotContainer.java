@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DefaultDriveUpdatePose;
 import frc.robot.commands.DropCone;
 import frc.robot.commands.DropCube;
-import frc.robot.commands.FloorPickup;
-import frc.robot.commands.FloorDrop;
+import frc.robot.commands.FloorIntakeIn;
+import frc.robot.commands.FloorIntakeOut;
 import frc.robot.commands.IntakeCone;
 import frc.robot.commands.IntakeCube;
 import frc.robot.commands.ToggleRotationTarget;
@@ -67,8 +67,8 @@ public class RobotContainer {
     );
 
     driverControllerBackButton.onTrue(new InstantCommand(drivetrainSubsystem::zeroGyroscope));
-    operatorControllerXButton.onTrue(new FloorPickup(floorIntake));
-    operatorControllerAButton.onTrue(new FloorDrop(floorIntake));
+    operatorControllerXButton.onTrue(new FloorIntakeIn(floorIntake));
+    operatorControllerAButton.onTrue(new FloorIntakeOut(floorIntake));
     driverControllerYButton.onTrue(new ToggleRotationTarget(drivetrainSubsystem, () -> vision.getTargetXOffsetDegrees()));
     driverControllerBButton.onTrue(new ToggleRotationTarget(drivetrainSubsystem, () -> Constants.DRIVE_ROTATION_TARGET_DEGREES));
 
