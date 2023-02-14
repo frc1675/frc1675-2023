@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -27,7 +28,10 @@ public class ArmSubsystem extends SubsystemBase {
   private static final int kCanID = Constants.ARM_MOTOR;
   private static final MotorType kMotorType = MotorType.kBrushless;
   public double  kP,kD ,kI;
+  private AbsoluteEncoder mEncoder;
 
+
+  
 
   public ArmSubsystem() {
     armMotor = new CANSparkMax(Constants.ARM_MOTOR, MotorType.kBrushless);
