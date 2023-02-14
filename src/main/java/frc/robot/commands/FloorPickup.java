@@ -7,10 +7,10 @@ import frc.robot.subsystems.FloorIntake;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class FloorIntakeIn extends CommandBase {
+public class FloorPickup extends CommandBase {
   /** Creates a new FloorIntakeIn. */
   FloorIntake floorIntake = new FloorIntake();
-  public FloorIntakeIn(FloorIntake floorIntake) {
+  public FloorPickup(FloorIntake floorIntake) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.floorIntake = floorIntake;
     addRequirements(this.floorIntake);
