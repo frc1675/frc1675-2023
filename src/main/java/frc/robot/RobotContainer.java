@@ -28,13 +28,6 @@ public class RobotContainer {
   private final DrivetrainSubsystem drivetrainSubsystem = new DrivetrainSubsystem();
   private final JoystickModification mod = new JoystickModification();
 
-  /* 
-   * Ground Intake Controller Operation:
-   * -  Push Button once, start the intake motor and set to suck inwards
-   * -  Push the button at anytime during the live state to switch directions
-   * -  Long press the button to shut down the motor
-  */
-
   private final Joystick driverController = new Joystick(Constants.DRIVER_CONTROLLER);
   private final Joystick operatorController = new Joystick(Constants.OPERATOR_CONTROLLER);
   private final JoystickButton driverControllerBackButton = new JoystickButton(driverController, Constants.BACK_BUTTON);
