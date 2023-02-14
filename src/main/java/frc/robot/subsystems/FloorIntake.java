@@ -15,16 +15,16 @@ public class FloorIntake extends SubsystemBase {
 
   }
 
-  public void intakePowerKill(){
+  public void intakePower(){
     intakeMotor.set(0);
   }
 
   
-  public void intakeInwards(double speed){
+  public void intakePickup(double speed){
     intakeMotor.set(speed*-1);
   }
 
-  public void intakeOutput(double speed){
+  public void intakeDrop(double speed){
     intakeMotor.set(speed * 1);
   }
 
