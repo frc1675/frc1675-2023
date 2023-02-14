@@ -71,4 +71,6 @@ public final class Constants {
   
       public static final double INTAKE_SPEED = 1;
       public static final int INTAKE_MOTOR = 9;
+      public static final double FLOOR_INTAKE_SPEED = 1;
+      public static final int FLOOR_INTAKE_MOTOR = 8;
 }
