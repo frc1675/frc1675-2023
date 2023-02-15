@@ -6,8 +6,8 @@ package frc.robot.subsystems;
 
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.EncoderType;
 import com.revrobotics.SparkMaxAbsoluteEncoder;
-import com.revrobotics.SparkMaxAlternateEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -20,17 +20,14 @@ import frc.robot.Constants;
 public class ArmSubsystem extends SubsystemBase {
   private CANSparkMax armMotor;
   private Solenoid brake;
-  private DutyCycleEncoder encoder;
+  private DutyCycleEncoder encoder = new DutyCycleEncoder(0);
   private PIDController pid;
-
+  private AbsoluteEncoder absEncoder;
 
  
   private static final int kCanID = Constants.ARM_MOTOR;
   private static final MotorType kMotorType = MotorType.kBrushless;
   public double  kP,kD ,kI;
-  private AbsoluteEncoder mEncoder;
-
-
   
 
   public ArmSubsystem() {
@@ -39,8 +36,8 @@ public class ArmSubsystem extends SubsystemBase {
     pid = new PIDController(kP,kI,kD);
     
     encoder = new DutyCycleEncoder(0);
-
-
+    absEncoder = armMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.fromId(2));
+    
   }
   
 
