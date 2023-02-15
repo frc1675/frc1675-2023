@@ -62,7 +62,15 @@ public final class Constants {
       public static final int START_BUTTON = 8;
       public static final int LEFT_JOYSTICK_BUTTON = 9;
       public static final int RIGHT_JOYSTICK_BUTTON = 10;
+
+      //arm constants
+      public static final int ARM_SOLENOID_CHANNEL = 0;
+      public static final double ARM_POWER_SCALING = 0;
+      public static final int ARM_MOTOR = 13;
+      public static final double ARM_VALUE = 0;
   
       public static final double INTAKE_SPEED = 1;
-      public static final int INTAKE_MOTOR = 9;
+      public static final int INTAKE_MOTOR = 14;
+      public static final double FLOOR_INTAKE_SPEED = 1;
+      public static final int FLOOR_INTAKE_MOTOR = 15;
 }
