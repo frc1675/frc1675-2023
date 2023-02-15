@@ -9,6 +9,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Vision extends SubsystemBase {
@@ -30,7 +32,11 @@ public class Vision extends SubsystemBase {
     targetID  = table.getEntry("tid");
     targetXOffset = table.getEntry("tx");
     targetArea = table.getEntry("ta");
-    botpose = table.getEntry("botpose");
+    if(DriverStation.getAlliance() == Alliance.Red) {
+      botpose = table.getEntry("botpose_wpired");
+    }else {
+      botpose = table.getEntry("botpose_wpiblue");
+    }
   }
 
   public Pose2d getBotpose() {
