@@ -52,8 +52,8 @@ public class Vision extends SubsystemBase {
     return targetArea.getDouble(0);
   }
 
-  public double getTargetXOffsetDegrees() {
-    return targetXOffset.getDouble(0);
+  public Rotation2d getTargetXOffset() {
+    return new Rotation2d(targetXOffset.getDouble(0));
   }
 
   public boolean hasTarget() {
