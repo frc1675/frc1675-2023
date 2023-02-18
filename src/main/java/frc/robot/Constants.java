@@ -74,9 +74,8 @@ public final class Constants {
       public static final double ARM_SCORE_HIGH = 0;
       public static final double ARM_SCORE_MID = 0;
       public static final double ARM_SCORE_LOW = 0;
-      public static final double ARM_SET_POINT = 0 ;
-      public static final double HUMAN_PLAYER_INTAKE = 0;
-      public static final double INSIDE_ROBOT = 0;
+      public static final double ARM_HUMAN_PLAYER_INTAKE = 0;
+      public static final double ARM_INSIDE_ROBOT = 0;
 
 
 

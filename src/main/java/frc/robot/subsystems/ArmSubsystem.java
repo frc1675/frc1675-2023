@@ -9,9 +9,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,7 +17,6 @@ import frc.robot.Constants;
 public class ArmSubsystem extends SubsystemBase {
   private ShuffleboardTab armTab = Shuffleboard.getTab("ArmSubsystem");
   private CANSparkMax armMotor;
-  private DutyCycleEncoder encoder;
   private PIDController pid;
   private SparkMaxAbsoluteEncoder absEncoder;
   private double targetPosition;
