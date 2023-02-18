@@ -69,10 +69,18 @@ public final class Constants {
       public static final int ARM_MOTOR = 9;
       public static final double ARM_VALUE = 0;
       public static final double ARM_P_COEFF =.006;
-      public static final double ARM_I_COEFF=0;
-      public static final double ARM_D_COEFF=0;
+      public static final double ARM_I_COEFF = 0;
+      public static final double ARM_D_COEFF = 0;
+      public static final double ARM_SCORE_HIGH = 0;
+      public static final double ARM_SCORE_MID = 0;
+      public static final double ARM_SCORE_LOW = 0;
+      public static final double ARM_SET_POINT = 0 ;
+      public static final double HUMAN_PLAYER_INTAKE = 0;
+      public static final double INSIDE_ROBOT = 0;
 
-  
+
+
+      //intake constants 
       public static final double INTAKE_SPEED = 1;
       public static final int INTAKE_MOTOR = 9;
 }

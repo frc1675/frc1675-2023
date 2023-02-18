@@ -21,7 +21,7 @@ public class ArmPosition extends CommandBase {
   public ArmPosition(ArmSubsystem arm, double armPosition, boolean canBeFinished) {
 
 
-
+    this.arm = arm;
     // Use addRequirements() here to declare subsystem dependencies.
     
     addRequirements(arm);
@@ -30,7 +30,7 @@ public class ArmPosition extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    arm.unlock();
+
   }
 
     
