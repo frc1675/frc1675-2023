@@ -15,7 +15,7 @@ import frc.robot.commands.FloorPickup;
 import frc.robot.commands.FloorDrop;
 import frc.robot.commands.IntakeCone;
 import frc.robot.commands.IntakeCube;
-import frc.robot.commands.ToggleRotationTarget;
+import frc.robot.commands.SetDriveTarget;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.FloorIntake;
 import frc.robot.subsystems.Intake;
@@ -64,8 +64,9 @@ public class RobotContainer {
     driverControllerBackButton.onTrue(new InstantCommand(drivetrainSubsystem::zeroGyroscope));
     operatorControllerXButton.onTrue(new FloorPickup(floorIntake));
     operatorControllerAButton.onTrue(new FloorDrop(floorIntake));
-    driverControllerYButton.onTrue(new ToggleRotationTarget(drivetrainSubsystem, () -> vision.getTargetXOffsetDegrees()));
-    driverControllerBButton.onTrue(new ToggleRotationTarget(drivetrainSubsystem, () -> Constants.DRIVE_ROTATION_TARGET_DEGREES));
+
+    driverControllerAButton.onTrue(new SetDriveTarget(drivetrainSubsystem, 0));
+    driverControllerYButton.onTrue(new SetDriveTarget(drivetrainSubsystem, 180));
 
     operatorControllerAButton.onTrue(new DropCone(intake));
     operatorControllerBButton.onTrue(new DropCube(intake));

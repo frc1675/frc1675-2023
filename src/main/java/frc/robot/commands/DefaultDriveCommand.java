@@ -2,7 +2,6 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -13,9 +12,6 @@ public class DefaultDriveCommand extends CommandBase {
     private final DoubleSupplier translationXSupplier;
     private final DoubleSupplier translationYSupplier;
     private final DoubleSupplier rotationSupplier;
-
-    private Rotation2d rotationTarget;
-    private boolean updateRotationTarget = true;
 
     private double x;
     private double y;
@@ -31,7 +27,6 @@ public class DefaultDriveCommand extends CommandBase {
         addRequirements(drivetrainSubsystem);
     }
 
-
     @Override
     public void execute() {
         x = translationXSupplier.getAsDouble();
@@ -39,15 +34,9 @@ public class DefaultDriveCommand extends CommandBase {
         rotation = rotationSupplier.getAsDouble();
         
         drivetrainSubsystem.drive(x, y, rotation);
-        
-        if (rotation == 0 && (x != 0 || y != 0)) {
-            if (updateRotationTarget) {
-                drivetrainSubsystem.setRotationTarget(rotationTarget);
-                updateRotationTarget = false;
-            }
-        } else {
+
+        if (rotation != 0) {
             drivetrainSubsystem.setRotationTarget(null);
-            updateRotationTarget = true;
         }
     }
 
