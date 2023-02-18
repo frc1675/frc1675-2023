@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -33,11 +34,17 @@ public class ArmSubsystem extends SubsystemBase {
     
     absEncoder = armMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.fromId(2));
     armTab.addNumber("Position", () -> getPosition());
+    
 
 
   }
   
-   
+   public void setSoftLimit(){
+    armMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    armMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    armMotor.setSoftLimit(SoftLimitDirection.kForward, Constants.ARM_MAX_POSITION);
+    armMotor.setSoftLimit(SoftLimitDirection.kReverse, Constants.ARM_MIN_POSITION);
+   }
 
   public void moveArm(double power) {
     armMotor.set(power);
@@ -54,6 +61,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    setSoftLimit();
     armMotor.set(pid.calculate(getPosition()-targetPosition));
   
   }
