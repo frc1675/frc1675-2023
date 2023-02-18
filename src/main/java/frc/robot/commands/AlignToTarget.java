@@ -45,7 +45,7 @@ public class AlignToTarget extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return !vision.hasTarget() || drivetrainSubsystem.getGyroscopeRotation().equals(target);
+    return !vision.hasTarget() || drivetrainSubsystem.getRotation().equals(target);
   }
 
   @Override

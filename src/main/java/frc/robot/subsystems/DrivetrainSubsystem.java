@@ -179,6 +179,21 @@ public class DrivetrainSubsystem extends SubsystemBase {
         }
 
         private void updatePose() {
+                if(Robot.isSimulation()) {
+                        positionMeters[0] += states[0].speedMetersPerSecond * (Timer.getFPGATimestamp() - lastUpdateTime);
+                        positionMeters[1] += states[1].speedMetersPerSecond * (Timer.getFPGATimestamp() - lastUpdateTime);
+                        positionMeters[2] += states[2].speedMetersPerSecond * (Timer.getFPGATimestamp() - lastUpdateTime);
+                        positionMeters[3] += states[3].speedMetersPerSecond * (Timer.getFPGATimestamp() - lastUpdateTime);
+                        simRotation += kinematics.toChassisSpeeds(states).omegaRadiansPerSecond * (Timer.getFPGATimestamp() - lastUpdateTime);
+                
+                }else {
+                        positionMeters[0] += frontLeftModule.getDriveVelocity() * (Timer.getFPGATimestamp() - lastUpdateTime); // (m / s) * delta t = m
+                        positionMeters[1] += frontRightModule.getDriveVelocity() * (Timer.getFPGATimestamp() - lastUpdateTime);
+                        positionMeters[2] += backLeftModule.getDriveVelocity() * (Timer.getFPGATimestamp() - lastUpdateTime);
+                        positionMeters[3] += backRightModule.getDriveVelocity() * (Timer.getFPGATimestamp() - lastUpdateTime);
+                }
+                lastUpdateTime = Timer.getFPGATimestamp();
+
                 robotPose = odometry.update(
                         getGyroscopeRotation(),
                         getModulePositions()
@@ -194,11 +209,15 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 return robotPose;
         }
 
+        public Rotation2d getRotation() {
+                return getPose().getRotation();
+        }
+
         public void setSwerveStates(SwerveModuleState[] states) {
                 this.chassisSpeeds = kinematics.toChassisSpeeds(states);
         }
 
-        public Rotation2d getGyroscopeRotation() {
+        private Rotation2d getGyroscopeRotation() {
 
                 if(Robot.isSimulation()) {
                         return Rotation2d.fromRadians(simRotation);
@@ -248,20 +267,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
                 backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
 
-                if(Robot.isSimulation()) {
-                        positionMeters[0] += states[0].speedMetersPerSecond * (Timer.getFPGATimestamp() - lastUpdateTime);
-                        positionMeters[1] += states[1].speedMetersPerSecond * (Timer.getFPGATimestamp() - lastUpdateTime);
-                        positionMeters[2] += states[2].speedMetersPerSecond * (Timer.getFPGATimestamp() - lastUpdateTime);
-                        positionMeters[3] += states[3].speedMetersPerSecond * (Timer.getFPGATimestamp() - lastUpdateTime);
-                        simRotation += kinematics.toChassisSpeeds(states).omegaRadiansPerSecond * (Timer.getFPGATimestamp() - lastUpdateTime);
-                
-                }else {
-                        positionMeters[0] += frontLeftModule.getDriveVelocity() * (Timer.getFPGATimestamp() - lastUpdateTime); // (m / s) * delta t = m
-                        positionMeters[1] += frontRightModule.getDriveVelocity() * (Timer.getFPGATimestamp() - lastUpdateTime);
-                        positionMeters[2] += backLeftModule.getDriveVelocity() * (Timer.getFPGATimestamp() - lastUpdateTime);
-                        positionMeters[3] += backRightModule.getDriveVelocity() * (Timer.getFPGATimestamp() - lastUpdateTime);
-                }
-                lastUpdateTime = Timer.getFPGATimestamp();
                 updatePose();
 
                 gyroReading.set(getGyroscopeRotation().getDegrees());
