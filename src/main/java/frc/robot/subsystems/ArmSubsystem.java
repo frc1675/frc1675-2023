@@ -4,11 +4,9 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.EncoderType;
-import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxAbsoluteEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
@@ -20,26 +18,28 @@ import frc.robot.Constants;
 public class ArmSubsystem extends SubsystemBase {
   private CANSparkMax armMotor;
   private Solenoid brake;
-  private DutyCycleEncoder encoder = new DutyCycleEncoder(0);
+  private DutyCycleEncoder encoder;
   private PIDController pid;
-  private AbsoluteEncoder absEncoder;
+  private SparkMaxAbsoluteEncoder absEncoder;
+  private double targetPosition;
+
 
  
-  private static final int kCanID = Constants.ARM_MOTOR;
-  private static final MotorType kMotorType = MotorType.kBrushless;
-  public double  kP,kD ,kI;
+
+
   
 
   public ArmSubsystem() {
     armMotor = new CANSparkMax(Constants.ARM_MOTOR, MotorType.kBrushless);
     brake = new Solenoid(PneumaticsModuleType.REVPH, Constants.ARM_SOLENOID_CHANNEL);
-    pid = new PIDController(kP,kI,kD);
+    pid = new PIDController(Constants.ARM_P_COEFF,Constants.ARM_I_COEFF,Constants.ARM_D_COEFF);
     
-    encoder = new DutyCycleEncoder(0);
     absEncoder = armMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.fromId(2));
-    
+
+
   }
   
+   
 
   public void moveArm(double power) {
     armMotor.set(power);
@@ -57,10 +57,13 @@ public class ArmSubsystem extends SubsystemBase {
     return encoder.getDistance();
   }
 
+  public void setTargetPosition(double position){
+    targetPosition = position;
+  }
 
   @Override
   public void periodic() {
-
+    armMotor.set(pid.calculate(getPosition()-targetPosition));
   
   }
 }
