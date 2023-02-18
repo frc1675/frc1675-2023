@@ -27,9 +27,7 @@ public class AlignToTarget extends CommandBase {
 
   @Override
   public void initialize() {
-    if(!vision.hasTarget()) {
-      end(false);
-    }
+
     drivetrainSubsystem.setForceRotationTarget(true);
     target = vision.getBotpose().getRotation().minus(vision.getTargetXOffset());
     if(floorIntakeFacing) {
@@ -43,9 +41,11 @@ public class AlignToTarget extends CommandBase {
   public void execute() {
     drivetrainSubsystem.resetPose(vision.getBotpose());
     drivetrainSubsystem.drive(xSupplier.getAsDouble(), ySupplier.getAsDouble(), 0);
-    if(drivetrainSubsystem.getGyroscopeRotation().equals(target)) {
-      end(false);
-    }
+  }
+
+  @Override
+  public boolean isFinished() {
+    return !vision.hasTarget() || drivetrainSubsystem.getGyroscopeRotation().equals(target);
   }
 
   @Override
