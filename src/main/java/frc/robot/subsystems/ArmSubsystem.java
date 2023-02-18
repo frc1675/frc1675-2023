@@ -34,6 +34,7 @@ public class ArmSubsystem extends SubsystemBase {
     
     absEncoder = armMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.fromId(2));
     armTab.addNumber("Position", () -> getPosition());
+    setSoftLimit();
     
 
 
@@ -61,7 +62,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    setSoftLimit();
+    
     armMotor.set(pid.calculate(getPosition()-targetPosition));
   
   }
