@@ -32,7 +32,7 @@ public class ArmSubsystem extends SubsystemBase {
     armMotor = new CANSparkMax(Constants.ARM_MOTOR, MotorType.kBrushless);
     pid = new PIDController(Constants.ARM_P_COEFF,Constants.ARM_I_COEFF,Constants.ARM_D_COEFF);
     
-    absEncoder = armMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.fromId(2));
+    absEncoder = armMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
     armTab.addNumber("Position", () -> getPosition());
     setSoftLimit();
     
