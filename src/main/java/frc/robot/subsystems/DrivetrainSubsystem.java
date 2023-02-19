@@ -30,6 +30,7 @@ import com.swervedrivespecialties.swervelib.SwerveModule;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -40,6 +41,8 @@ import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.DoubleTopic;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
@@ -48,6 +51,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Robot;
 
 public class DrivetrainSubsystem extends SubsystemBase {
@@ -174,10 +178,35 @@ public class DrivetrainSubsystem extends SubsystemBase {
         }
 
         private void updatePose() {
+                if(Robot.isSimulation()) {
+                        positionMeters[0] += states[0].speedMetersPerSecond * (Timer.getFPGATimestamp() - lastUpdateTime);
+                        positionMeters[1] += states[1].speedMetersPerSecond * (Timer.getFPGATimestamp() - lastUpdateTime);
+                        positionMeters[2] += states[2].speedMetersPerSecond * (Timer.getFPGATimestamp() - lastUpdateTime);
+                        positionMeters[3] += states[3].speedMetersPerSecond * (Timer.getFPGATimestamp() - lastUpdateTime);
+                        simRotation += kinematics.toChassisSpeeds(states).omegaRadiansPerSecond * (Timer.getFPGATimestamp() - lastUpdateTime);
+
+                        if(DriverStation.getAlliance() == Alliance.Red && robotPose != null){
+                                Pose2d redOrigin = new Pose2d(
+                                        new Translation2d(Constants.RED_ORIGIN_POS_X_METERS, Constants.RED_ORIGIN_POS_Y_METERS),
+                                        Rotation2d.fromDegrees(Constants.RED_ORIGIN_ROTATION_DEG)
+                                );
+                                robotPose = redOrigin.transformBy(new Transform2d(robotPose.getTranslation(), robotPose.getRotation()));
+                        }
+                
+                }else {
+                        positionMeters[0] += frontLeftModule.getDriveVelocity() * (Timer.getFPGATimestamp() - lastUpdateTime); // (m / s) * delta t = m
+                        positionMeters[1] += frontRightModule.getDriveVelocity() * (Timer.getFPGATimestamp() - lastUpdateTime);
+                        positionMeters[2] += backLeftModule.getDriveVelocity() * (Timer.getFPGATimestamp() - lastUpdateTime);
+                        positionMeters[3] += backRightModule.getDriveVelocity() * (Timer.getFPGATimestamp() - lastUpdateTime);
+                }
+                lastUpdateTime = Timer.getFPGATimestamp();
+
                 robotPose = odometry.update(
                         getGyroscopeRotation(),
                         getModulePositions()
                 );
+
+
                 field.setRobotPose(getPose());
         }
 
@@ -197,7 +226,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 this.chassisSpeeds = kinematics.toChassisSpeeds(states);
         }
 
-        public Rotation2d getGyroscopeRotation() {
+        private Rotation2d getGyroscopeRotation() {
 
                 if(Robot.isSimulation()) {
                         return Rotation2d.fromRadians(simRotation);
@@ -241,20 +270,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 backLeftModule.set(states[2].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[2].angle.getRadians());
                 backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
 
-                if(Robot.isSimulation()) {
-                        positionMeters[0] += states[0].speedMetersPerSecond * (Timer.getFPGATimestamp() - lastUpdateTime);
-                        positionMeters[1] += states[1].speedMetersPerSecond * (Timer.getFPGATimestamp() - lastUpdateTime);
-                        positionMeters[2] += states[2].speedMetersPerSecond * (Timer.getFPGATimestamp() - lastUpdateTime);
-                        positionMeters[3] += states[3].speedMetersPerSecond * (Timer.getFPGATimestamp() - lastUpdateTime);
-                        simRotation += kinematics.toChassisSpeeds(states).omegaRadiansPerSecond * (Timer.getFPGATimestamp() - lastUpdateTime);
-                
-                }else {
-                        positionMeters[0] += frontLeftModule.getDriveVelocity() * (Timer.getFPGATimestamp() - lastUpdateTime); // (m / s) * delta t = m
-                        positionMeters[1] += frontRightModule.getDriveVelocity() * (Timer.getFPGATimestamp() - lastUpdateTime);
-                        positionMeters[2] += backLeftModule.getDriveVelocity() * (Timer.getFPGATimestamp() - lastUpdateTime);
-                        positionMeters[3] += backRightModule.getDriveVelocity() * (Timer.getFPGATimestamp() - lastUpdateTime);
-                }
-                lastUpdateTime = Timer.getFPGATimestamp();
                 updatePose();
 
                 gyroReading.set(getGyroscopeRotation().getDegrees());
