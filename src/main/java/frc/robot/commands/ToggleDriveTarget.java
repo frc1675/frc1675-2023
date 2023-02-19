@@ -7,20 +7,17 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 public class ToggleDriveTarget extends CommandBase{
     
     private DrivetrainSubsystem drivetrainSubsystem;
+    private double target;
 
-    public ToggleDriveTarget(DrivetrainSubsystem drivetrainSubsystem) {
+    public ToggleDriveTarget(DrivetrainSubsystem drivetrainSubsystem, double target) {
         this.drivetrainSubsystem = drivetrainSubsystem;
-
+        this.target = target;
         addRequirements(drivetrainSubsystem);
     }
 
     @Override
     public void initialize() {
-        if(drivetrainSubsystem.getRotationTarget().getDegrees() == 0)  {
-            drivetrainSubsystem.setRotationTarget(Rotation2d.fromDegrees(180));
-        }else {
-            drivetrainSubsystem.setRotationTarget(Rotation2d.fromDegrees(0));
-        }
+        drivetrainSubsystem.setRotationTarget(Rotation2d.fromDegrees(target));
     }
 
     @Override

@@ -90,7 +90,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         private ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
-        private Rotation2d rotationTarget = Rotation2d.fromDegrees(0);
+        private Rotation2d rotationTarget;
 
         private PIDController yPID = new PIDController(PROPORTIONAL_COEFFICENT, INTEGRAL_COEFFICENT,
                         DERIVATIVE_COEFFICENT);
@@ -189,6 +189,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 return robotPose;
         }
 
+        public Rotation2d getRotation() {
+                return robotPose.getRotation();
+        }
+
         public void setSwerveStates(SwerveModuleState[] states) {
                 this.chassisSpeeds = kinematics.toChassisSpeeds(states);
         }
@@ -225,8 +229,8 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         @Override
         public void periodic() {
-                if(chassisSpeeds.omegaRadiansPerSecond == 0) {
-                        chassisSpeeds.omegaRadiansPerSecond = rotationPID.calculate(getGyroscopeRotation().minus(rotationTarget).getRadians());
+                if(rotationTarget != null && chassisSpeeds.omegaRadiansPerSecond == 0) {
+                        chassisSpeeds.omegaRadiansPerSecond = rotationPID.calculate(getRotation().minus(rotationTarget).getRadians());
                 }
 
                 states = kinematics.toSwerveModuleStates(chassisSpeeds);

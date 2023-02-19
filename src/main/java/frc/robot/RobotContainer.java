@@ -64,7 +64,9 @@ public class RobotContainer {
     driverControllerBackButton.onTrue(new InstantCommand(drivetrainSubsystem::zeroGyroscope));
     operatorControllerXButton.onTrue(new FloorPickup(floorIntake));
     operatorControllerAButton.onTrue(new FloorDrop(floorIntake));
-    driverControllerBButton.onTrue(new ToggleDriveTarget(drivetrainSubsystem));
+
+    driverControllerAButton.onTrue(new ToggleDriveTarget(drivetrainSubsystem, 0));
+    driverControllerYButton.onTrue(new ToggleDriveTarget(drivetrainSubsystem, 180));
 
     operatorControllerAButton.onTrue(new DropCone(intake));
     operatorControllerBButton.onTrue(new DropCube(intake));
