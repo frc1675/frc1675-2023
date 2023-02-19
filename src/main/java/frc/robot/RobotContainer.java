@@ -8,7 +8,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.AlignToTarget;
+import frc.robot.commands.AlignToDriverStation;
+import frc.robot.commands.AlignToOpponent;
 import frc.robot.commands.DefaultDriveUpdatePose;
 import frc.robot.commands.DropCone;
 import frc.robot.commands.DropCube;
@@ -66,11 +67,16 @@ public class RobotContainer {
     operatorControllerXButton.onTrue(new FloorPickup(floorIntake));
     operatorControllerAButton.onTrue(new FloorDrop(floorIntake));
     driverControllerBButton.onTrue(new ToggleRotationTarget(drivetrainSubsystem, () -> Constants.DRIVE_ROTATION_TARGET_DEGREES));
-    driverControllerXButton.toggleOnTrue(new AlignToTarget(vision, drivetrainSubsystem,
+    driverControllerXButton.toggleOnTrue(new AlignToDriverStation(vision, drivetrainSubsystem,
     () -> mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_X_AXIS))
     * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
     () -> -mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_Y_AXIS))
-    * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND, false));
+    * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND));
+    driverControllerAButton.toggleOnTrue(new AlignToOpponent(vision, drivetrainSubsystem,
+    () -> mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_X_AXIS))
+    * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+    () -> -mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_Y_AXIS))
+    * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND));
 
     operatorControllerAButton.onTrue(new DropCone(intake));
     operatorControllerBButton.onTrue(new DropCube(intake));
