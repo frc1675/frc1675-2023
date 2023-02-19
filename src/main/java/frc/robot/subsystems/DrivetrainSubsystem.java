@@ -36,8 +36,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.networktables.BooleanPublisher;
-import edu.wpi.first.networktables.BooleanTopic;
 import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.DoubleTopic;
 import edu.wpi.first.networktables.NetworkTable;
@@ -89,13 +87,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
         private NetworkTable table = NetworkTableInstance.getDefault().getTable("Drivetrain");
         private DoubleTopic gyroTopic = table.getDoubleTopic("Gyro Rotation");
         private DoublePublisher gyroReading = gyroTopic.publish();
-        private BooleanTopic rotationTargetTopic = table.getBooleanTopic("Has Rotation Target");
-        private BooleanPublisher hasRotationTarget = rotationTargetTopic.publish(); 
 
         private ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
-        private Rotation2d rotationTarget;
-        private boolean forceRotationTarget;
+        private Rotation2d rotationTarget = Rotation2d.fromDegrees(0);
 
         private PIDController yPID = new PIDController(PROPORTIONAL_COEFFICENT, INTEGRAL_COEFFICENT,
                         DERIVATIVE_COEFFICENT);
@@ -221,22 +216,16 @@ public class DrivetrainSubsystem extends SubsystemBase {
         }
 
         public void setRotationTarget(Rotation2d rotationTarget) {
-                if(!forceRotationTarget) {
-                        this.rotationTarget = rotationTarget;
-                }
+                this.rotationTarget = rotationTarget;
         }
 
-        public void setForceRotationTarget(boolean forceRotationTarget) {
-                this.forceRotationTarget = forceRotationTarget;
-        }
-
-        public boolean isRotationTargetForced() {
-                return forceRotationTarget;
+        public Rotation2d getRotationTarget() {
+                return rotationTarget;
         }
 
         @Override
         public void periodic() {
-                if(rotationTarget != null) {
+                if(chassisSpeeds.omegaRadiansPerSecond == 0) {
                         chassisSpeeds.omegaRadiansPerSecond = rotationPID.calculate(getGyroscopeRotation().minus(rotationTarget).getRadians());
                 }
 
@@ -265,6 +254,5 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 updatePose();
 
                 gyroReading.set(getGyroscopeRotation().getDegrees());
-                hasRotationTarget.set(forceRotationTarget);
         }
 }

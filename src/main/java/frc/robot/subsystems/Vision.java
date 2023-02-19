@@ -41,7 +41,7 @@ public class Vision extends SubsystemBase {
 
   public Pose2d getBotpose() {
     double[] arr = botpose.getDoubleArray(new double[6]);
-    return new Pose2d(arr[0], arr[1], new Rotation2d(arr[3], arr[4]));
+    return new Pose2d(arr[0], arr[1], Rotation2d.fromDegrees(arr[5]));
   }
 
   public int getTargetID() {
