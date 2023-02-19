@@ -15,7 +15,7 @@ import frc.robot.commands.FloorPickup;
 import frc.robot.commands.FloorDrop;
 import frc.robot.commands.IntakeCone;
 import frc.robot.commands.IntakeCube;
-import frc.robot.commands.ToggleDriveTarget;
+import frc.robot.commands.SetDriveTarget;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.FloorIntake;
 import frc.robot.subsystems.Intake;
@@ -65,8 +65,8 @@ public class RobotContainer {
     operatorControllerXButton.onTrue(new FloorPickup(floorIntake));
     operatorControllerAButton.onTrue(new FloorDrop(floorIntake));
 
-    driverControllerAButton.onTrue(new ToggleDriveTarget(drivetrainSubsystem, 0));
-    driverControllerYButton.onTrue(new ToggleDriveTarget(drivetrainSubsystem, 180));
+    driverControllerAButton.onTrue(new SetDriveTarget(drivetrainSubsystem, 0));
+    driverControllerYButton.onTrue(new SetDriveTarget(drivetrainSubsystem, 180));
 
     operatorControllerAButton.onTrue(new DropCone(intake));
     operatorControllerBButton.onTrue(new DropCube(intake));

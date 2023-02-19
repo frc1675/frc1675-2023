@@ -4,12 +4,12 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
-public class ToggleDriveTarget extends CommandBase{
+public class SetDriveTarget extends CommandBase{
     
     private DrivetrainSubsystem drivetrainSubsystem;
     private double target;
 
-    public ToggleDriveTarget(DrivetrainSubsystem drivetrainSubsystem, double target) {
+    public SetDriveTarget(DrivetrainSubsystem drivetrainSubsystem, double target) {
         this.drivetrainSubsystem = drivetrainSubsystem;
         this.target = target;
         addRequirements(drivetrainSubsystem);
