@@ -33,15 +33,18 @@ public class RobotContainer {
 
   private final Joystick driverController = new Joystick(Constants.DRIVER_CONTROLLER);
   private final Joystick operatorController = new Joystick(Constants.OPERATOR_CONTROLLER);
+  
   private final JoystickButton driverControllerBackButton = new JoystickButton(driverController, Constants.BACK_BUTTON);
   private final JoystickButton driverControllerBButton = new JoystickButton(driverController, Constants.B_BUTTON);
   private final JoystickButton driverControllerYButton = new JoystickButton(driverController, Constants.Y_BUTTON);
   private final JoystickButton driverControllerAButton = new JoystickButton(driverController, Constants.A_BUTTON);
   private final JoystickButton driverControllerXButton = new JoystickButton(driverController, Constants.X_BUTTON);
+
   private final JoystickButton operatorControllerBButton = new JoystickButton(operatorController, Constants.B_BUTTON);
   private final JoystickButton operatorControllerYButton = new JoystickButton(operatorController, Constants.Y_BUTTON);
   private final JoystickButton operatorControllerAButton = new JoystickButton(operatorController, Constants.A_BUTTON);
   private final JoystickButton operatorControllerXButton = new JoystickButton(operatorController, Constants.X_BUTTON);
+  
   private final FloorIntake floorIntake = new FloorIntake();
 
 
@@ -62,12 +65,11 @@ public class RobotContainer {
     );
 
     driverControllerBackButton.onTrue(new InstantCommand(drivetrainSubsystem::zeroGyroscope));
-    operatorControllerXButton.onTrue(new FloorPickup(floorIntake));
-    operatorControllerAButton.onTrue(new FloorDrop(floorIntake));
-
     driverControllerAButton.onTrue(new SetDriveTarget(drivetrainSubsystem, 0));
     driverControllerYButton.onTrue(new SetDriveTarget(drivetrainSubsystem, 180));
 
+    operatorControllerXButton.onTrue(new FloorPickup(floorIntake));
+    operatorControllerAButton.onTrue(new FloorDrop(floorIntake));
     operatorControllerAButton.onTrue(new DropCone(intake));
     operatorControllerBButton.onTrue(new DropCube(intake));
     operatorControllerXButton.onTrue(new IntakeCone(intake));
