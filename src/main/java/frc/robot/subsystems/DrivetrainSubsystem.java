@@ -87,6 +87,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         private Pose2d robotPose;
         private Field2d field = new Field2d();
         private double simRotation = 0;
+        private final Pose2d RED_ORIGIN = new Pose2d(new Translation2d(Constants.RED_ORIGIN_POS_X_METERS, Constants.RED_ORIGIN_POS_Y_METERS),Rotation2d.fromDegrees(Constants.RED_ORIGIN_ROTATION_DEG));
 
         private NetworkTable table = NetworkTableInstance.getDefault().getTable("Drivetrain");
         private DoubleTopic gyroTopic = table.getDoubleTopic("Gyro Rotation");
@@ -184,15 +185,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
                         positionMeters[2] += states[2].speedMetersPerSecond * (Timer.getFPGATimestamp() - lastUpdateTime);
                         positionMeters[3] += states[3].speedMetersPerSecond * (Timer.getFPGATimestamp() - lastUpdateTime);
                         simRotation += kinematics.toChassisSpeeds(states).omegaRadiansPerSecond * (Timer.getFPGATimestamp() - lastUpdateTime);
-
-                        if(DriverStation.getAlliance() == Alliance.Red && robotPose != null){
-                                Pose2d redOrigin = new Pose2d(
-                                        new Translation2d(Constants.RED_ORIGIN_POS_X_METERS, Constants.RED_ORIGIN_POS_Y_METERS),
-                                        Rotation2d.fromDegrees(Constants.RED_ORIGIN_ROTATION_DEG)
-                                );
-                                robotPose = redOrigin.transformBy(new Transform2d(robotPose.getTranslation(), robotPose.getRotation()));
-                        }
-                
                 }else {
                         positionMeters[0] += frontLeftModule.getDriveVelocity() * (Timer.getFPGATimestamp() - lastUpdateTime); // (m / s) * delta t = m
                         positionMeters[1] += frontRightModule.getDriveVelocity() * (Timer.getFPGATimestamp() - lastUpdateTime);
@@ -206,8 +198,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
                         getModulePositions()
                 );
 
-
-                field.setRobotPose(getPose());
+                if(DriverStation.getAlliance() == Alliance.Red && robotPose != null){
+                        field.setRobotPose(RED_ORIGIN.transformBy(new Transform2d(robotPose.getTranslation(), robotPose.getRotation())));
+                } else {
+                        field.setRobotPose(getPose());
+                }
         }
 
         public SwerveDriveKinematics getKinematics() {
