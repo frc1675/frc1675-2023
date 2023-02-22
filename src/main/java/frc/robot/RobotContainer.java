@@ -64,16 +64,16 @@ public class RobotContainer {
         * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)
     );
 
-    driverControllerBackButton.onTrue(new InstantCommand(drivetrainSubsystem::zeroGyroscope));
-    driverControllerAButton.onTrue(new SetDriveTarget(drivetrainSubsystem, 0));
-    driverControllerYButton.onTrue(new SetDriveTarget(drivetrainSubsystem, 180));
+    driverControllerBackButton.whileTrue(new InstantCommand(drivetrainSubsystem::zeroGyroscope));
+    driverControllerAButton.whileTrue(new SetDriveTarget(drivetrainSubsystem, 0));
+    driverControllerYButton.whileTrue(new SetDriveTarget(drivetrainSubsystem, 180));
 
-    operatorControllerXButton.onTrue(new FloorPickup(floorIntake));
-    operatorControllerAButton.onTrue(new FloorDrop(floorIntake));
-    operatorControllerAButton.onTrue(new DropCone(intake));
-    operatorControllerBButton.onTrue(new DropCube(intake));
-    operatorControllerXButton.onTrue(new IntakeCone(intake));
-    operatorControllerYButton.onTrue(new IntakeCube(intake));
+    operatorControllerXButton.whileTrue(new FloorPickup(floorIntake));
+    operatorControllerAButton.whileTrue(new FloorDrop(floorIntake));
+    operatorControllerAButton.whileTrue(new DropCone(intake));
+    operatorControllerBButton.whileTrue(new DropCube(intake));
+    operatorControllerXButton.whileTrue(new IntakeCone(intake));
+    operatorControllerYButton.whileTrue(new IntakeCube(intake));
   }
 
   public Command getAutonomousCommand() {
