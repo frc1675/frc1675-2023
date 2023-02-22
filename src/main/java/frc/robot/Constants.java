@@ -43,17 +43,14 @@ public final class Constants {
       //controller constants
       public static final int DRIVER_CONTROLLER = 0;
       public static final int OPERATOR_CONTROLLER = 1;
-  
       public static final int LEFT_X_AXIS = 0;
       public static final int LEFT_Y_AXIS= 1;
       public static final int RIGHT_X_AXIS = 4;
       public static final int RIGHT_Y_AXIS = 5;
-  
       public static final int A_BUTTON = 1;
       public static final int B_BUTTON = 2;
       public static final int X_BUTTON = 3;
       public static final int Y_BUTTON = 4;
-  
       public static final int LEFT_BUMPER = 5;
       public static final int RIGHT_BUMPER = 6;
       public static final int BACK_BUTTON = 7;
@@ -76,9 +73,6 @@ public final class Constants {
       public static final double ARM_INSIDE_ROBOT = 0;
       public static final float ARM_MAX_POSITION = 0;
       public static final float ARM_MIN_POSITION = 0;
-
-
-
 
       //intake constants 
       public static final double INTAKE_SPEED = 1;
