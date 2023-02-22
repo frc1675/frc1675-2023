@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.arm;
+package frc.robot.commands.floorArm;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import java.util.function.DoubleSupplier;
@@ -11,16 +11,16 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.FloorArmSubsystem;
 
-public class MoveArm extends CommandBase {
+public class FloorMoveArm extends CommandBase {
   /** Creates a new moveArm. */
- private FloorArmSubsystem arm;
+ private FloorArmSubsystem floorArm;
  private DoubleSupplier armSpeed;
 
-  public MoveArm(FloorArmSubsystem arm,DoubleSupplier armSpeed ) {
+  public FloorMoveArm(FloorArmSubsystem arm,DoubleSupplier armSpeed ) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.arm = arm; 
+    this.floorArm = floorArm; 
     this.armSpeed = armSpeed;
-    addRequirements(this.arm);
+    addRequirements(this.floorArm);
 
   }
 
@@ -34,14 +34,13 @@ public class MoveArm extends CommandBase {
   @Override
   public void execute() {
     double armPower = armSpeed.getAsDouble()*Constants.ARM_POWER_SCALING;
-    arm.moveArm(armPower);
+    floorArm.moveArm(armPower);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    arm.moveArm(0);
-
+    floorArm.moveArm(0);
   }
 
   // Returns true when the command should end.

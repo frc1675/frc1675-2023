@@ -2,51 +2,42 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.arm;
+package frc.robot.commands.floorArm;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import java.util.function.DoubleSupplier;
-
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.FloorArmSubsystem;
 
-public class MoveArm extends CommandBase {
-  /** Creates a new moveArm. */
- private FloorArmSubsystem arm;
- private DoubleSupplier armSpeed;
-
-  public MoveArm(FloorArmSubsystem arm,DoubleSupplier armSpeed ) {
+public class FloorMoveArmToPostion extends CommandBase {
+  private FloorArmSubsystem floorArm;
+  private double targetPosition;
+  /** Creates a new MoveArmToPostion. */
+  public FloorMoveArmToPostion(FloorArmSubsystem floorArm, double targetPosition) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.arm = arm; 
-    this.armSpeed = armSpeed;
-    addRequirements(this.arm);
 
+    this.floorArm=floorArm;
+    this.targetPosition=targetPosition;
+    addRequirements(floorArm);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    floorArm.setTargetPosition(targetPosition);
   }
-    
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    double armPower = armSpeed.getAsDouble()*Constants.ARM_POWER_SCALING;
-    arm.moveArm(armPower);
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    arm.moveArm(0);
-
+    floorArm.moveArm(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
