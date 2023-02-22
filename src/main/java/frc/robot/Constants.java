@@ -74,7 +74,7 @@ public final class Constants {
       //floor arm constants
       public static final int FLOOR_ARM_SOLENOID_CHANNEL = 0;
       public static final double FLOOR_ARM_POWER_SCALING = 0;
-      public static final int FLOOR_ARM_MOTOR = 13;
+      public static final int FLOOR_ARM_MOTOR = 14;
       public static final double FLOOR_ARM_VALUE = 0;
       public static final double FLOOR_ARM_P_COEFF =.006;
       public static final double FLOOR_ARM_I_COEFF = 0;
@@ -89,7 +89,7 @@ public final class Constants {
 
       //intake constants 
       public static final double INTAKE_SPEED = 1;
-      public static final int INTAKE_MOTOR = 14;
+      public static final int INTAKE_MOTOR = 15;
       public static final double FLOOR_INTAKE_SPEED = 1;
-      public static final int FLOOR_INTAKE_MOTOR = 15;
+      public static final int FLOOR_INTAKE_MOTOR = 16;
 }

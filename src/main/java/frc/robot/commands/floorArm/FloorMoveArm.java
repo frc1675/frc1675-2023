@@ -7,19 +7,18 @@ package frc.robot.commands.floorArm;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.FloorArmSubsystem;
 
 public class FloorMoveArm extends CommandBase {
   /** Creates a new moveArm. */
  private FloorArmSubsystem floorArm;
- private DoubleSupplier armSpeed;
+ private DoubleSupplier floorArmSpeed;
 
-  public FloorMoveArm(FloorArmSubsystem arm,DoubleSupplier armSpeed ) {
+  public FloorMoveArm(FloorArmSubsystem floorArm,DoubleSupplier floorArmSpeed ) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.floorArm = floorArm; 
-    this.armSpeed = armSpeed;
+    this.floorArmSpeed = floorArmSpeed;
     addRequirements(this.floorArm);
 
   }
@@ -33,7 +32,7 @@ public class FloorMoveArm extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double armPower = armSpeed.getAsDouble()*Constants.ARM_POWER_SCALING;
+    double armPower = floorArmSpeed.getAsDouble()*Constants.FLOOR_ARM_POWER_SCALING;
     floorArm.moveArm(armPower);
   }
 

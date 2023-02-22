@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class FloorArmSubsystem extends SubsystemBase {
-  private ShuffleboardTab floorArmTab = Shuffleboard.getTab("ArmSubsystem");
+  private ShuffleboardTab floorArmTab = Shuffleboard.getTab("FloorArm");
   private CANSparkMax floorArmMotor;
   private PIDController pid;
   private SparkMaxAbsoluteEncoder absEncoder;
@@ -30,7 +30,7 @@ public class FloorArmSubsystem extends SubsystemBase {
 
   public FloorArmSubsystem() {
     floorArmMotor = new CANSparkMax(Constants.FLOOR_ARM_MOTOR, MotorType.kBrushless);
-    pid = new PIDController(Constants.FLOOR_ARM_P_COEFF,Constants.FLOOR_ARM_I_COEFF,Constants.ARM_D_COEFF);
+    pid = new PIDController(Constants.FLOOR_ARM_P_COEFF,Constants.FLOOR_ARM_I_COEFF,Constants.FLOOR_ARM_D_COEFF);
     
     absEncoder = floorArmMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
     floorArmTab.addNumber("Position", () -> getPosition());
@@ -43,8 +43,8 @@ public class FloorArmSubsystem extends SubsystemBase {
    public void setSoftLimit(){
     floorArmMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
     floorArmMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    floorArmMotor.setSoftLimit(SoftLimitDirection.kForward, Constants.ARM_MAX_POSITION);
-    floorArmMotor.setSoftLimit(SoftLimitDirection.kReverse, Constants.ARM_MIN_POSITION);
+    floorArmMotor.setSoftLimit(SoftLimitDirection.kForward, Constants.FLOOR_ARM_MAX_POSITION);
+    floorArmMotor.setSoftLimit(SoftLimitDirection.kReverse, Constants.FLOOR_ARM_MIN_POSITION);
    }
 
   public void moveArm(double power) {

@@ -7,16 +7,15 @@ package frc.robot.commands.arm;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.FloorArmSubsystem;
+import frc.robot.subsystems.ArmSubsystem;
 
 public class MoveArm extends CommandBase {
   /** Creates a new moveArm. */
- private FloorArmSubsystem arm;
+ private ArmSubsystem arm;
  private DoubleSupplier armSpeed;
 
-  public MoveArm(FloorArmSubsystem arm,DoubleSupplier armSpeed ) {
+  public MoveArm(ArmSubsystem arm,DoubleSupplier armSpeed ) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.arm = arm; 
     this.armSpeed = armSpeed;
