@@ -2,40 +2,39 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
-
+package frc.robot.commands.intake.armIntake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.Constants;
+import frc.robot.subsystems.Intake;
 
-public class MoveArmToPostion extends CommandBase {
-  private ArmSubsystem arm;
-  private double targetPosition;
-  /** Creates a new MoveArmToPostion. */
-  public MoveArmToPostion(ArmSubsystem arm, double targetPosition) {
+public class DropCone extends CommandBase {
+  /** Creates a new DropCone. */
+  private final Intake intake;
+  public DropCone(Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
-
-    this.arm=arm;
-    this.targetPosition=targetPosition;
-    addRequirements(arm);
+    this.intake = intake;
+    addRequirements(this.intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    arm.setTargetPosition(targetPosition);
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    intake.coneDrop(Constants.INTAKE_SPEED);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    intake.intakeStop();
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }
