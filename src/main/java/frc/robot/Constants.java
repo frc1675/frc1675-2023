@@ -9,6 +9,11 @@ public final class Constants {
       public static final double AUTO_MAX_VELOCITY = 3;
       public static final double AUTO_MAX_ACCELERATION = 3;
 
+      //sim constants
+      public static final double RED_ORIGIN_POS_X_METERS = 16.541748984;
+      public static final double RED_ORIGIN_POS_Y_METERS = 8.01367968;
+      public static final double RED_ORIGIN_ROTATION_DEG = 180.0;      
+
       //drivetrain constants
       public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.5969; //Measured on robot
       public static final double DRIVETRAIN_WHEELBASE_METERS = 0.5969;
