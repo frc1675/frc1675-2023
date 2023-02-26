@@ -83,7 +83,11 @@ public class RobotContainer {
     {
         //floor arm
         operatorControllerLeftJoystickButton.onTrue(new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_INSIDE_ROBOT));
-        operatorControllerRightBumper.onTrue(new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_OUTSIDE_ROBOT));
+        operatorControllerRightBumper.onTrue(
+          new SequentialCommandGroup(
+            new MoveArmToPosition(arm, Constants.ARM_INSIDE_ROBOT),
+            new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_OUTSIDE_ROBOT)
+          ));
 
         //floor intake
         operatorControllerRightBumper.whileTrue(new FloorPickup(floorIntake));
