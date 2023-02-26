@@ -61,43 +61,37 @@ public final class Constants {
       public static final int BACK_BUTTON = 7;
       public static final int START_BUTTON = 8;
       public static final int LEFT_JOYSTICK_BUTTON = 9;
-      public static final int RIGHT_JOYSTICK_BUTTON = 10;
 
       //arm constants
-      public static final int ARM_SOLENOID_CHANNEL = 0;
-      public static final double ARM_POWER_SCALING = 0;
+      public static final double ARM_POWER_SCALING = 0.1;
       public static final int ARM_MOTOR = 13;
-      public static final double ARM_VALUE = 0;
-      public static final double ARM_P_COEFF =.006;
+      public static final double ARM_P_COEFF = 3;
       public static final double ARM_I_COEFF = 0;
       public static final double ARM_D_COEFF = 0;
-      public static final double ARM_SCORE_HIGH = 0;
-      public static final double ARM_SCORE_MID = 0;
+      public static final double ARM_SCORE_HIGH = 0.1999;
+      public static final double ARM_SCORE_MID = 0.27780;
       public static final double ARM_SCORE_LOW = 0;
       public static final double ARM_HUMAN_PLAYER_INTAKE = 0;
-      public static final double ARM_INSIDE_ROBOT = 0;
-      public static final float ARM_MAX_POSITION = 0;
-      public static final float ARM_MIN_POSITION = 0;
-
-      //floor arm constants
-      public static final int FLOOR_ARM_SOLENOID_CHANNEL = 0;
-      public static final double FLOOR_ARM_POWER_SCALING = 0;
-      public static final int FLOOR_ARM_MOTOR = 14;
-      public static final double FLOOR_ARM_VALUE = 0;
-      public static final double FLOOR_ARM_P_COEFF =.006;
-      public static final double FLOOR_ARM_I_COEFF = 0;
-      public static final double FLOOR_ARM_D_COEFF = 0;
-      public static final double FLOOR_ARM_SCORE_HIGH = 0;
-      public static final double FLOOR_ARM_SCORE_MID = 0;
-      public static final double FLOOR_ARM_SCORE_LOW = 0;
-      public static final double FLOOR_ARM_HUMAN_PLAYER_INTAKE = 0;
-      public static final double FLOOR_ARM_INSIDE_ROBOT = 0;
-      public static final float FLOOR_ARM_MAX_POSITION = 0;
-      public static final float FLOOR_ARM_MIN_POSITION = 0;
+      public static final double ARM_INSIDE_ROBOT = 0.49752;
+      public static final double ARM_MAX_POSITION = 0.5;//fully within robot
+      public static final double ARM_MIN_POSITION = 0.2;//completely outside robot
 
       //intake constants 
       public static final double INTAKE_SPEED = 1;
       public static final int INTAKE_MOTOR = 15;
+
+      //floor arm constants
+      public static final double FLOOR_ARM_POWER_SCALING = 0.1;
+      public static final int FLOOR_ARM_MOTOR = 14;
+      public static final double FLOOR_ARM_P_COEFF = 2;
+      public static final double FLOOR_ARM_I_COEFF = 0;
+      public static final double FLOOR_ARM_D_COEFF = 0;
+      public static final double FLOOR_ARM_OUTSIDE_ROBOT = 0.05451;
+      public static final double FLOOR_ARM_INSIDE_ROBOT = 0.74;
+      public static final double FLOOR_ARM_MAX_POSITION = 0.68878;
+      public static final double FLOOR_ARM_MIN_POSITION = 0;
+
+      //floor intake constants
       public static final double FLOOR_INTAKE_SPEED = 1;
       public static final int FLOOR_INTAKE_MOTOR = 16;
 }
