@@ -80,6 +80,7 @@ public class RobotContainer {
     driverControllerYButton.onTrue(new SetDriveTarget(drivetrainSubsystem, 180));
 
     //operator
+    {
         //floor arm
         operatorControllerLeftJoystickButton.onTrue(new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_INSIDE_ROBOT));
         operatorControllerRightBumper.onTrue(new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_OUTSIDE_ROBOT));
@@ -108,6 +109,7 @@ public class RobotContainer {
         operatorControllerAButton.whileTrue(new IntakeCube(intake));
         operatorControllerXButton.whileTrue(new DropCone(intake));
         operatorControllerBButton.whileTrue(new IntakeCone(intake));
+    }
   }
 
   public Command getAutonomousCommand() {
