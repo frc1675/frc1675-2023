@@ -7,11 +7,11 @@ package frc.robot.commands.arm;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
 
-public class MoveArmToPostion extends CommandBase {
+public class MoveArmToPosition extends CommandBase {
   private ArmSubsystem arm;
   private double targetPosition;
   /** Creates a new MoveArmToPostion. */
-  public MoveArmToPostion(ArmSubsystem arm, double targetPosition) {
+  public MoveArmToPosition(ArmSubsystem arm, double targetPosition) {
     // Use addRequirements() here to declare subsystem dependencies.
 
     this.arm=arm;
