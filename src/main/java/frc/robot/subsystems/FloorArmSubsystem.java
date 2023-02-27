@@ -54,6 +54,10 @@ public class FloorArmSubsystem extends SubsystemBase {
     pid.setSetpoint(targetPosition);
   }
 
+  public double getTargetPosition() {
+    return targetPosition;
+  }
+
   @Override
   public void periodic() {
     floorArmMotor.set(pid.calculate(getPosition()));

@@ -52,6 +52,10 @@ public class ArmSubsystem extends SubsystemBase {
     targetPosition = position;
   }
 
+  public double getTargetPosition() {
+    return targetPosition;
+  }
+
   @Override
   public void periodic() {
     

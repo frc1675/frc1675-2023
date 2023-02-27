@@ -86,12 +86,15 @@ public final class Constants {
       public static final double FLOOR_ARM_P_COEFF = 2;
       public static final double FLOOR_ARM_I_COEFF = 0;
       public static final double FLOOR_ARM_D_COEFF = 0;
-      public static final double FLOOR_ARM_OUTSIDE_ROBOT = 0.05451;
+      public static final double FLOOR_ARM_GROUND_INTAKE = 0.05451;
       public static final double FLOOR_ARM_INSIDE_ROBOT = 0.74;
-      public static final double FLOOR_ARM_MAX_POSITION = 0.68878;
+      public static final double FLOOR_ARM_MIDDLE = 0.68878;
+      public static final double FLOOR_ARM_HUMAN_PLAYER = 0;
+      public static final double FLOOR_ARM_MAX_POSITION = 0;
       public static final double FLOOR_ARM_MIN_POSITION = 0;
 
       //floor intake constants
       public static final double FLOOR_INTAKE_SPEED = 1;
+      public static final double FLOOR_INTAKE_SLOW_SPEED = 0.5;
       public static final int FLOOR_INTAKE_MOTOR = 16;
 }
