@@ -44,6 +44,15 @@ public class RobotContainer {
   private final JoystickButton operatorControllerXButton = new JoystickButton(operatorController, Constants.X_BUTTON);
   private final FloorIntake floorIntake = new FloorIntake();
 
+  private boolean armIsInsideRobot() {
+    return false;
+    //return arm.getTargetPosition() == Constants.ARM_INSIDE_ROBOT;
+  }
+
+  private boolean floorArmIsInsideRobot() {
+    return false;
+    //return floorArm.getTargetPosition() == Constants.FLOOR_ARM_INSIDE_ROBOT;
+  }
 
   public RobotContainer() {
     configureBindings();
@@ -58,7 +67,10 @@ public class RobotContainer {
         () -> -mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_Y_AXIS))
         * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
         () -> -mod.modifyAxis(driverController.getRawAxis(Constants.RIGHT_X_AXIS))
-        * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)
+        * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
+        () -> mod.modifyAxis(driverController.getRawAxis(Constants.RIGHT_TRIGGER)),
+        () -> !floorArmIsInsideRobot() || !armIsInsideRobot()
+      )
     );
 
     driverControllerBackButton.onTrue(new InstantCommand(drivetrainSubsystem::zeroGyroscope));
