@@ -20,7 +20,7 @@ public class ArmSubsystem extends SubsystemBase {
   private CANSparkMax armMotor;
   private PIDController pid;
   private SparkMaxAbsoluteEncoder absEncoder;
-  private double targetPosition = Constants.ARM_INSIDE_ROBOT;
+  private double targetPosition = Constants.ARM_INSIDE_ROBOT_POSITION;
 
   public ArmSubsystem() {
     armMotor = new CANSparkMax(Constants.ARM_MOTOR, MotorType.kBrushless);

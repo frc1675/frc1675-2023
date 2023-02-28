@@ -10,16 +10,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class FloorDrop extends CommandBase {
   /** Creates a new FloorIntakeOut. */
   private FloorIntake floorIntake;
-  private boolean fast = true;
-  public FloorDrop(FloorIntake floorIntake) {
+  private double speed;
+
+  public FloorDrop(FloorIntake floorIntake, double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.floorIntake = floorIntake;
+    this.speed = speed;
     addRequirements(this.floorIntake);
-  }
-
-  public FloorDrop(FloorIntake floorIntake, boolean fast) {
-    this(floorIntake);
-    this.fast = fast;
   }
 
   // Called when the command is initially scheduled.
@@ -29,12 +26,7 @@ public class FloorDrop extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(fast) {
-      floorIntake.intakeDrop(Constants.FLOOR_INTAKE_SPEED);
-    }else {
-      floorIntake.intakeDrop(Constants.FLOOR_INTAKE_SPEED);
-    }
-    
+    floorIntake.intakeDrop(speed);
   }
 
   // Called once the command ends or is interrupted.
