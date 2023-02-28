@@ -98,7 +98,7 @@ public class RobotContainer {
           new ConditionalCommand(
             new DropCube(intake),
             new ConditionalCommand(
-              new FloorDrop(floorIntake, Constants.FLOOR_INTAKE_FAST_SPEED),
+              new FloorDrop(floorIntake, Constants.FLOOR_INTAKE_NORMAL_SPEED),
               new PrintCommand("Cannot output"),
               ()-> floorArmIsExtended()),
             ()-> armIsExtended()
