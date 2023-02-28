@@ -20,7 +20,7 @@ public class FloorArmSubsystem extends SubsystemBase {
   private CANSparkMax floorArmMotor;
   private PIDController pid;
   private SparkMaxAbsoluteEncoder absEncoder;
-  private double targetPosition = Constants.FLOOR_ARM_INSIDE_ROBOT;
+  private double targetPosition = Constants.FLOOR_ARM_INSIDE_ROBOT_POSITION;
 
   public FloorArmSubsystem() {
     floorArmMotor = new CANSparkMax(Constants.FLOOR_ARM_MOTOR, MotorType.kBrushless);
@@ -52,6 +52,10 @@ public class FloorArmSubsystem extends SubsystemBase {
   public void setTargetPosition(double position){
     targetPosition = position;
     pid.setSetpoint(targetPosition);
+  }
+
+  public double getTargetPosition() {
+    return targetPosition;
   }
 
   @Override
