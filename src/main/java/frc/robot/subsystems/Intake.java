@@ -6,14 +6,24 @@ package frc.robot.subsystems;
 import frc.robot.Constants;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
 
   /** Creates a new Intake. */
+  private ShuffleboardTab armIntakeTab = Shuffleboard.getTab("Intake");
   private CANSparkMax intakeMotor = new CANSparkMax( Constants.INTAKE_MOTOR, MotorType.kBrushless);
-  public Intake() {
+  
 
+  public Intake() {
+    armIntakeTab.addNumber("Current", () -> getCurrent());
+    // intakeMotor.setSmartCurrentLimit(LIMIT IN AMPS);  
+  }
+
+  public double getCurrent(){
+    return intakeMotor.getOutputCurrent();
   }
 
   public void intakeStop(){
