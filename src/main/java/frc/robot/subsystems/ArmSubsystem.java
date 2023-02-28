@@ -24,10 +24,15 @@ public class ArmSubsystem extends SubsystemBase {
 
   public ArmSubsystem() {
     armMotor = new CANSparkMax(Constants.ARM_MOTOR, MotorType.kBrushless);
+    armMotor.setInverted(true);
 
     pid = new PIDController(Constants.ARM_P_COEFF, Constants.ARM_I_COEFF,Constants.ARM_D_COEFF);
-    
+    pid.enableContinuousInput(0, 1);
+
+    setTargetPosition(targetPosition);
+
     absEncoder = armMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
+
     armTab.addNumber("Position", () -> getPosition());
     setSoftLimit();
   }
@@ -50,6 +55,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void setTargetPosition(double position){
     targetPosition = position;
+    pid.setSetpoint(targetPosition);
   }
 
   public double getTargetPosition() {
@@ -59,7 +65,7 @@ public class ArmSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     
-    armMotor.set(pid.calculate(targetPosition-getPosition()));
+    armMotor.set(pid.calculate(getPosition()));
   
   }
 }

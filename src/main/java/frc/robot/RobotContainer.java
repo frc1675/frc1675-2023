@@ -141,7 +141,7 @@ public class RobotContainer {
         operatorControllerBButton.onTrue(
           new SequentialCommandGroup(
             new MoveArmToPosition(arm, Constants.ARM_INSIDE_ROBOT),
-            new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_MIDDLE)
+            new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_SHOOTING)
           )
         );
         operatorControllerAButton.onTrue(new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_INSIDE_ROBOT));

@@ -28,22 +28,22 @@ public final class Constants {
       public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 3;
       public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 4;
       public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 12; 
-      public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(51.24);
+      public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(51.15);
   
       public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 1;
       public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 2; 
       public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 10; 
-      public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(341.10);
+      public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(341.28);
   
       public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 7; 
       public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 8; 
       public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 11; 
-      public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(32.08);
+      public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(33.19);
   
       public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 5; 
       public static final int BACK_LEFT_MODULE_STEER_MOTOR = 6; 
       public static final int BACK_LEFT_MODULE_STEER_ENCODER = 9; 
-      public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(221.86);
+      public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(221.84);
   
       //controller constants
       public static final int DRIVER_CONTROLLER = 0;
@@ -65,16 +65,16 @@ public final class Constants {
       //arm constants
       public static final double ARM_POWER_SCALING = 0.1;
       public static final int ARM_MOTOR = 13;
-      public static final double ARM_P_COEFF = 3;
+      public static final double ARM_P_COEFF = 2.5;
       public static final double ARM_I_COEFF = 0;
       public static final double ARM_D_COEFF = 0;
-      public static final double ARM_SCORE_HIGH = 0.1999;
-      public static final double ARM_SCORE_MID = 0.27780;
+      public static final double ARM_SCORE_HIGH = 0.84;
+      public static final double ARM_SCORE_MID = 0.92;
       public static final double ARM_SCORE_LOW = 0;
-      public static final double ARM_HUMAN_PLAYER_INTAKE = 0;
-      public static final double ARM_INSIDE_ROBOT = 0.49752;
-      public static final double ARM_MAX_POSITION = 0.5;//fully within robot
-      public static final double ARM_MIN_POSITION = 0.2;//completely outside robot
+      public static final double ARM_HUMAN_PLAYER_INTAKE = 0.88;
+      public static final double ARM_INSIDE_ROBOT = 0.1677;
+      public static final double ARM_MAX_POSITION = 0.0;//fully within robot
+      public static final double ARM_MIN_POSITION = 0.0;//completely outside robot
 
       //intake constants 
       public static final double INTAKE_SPEED = 1;
@@ -88,13 +88,11 @@ public final class Constants {
       public static final double FLOOR_ARM_D_COEFF = 0;
       public static final double FLOOR_ARM_GROUND_INTAKE = 0.05451;
       public static final double FLOOR_ARM_INSIDE_ROBOT = 0.74;
-      public static final double FLOOR_ARM_MIDDLE = 0.68878;
-      public static final double FLOOR_ARM_HUMAN_PLAYER = 0;
-      public static final double FLOOR_ARM_MAX_POSITION = 0;
+      public static final double FLOOR_ARM_SHOOTING = 0.8311;
+      public static final double FLOOR_ARM_MAX_POSITION = 0.68878;
       public static final double FLOOR_ARM_MIN_POSITION = 0;
 
       //floor intake constants
-      public static final double FLOOR_INTAKE_SPEED = 1;
-      public static final double FLOOR_INTAKE_SLOW_SPEED = 0.5;
+      public static final double FLOOR_INTAKE_SPEED = 0.5;
       public static final int FLOOR_INTAKE_MOTOR = 16;
 }
