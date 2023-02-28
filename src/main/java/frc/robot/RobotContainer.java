@@ -61,6 +61,9 @@ public class RobotContainer {
   private final JoystickButton operatorControllerYButton = new JoystickButton(operatorController, Constants.Y_BUTTON);
   private final JoystickButton operatorControllerAButton = new JoystickButton(operatorController, Constants.A_BUTTON);
   private final JoystickButton operatorControllerXButton = new JoystickButton(operatorController, Constants.X_BUTTON);
+  private final JoystickButton operatorControllerLeftBumper = new JoystickButton(operatorController, Constants.LEFT_BUMPER);
+  private final JoystickButton operatorControllerRightBumper = new JoystickButton(operatorController, Constants.RIGHT_BUMPER);
+
 
   private final DPadButton operatorDPadUp = new DPadButton(operatorController, DPadButton.Direction.UP);
   private final DPadButton operatorDPadRight = new DPadButton(operatorController, DPadButton.Direction.RIGHT);
@@ -94,26 +97,20 @@ public class RobotContainer {
             * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)
         );
         driverControllerBackButton.onTrue(new InstantCommand(drivetrainSubsystem::zeroGyroscope));
-        driverControllerLeftBumper.onTrue(new SetDriveTarget(drivetrainSubsystem, 0));
-        driverControllerRightBumper.onTrue(new SetDriveTarget(drivetrainSubsystem, 180));
+        //driverControllerLeftBumper.onTrue(new SetDriveTarget(drivetrainSubsystem, 0));
+        //driverControllerRightBumper.onTrue(new SetDriveTarget(drivetrainSubsystem, 180));
 
         //floor intake
         driverDPadUp.whileTrue(
           new ConditionalCommand(
             new PrintCommand("Floor arm inside robot"),
-            new FloorPickup(floorIntake), 
+            new FloorDrop(floorIntake), 
             () -> floorArmIsInsideRobot()
         ));
         driverDPadDown.whileTrue(
           new ConditionalCommand(
             new PrintCommand("Floor arm inside robot"),
-            new FloorDrop(floorIntake), 
-            () -> floorArmIsInsideRobot()
-        ));
-        driverDPadLeft.whileTrue(
-          new ConditionalCommand(
-            new PrintCommand("Floor arm inside robot"),
-            new FloorDrop(floorIntake, false  ), 
+            new FloorDrop(floorIntake, false), 
             () -> floorArmIsInsideRobot()
         ));
 
@@ -123,22 +120,11 @@ public class RobotContainer {
             new PrintCommand("Arm inside robot"),
             new DropCube(intake), 
             () -> armIsInsideRobot()
-        ));driverControllerAButton.whileTrue(
-          new ConditionalCommand(
-            new PrintCommand("Arm inside robot"),
-            new IntakeCube(intake), 
-            () -> armIsInsideRobot()
-        ));    
-        driverControllerXButton.whileTrue(
+        ));
+        driverControllerAButton.whileTrue(
           new ConditionalCommand(
             new PrintCommand("Arm inside robot"),
             new DropCone(intake), 
-            () -> armIsInsideRobot()
-        ));
-        driverControllerBButton.whileTrue(
-          new ConditionalCommand(
-            new PrintCommand("Arm inside robot"),
-            new IntakeCone(intake), 
             () -> armIsInsideRobot()
         ));
     }
@@ -150,12 +136,6 @@ public class RobotContainer {
           new SequentialCommandGroup(
             new MoveArmToPosition(arm, Constants.ARM_INSIDE_ROBOT),
             new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_GROUND_INTAKE)
-          )
-        );
-        operatorControllerXButton.onTrue(
-          new SequentialCommandGroup(
-            new MoveArmToPosition(arm, Constants.ARM_INSIDE_ROBOT),
-            new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_HUMAN_PLAYER)
           )
         );
         operatorControllerBButton.onTrue(
@@ -184,6 +164,24 @@ public class RobotContainer {
           )
         );
         operatorDPadDown.onTrue(new MoveArmToPosition(arm, Constants.ARM_INSIDE_ROBOT));
+
+        //floor intake
+        operatorControllerLeftBumper.whileTrue(
+          new ConditionalCommand(
+            new PrintCommand("Floor arm inside robot"),
+            new IntakeCone(intake), 
+            () -> floorArmIsInsideRobot()
+        ));
+        operatorControllerRightBumper.whileTrue(
+          new ConditionalCommand(
+            new IntakeCube(intake),
+            new ConditionalCommand(
+              new FloorPickup(floorIntake),
+              new PrintCommand("Cannot intake"),
+              ()-> !floorArmIsInsideRobot()),
+            ()-> !armIsInsideRobot()
+          )
+        );
     }
   }
 

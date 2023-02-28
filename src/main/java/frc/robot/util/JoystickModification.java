@@ -35,7 +35,8 @@ public class JoystickModification {
   public double modifyAxis(double value) {
     value = deadband(value, 0.05);
     value = Math.copySign(value * value, value);
-    value = value * speedScalerSub.get();; // scale down value to slow robot
+    //value = value * speedScalerSub.get();; // scale down value to slow robot
+    value = value * 0.4;
 
     return value;
   }
