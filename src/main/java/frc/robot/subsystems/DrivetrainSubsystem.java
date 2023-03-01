@@ -96,6 +96,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         private ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
         private Rotation2d rotationTarget;
+        private Translation2d translationTarget;
 
         private PIDController yPID = new PIDController(PROPORTIONAL_COEFFICENT, INTEGRAL_COEFFICENT,
                         DERIVATIVE_COEFFICENT);
@@ -251,10 +252,23 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 return rotationTarget;
         }
 
+        public void setTranslationTarget(Translation2d translationTarget) {
+                this.translationTarget = translationTarget;
+        }
+
+        public Translation2d getTranslationTarget() {
+                return translationTarget;
+        }
+
         @Override
         public void periodic() {
                 if(rotationTarget != null && chassisSpeeds.omegaRadiansPerSecond == 0) {
                         chassisSpeeds.omegaRadiansPerSecond = rotationPID.calculate(getRotation().minus(rotationTarget).getRadians());
+                }
+
+                if(translationTarget != null && chassisSpeeds.vxMetersPerSecond == 0 && chassisSpeeds.vyMetersPerSecond == 0) {
+                        chassisSpeeds.vxMetersPerSecond = xPID.calculate(getPose().getTranslation().minus(translationTarget).getX());
+                        chassisSpeeds.vyMetersPerSecond = yPID.calculate(getPose().getTranslation().minus(translationTarget).getY());
                 }
 
                 states = kinematics.toSwerveModuleStates(chassisSpeeds);
