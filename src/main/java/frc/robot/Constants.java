@@ -75,6 +75,7 @@ public final class Constants {
       public static final double ARM_INSIDE_ROBOT_POSITION = 0.1677;
       public static final double ARM_MAX_POSITION = 0.0;//fully within robot
       public static final double ARM_MIN_POSITION = 0.0;//completely outside robot
+      public static final double ARM_ENCODER_COUNT_ERROR = 1.0;
 
       //intake constants 
       public static final double INTAKE_SPEED = 1;
