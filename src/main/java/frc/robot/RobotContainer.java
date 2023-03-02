@@ -87,7 +87,9 @@ public class RobotContainer {
             () -> -mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_X_AXIS))
             * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
             () -> -mod.modifyAxis(driverController.getRawAxis(Constants.RIGHT_X_AXIS))
-            * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)
+            * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
+            () -> mod.modifyAxis(driverController.getRawAxis(Constants.RIGHT_TRIGGER)),
+            () -> floorArmIsExtended() || floorArmIsExtended())
         );
         driverControllerBackButton.onTrue(new InstantCommand(drivetrainSubsystem::zeroGyroscope));
         driverControllerLeftBumper.onTrue(new SetDriveRotationTarget(drivetrainSubsystem, 0));

@@ -9,6 +9,19 @@ public final class Constants {
       public static final double AUTO_MAX_VELOCITY = 3;
       public static final double AUTO_MAX_ACCELERATION = 3;
 
+      public static final double COMMUNITY_MAX_WIDTH_METERS = 4.91;
+      public static final double COMMUNITY_MIN_WIDTH_METERS = 3.36;
+      public static final double COMMUNITY_HEIGHT_METERS = 5.49;
+      public static final double COMMUNITY_MAX_WIDTH_HEIGHT_METERS = 3.98;
+
+      public static final double HUMAN_PLAYER_MAX_WIDTH_METERS = 6.71;
+      public static final double HUMAN_PLAYER_MIN_WIDTH_METERS = 3.36;
+      public static final double HUMAN_PLAYER_HEIGHT_METERS = 2.52;
+      public static final double HUMAN_PLAYER_MIN_WIDTH_HEIGHT_METERS = 1.16;
+
+      public static final double FIELD_WIDTH_METERS = 16;
+      public static final double FIELD_HEIGHT_METERS = 7.85;
+
       //sim constants
       public static final double RED_ORIGIN_POS_X_METERS = 16.541748984;
       public static final double RED_ORIGIN_POS_Y_METERS = 8.01367968;
@@ -18,7 +31,8 @@ public final class Constants {
       public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.5969; //Measured on robot
       public static final double DRIVETRAIN_WHEELBASE_METERS = 0.5969;
       public static final double DRIVE_ROTATE_TOLERANCE_DEGREES = 1.0;
-      public static final double DRIVE_SPEED_SCALER = 0.4;
+      public static final double DRIVE_SPEED_SCALER = 0.5;
+      public static final double SLOW_DRIVE_SCALING = 0.3;
   
       //PID constants
       public static final double ROTATION_PROPORTIONAL_COEFFICENT = 3.0;
@@ -57,6 +71,8 @@ public final class Constants {
       public static final int LEFT_Y_AXIS= 1;
       public static final int RIGHT_X_AXIS = 4;
       public static final int RIGHT_Y_AXIS = 5;
+      public static final int RIGHT_TRIGGER = 6;
+  
       public static final int A_BUTTON = 1;
       public static final int B_BUTTON = 2;
       public static final int X_BUTTON = 3;
