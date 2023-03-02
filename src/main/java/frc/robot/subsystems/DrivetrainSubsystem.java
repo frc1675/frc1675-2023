@@ -1,26 +1,6 @@
 package frc.robot.subsystems;
 
-import static frc.robot.Constants.BACK_LEFT_MODULE_DRIVE_MOTOR;
-import static frc.robot.Constants.BACK_LEFT_MODULE_STEER_ENCODER;
-import static frc.robot.Constants.BACK_LEFT_MODULE_STEER_MOTOR;
-import static frc.robot.Constants.BACK_LEFT_MODULE_STEER_OFFSET;
-import static frc.robot.Constants.BACK_RIGHT_MODULE_DRIVE_MOTOR;
-import static frc.robot.Constants.BACK_RIGHT_MODULE_STEER_ENCODER;
-import static frc.robot.Constants.BACK_RIGHT_MODULE_STEER_MOTOR;
-import static frc.robot.Constants.BACK_RIGHT_MODULE_STEER_OFFSET;
-import static frc.robot.Constants.DERIVATIVE_COEFFICENT;
-import static frc.robot.Constants.DRIVETRAIN_TRACKWIDTH_METERS;
-import static frc.robot.Constants.DRIVETRAIN_WHEELBASE_METERS;
-import static frc.robot.Constants.FRONT_LEFT_MODULE_DRIVE_MOTOR;
-import static frc.robot.Constants.FRONT_LEFT_MODULE_STEER_ENCODER;
-import static frc.robot.Constants.FRONT_LEFT_MODULE_STEER_MOTOR;
-import static frc.robot.Constants.FRONT_LEFT_MODULE_STEER_OFFSET;
-import static frc.robot.Constants.FRONT_RIGHT_MODULE_DRIVE_MOTOR;
-import static frc.robot.Constants.FRONT_RIGHT_MODULE_STEER_ENCODER;
-import static frc.robot.Constants.FRONT_RIGHT_MODULE_STEER_MOTOR;
-import static frc.robot.Constants.FRONT_RIGHT_MODULE_STEER_OFFSET;
-import static frc.robot.Constants.INTEGRAL_COEFFICENT;
-import static frc.robot.Constants.PROPORTIONAL_COEFFICENT;
+import static frc.robot.Constants.*;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
@@ -96,13 +76,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
         private ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
         private Rotation2d rotationTarget;
+        private Translation2d translationTarget;
 
-        private PIDController yPID = new PIDController(PROPORTIONAL_COEFFICENT, INTEGRAL_COEFFICENT,
-                        DERIVATIVE_COEFFICENT);
-        private PIDController xPID = new PIDController(PROPORTIONAL_COEFFICENT, INTEGRAL_COEFFICENT,
-                        DERIVATIVE_COEFFICENT);
-        private PIDController rotationPID = new PIDController(PROPORTIONAL_COEFFICENT, INTEGRAL_COEFFICENT,
-                        DERIVATIVE_COEFFICENT);
+        private PIDController yPID = new PIDController(TRANSLATION_PROPORTIONAL_COEFFICENT, TRANSLATION_INTEGRAL_COEFFICENT,
+        TRANSLATION_DERIVATIVE_COEFFICENT);
+        private PIDController xPID = new PIDController(TRANSLATION_PROPORTIONAL_COEFFICENT, TRANSLATION_INTEGRAL_COEFFICENT,
+        TRANSLATION_DERIVATIVE_COEFFICENT);
+        private PIDController rotationPID = new PIDController(ROTATION_PROPORTIONAL_COEFFICENT, ROTATION_INTEGRAL_COEFFICENT,
+        ROTATION_DERIVATIVE_COEFFICENT);
 
         public DrivetrainSubsystem() {
                 states = kinematics.toSwerveModuleStates(chassisSpeeds);
@@ -251,10 +232,23 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 return rotationTarget;
         }
 
+        public void setTranslationTarget(Translation2d translationTarget) {
+                this.translationTarget = translationTarget;
+        }
+
+        public Translation2d getTranslationTarget() {
+                return translationTarget;
+        }
+
         @Override
         public void periodic() {
                 if(rotationTarget != null && chassisSpeeds.omegaRadiansPerSecond == 0) {
                         chassisSpeeds.omegaRadiansPerSecond = rotationPID.calculate(getRotation().minus(rotationTarget).getRadians());
+                }
+
+                if(translationTarget != null && chassisSpeeds.vxMetersPerSecond == 0 && chassisSpeeds.vyMetersPerSecond == 0) {
+                        chassisSpeeds.vxMetersPerSecond = xPID.calculate(getPose().getTranslation().minus(translationTarget).getX());
+                        chassisSpeeds.vyMetersPerSecond = yPID.calculate(getPose().getTranslation().minus(translationTarget).getY());
                 }
 
                 states = kinematics.toSwerveModuleStates(chassisSpeeds);

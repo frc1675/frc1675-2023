@@ -13,11 +13,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.Constants;
+import frc.robot.commands.groups.ExtendAndScore;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.Intake;
 
 public class AutoGenerator {
     private SwerveAutoBuilder builder;
-    private DrivetrainSubsystem drivetrainSubsystem;
 
     private HashMap<String, Command> eventMap = new HashMap<String, Command>();
     private PathConstraints defaulPathConstraints = new PathConstraints(Constants.AUTO_MAX_VELOCITY, Constants.AUTO_MAX_ACCELERATION);
@@ -26,7 +28,8 @@ public class AutoGenerator {
     private SendableChooser<StartLocation> locationSelector = new SendableChooser<StartLocation>();
 
     public enum AutoActions {
-        EXIT_AND_BALANCE
+        SCORE_EXIT_BALANCE,
+        SCORE_AND_EXIT
     } 
 
     public enum StartLocation {
@@ -39,32 +42,36 @@ public class AutoGenerator {
         }
     }
 
-    public AutoGenerator(DrivetrainSubsystem drivetrainSubsystem) {   
-
-        this.drivetrainSubsystem = drivetrainSubsystem;
-        SwerveDriveKinematics kinematics = this.drivetrainSubsystem.getKinematics();
+    public AutoGenerator(DrivetrainSubsystem drivetrainSubsystem, ArmSubsystem armSubsystem, Intake intake) {   
+        SwerveDriveKinematics kinematics = drivetrainSubsystem.getKinematics();
 
         builder = new SwerveAutoBuilder(
-            this.drivetrainSubsystem::getPose,
-            this.drivetrainSubsystem::resetPose,
+            drivetrainSubsystem::getPose,
+            drivetrainSubsystem::resetPose,
             kinematics,
             new PIDConstants(0, 0, 0),
             new PIDConstants(0, 0, 0),
-            this.drivetrainSubsystem::setSwerveStates,
+            drivetrainSubsystem::setSwerveStates,
             eventMap,
             true,
-            this.drivetrainSubsystem
+            drivetrainSubsystem
         );
 
         locationSelector.setDefaultOption("Area One", StartLocation.ONE);
         locationSelector.addOption("Area Two", StartLocation.TWO);
 
-        actionSelector.setDefaultOption("Exit community and balance", AutoActions.EXIT_AND_BALANCE);
+        actionSelector.setDefaultOption("Score and exit", AutoActions.SCORE_AND_EXIT);
+        actionSelector.addOption("Score, exit community and balance", AutoActions.SCORE_EXIT_BALANCE);
+
+        eventMap.put("scoreConeHigh", new ExtendAndScore(drivetrainSubsystem, armSubsystem, intake));
+        eventMap.put("autoBalance", new PrintCommand("Auto balance begin"));
     }
 
     public Command getAutoCommand() {
-        if(actionSelector.getSelected() == AutoActions.EXIT_AND_BALANCE) {
+        if(actionSelector.getSelected() == AutoActions.SCORE_EXIT_BALANCE) {
             return getExitAndBalance(locationSelector.getSelected());
+        }else if(actionSelector.getSelected() == AutoActions.SCORE_AND_EXIT) {
+            return getScoreAndExit(locationSelector.getSelected());
         }
         return null;
     }
@@ -72,7 +79,15 @@ public class AutoGenerator {
     public Command getExitAndBalance(StartLocation startArea) {
         if(startArea == StartLocation.ONE || startArea == StartLocation.TWO) {
             PathPlannerTrajectory path = PathPlanner.loadPath("ExitAndBalance A" + startArea.value, defaulPathConstraints);
-            eventMap.put("autoBalance", new PrintCommand("Auto balance begin"));
+            return builder.fullAuto(path);
+        }else {
+            return null;
+        }
+    }
+
+    public Command getScoreAndExit(StartLocation startArea) {
+        if(startArea == StartLocation.ONE || startArea == StartLocation.TWO) {
+            PathPlannerTrajectory path = PathPlanner.loadPath("ScoreAndExit A" + startArea.value, defaulPathConstraints);
             return builder.fullAuto(path);
         }else {
             return null;

@@ -1,15 +1,15 @@
 package frc.robot.commands.drive;
 
-import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DrivetrainSubsystem;
 
-public class SetDriveTarget extends CommandBase{
+public class SetDriveTranslationTarget extends CommandBase{
     
     private DrivetrainSubsystem drivetrainSubsystem;
-    private double target;
+    private Translation2d target;
 
-    public SetDriveTarget(DrivetrainSubsystem drivetrainSubsystem, double target) {
+    public SetDriveTranslationTarget(DrivetrainSubsystem drivetrainSubsystem, Translation2d target) {
         this.drivetrainSubsystem = drivetrainSubsystem;
         this.target = target;
         addRequirements(drivetrainSubsystem);
@@ -17,7 +17,7 @@ public class SetDriveTarget extends CommandBase{
 
     @Override
     public void initialize() {
-        drivetrainSubsystem.setRotationTarget(Rotation2d.fromDegrees(target));
+        drivetrainSubsystem.setTranslationTarget(target);
     }
 
     @Override
