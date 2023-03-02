@@ -177,7 +177,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autoGenerator.getTestPath();
-    //return autoGenerator.getAutoCommand();
+    return autoGenerator.getAutoCommand();
   }
 }
