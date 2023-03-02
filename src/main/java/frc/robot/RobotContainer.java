@@ -160,8 +160,8 @@ public class RobotContainer {
         operatorControllerLeftBumper.whileTrue(
           new ConditionalCommand(
             new IntakeCone(intake),
-            new PrintCommand("Floor arm inside robot"),
-            () -> floorArmIsExtended()
+            new PrintCommand("Arm inside robot"),
+            () -> armIsExtended()
         ));
         operatorControllerRightBumper.whileTrue(
           new ConditionalCommand(
@@ -177,6 +177,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autoGenerator.getAutoCommand();
+    return null;
+    //return autoGenerator.getAutoCommand();
   }
 }

@@ -18,6 +18,7 @@ public class Intake extends SubsystemBase {
   
 
   public Intake() {
+    intakeMotor.setInverted(true);
     armIntakeTab.addNumber("Current", () -> getCurrent());
     // intakeMotor.setSmartCurrentLimit(LIMIT IN AMPS);  
   }
@@ -31,19 +32,19 @@ public class Intake extends SubsystemBase {
   }
 
   public void conePickup(double speed){
-    intakeMotor.set(speed * -1);
+    intakeMotor.set(speed * 1);
   }
 
   public void coneDrop(double speed){
-    intakeMotor.set(speed * 1);
+    intakeMotor.set(speed * -1); 
   }
 
   public void cubeDrop(double speed){
-    intakeMotor.set(speed * -1);
+    intakeMotor.set(speed * 1);
   }
 
   public void cubePickup(double speed){
-    intakeMotor.set(speed * 1);
+    intakeMotor.set(speed * -1);
   }
 
   @Override
