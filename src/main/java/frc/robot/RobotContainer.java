@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.arm.MoveArmToPosition;
 import frc.robot.commands.drive.DefaultDriveUpdatePose;
-import frc.robot.commands.drive.SetDriveTarget;
+import frc.robot.commands.drive.SetDriveRotationTarget;
 import frc.robot.commands.floorArm.FloorMoveArmToPostion;
 import frc.robot.commands.intake.armIntake.DropCone;
 import frc.robot.commands.intake.armIntake.DropCube;
@@ -38,7 +38,7 @@ public class RobotContainer {
   private final FloorIntake floorIntake = new FloorIntake();
   private final FloorArmSubsystem floorArm = new FloorArmSubsystem();
   private final ArmSubsystem arm = new ArmSubsystem();
-  private final AutoGenerator autoGenerator = new AutoGenerator(drivetrainSubsystem);
+  private final AutoGenerator autoGenerator = new AutoGenerator(drivetrainSubsystem, arm, intake);
 
   private final JoystickModification mod = new JoystickModification();
 
@@ -90,8 +90,8 @@ public class RobotContainer {
             * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND)
         );
         driverControllerBackButton.onTrue(new InstantCommand(drivetrainSubsystem::zeroGyroscope));
-        driverControllerLeftBumper.onTrue(new SetDriveTarget(drivetrainSubsystem, 0));
-        driverControllerRightBumper.onTrue(new SetDriveTarget(drivetrainSubsystem, 180));
+        driverControllerLeftBumper.onTrue(new SetDriveRotationTarget(drivetrainSubsystem, 0));
+        driverControllerRightBumper.onTrue(new SetDriveRotationTarget(drivetrainSubsystem, 180));
 
         //main intake
         driverControllerAButton.whileTrue(
