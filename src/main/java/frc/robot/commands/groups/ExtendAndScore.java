@@ -17,9 +17,9 @@ public class ExtendAndScore extends SequentialCommandGroup {
   public ExtendAndScore(DrivetrainSubsystem drive, ArmSubsystem arm, Intake intake) {
     addCommands(
       new MoveArmToPosition(arm, Constants.ARM_SCORE_HIGH_POSITION),
-      new SetDriveTranslationTarget(drive, getTranslationTarget(drive, 1)),
       //new WaitUntilCommand(() -> Math.abs(arm.getPosition() - arm.getTargetPosition()) < Constants.ARM_ENCODER_COUNT_ERROR),
       new WaitCommand(1),
+      new SetDriveTranslationTarget(drive, getTranslationTarget(drive, 1)),
       new DropCone(intake).withTimeout(1),//could probably tune this down
       new SetDriveTranslationTarget(drive, getTranslationTarget(drive, -1)),
       new MoveArmToPosition(arm, Constants.ARM_INSIDE_ROBOT_POSITION)
