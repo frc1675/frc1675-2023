@@ -64,7 +64,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         private SwerveModuleState[] states;
         private SwerveDriveOdometry odometry;
-        private Pose2d robotPose;
+        private Pose2d robotPose = new Pose2d();
         private Field2d field = new Field2d();
         private double simRotation = 0;
         private final Pose2d RED_ORIGIN = new Pose2d(new Translation2d(Constants.RED_ORIGIN_POS_X_METERS, Constants.RED_ORIGIN_POS_Y_METERS),Rotation2d.fromDegrees(Constants.RED_ORIGIN_ROTATION_DEG));

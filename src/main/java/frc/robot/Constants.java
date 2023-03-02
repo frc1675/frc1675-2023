@@ -107,9 +107,9 @@ public final class Constants {
       public static final double FLOOR_ARM_P_COEFF = 2;
       public static final double FLOOR_ARM_I_COEFF = 0;
       public static final double FLOOR_ARM_D_COEFF = 0;
-      public static final double FLOOR_ARM_GROUND_POSITION = 0.0652;
-      public static final double FLOOR_ARM_INSIDE_ROBOT_POSITION = 0.7043;
-      public static final double FLOOR_ARM_SHOOTING_POSITION = 0.8302;
+      public static final double FLOOR_ARM_GROUND_POSITION = 0.2301;
+      public static final double FLOOR_ARM_INSIDE_ROBOT_POSITION = 0.8848;
+      public static final double FLOOR_ARM_SHOOTING_POSITION = 0.9872;
       public static final double FLOOR_ARM_MAX_POSITION = 0;
       public static final double FLOOR_ARM_MIN_POSITION = 0;
 
