@@ -89,4 +89,9 @@ public class AutoGenerator {
         }
     }
 
+    public Command getTestPath() {
+        PathPlannerTrajectory path = PathPlanner.loadPath("TestPath", defaulPathConstraints);
+        return builder.fullAuto(path);
+    }
+
 }
