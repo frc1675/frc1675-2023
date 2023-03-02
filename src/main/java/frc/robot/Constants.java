@@ -21,9 +21,13 @@ public final class Constants {
       public static final double DRIVE_SPEED_SCALER = 0.4;
   
       //PID constants
-      public static final double PROPORTIONAL_COEFFICENT = 3.0;
-      public static final double INTEGRAL_COEFFICENT = 0.5;
-      public static final double DERIVATIVE_COEFFICENT = 0.5;
+      public static final double ROTATION_PROPORTIONAL_COEFFICENT = 3.0;
+      public static final double ROTATION_INTEGRAL_COEFFICENT = 0.5;
+      public static final double ROTATION_DERIVATIVE_COEFFICENT = 0.5;
+
+      public static final double TRANSLATION_PROPORTIONAL_COEFFICENT = 0.6;
+      public static final double TRANSLATION_INTEGRAL_COEFFICENT = 0;
+      public static final double TRANSLATION_DERIVATIVE_COEFFICENT = 0.01;
   
       //swerve module constants
       public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 3;
