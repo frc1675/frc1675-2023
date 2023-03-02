@@ -6,43 +6,62 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.DefaultDriveUpdatePose;
-import frc.robot.commands.DropCone;
-import frc.robot.commands.DropCube;
-import frc.robot.commands.FloorPickup;
-import frc.robot.commands.FloorDrop;
-import frc.robot.commands.IntakeCone;
-import frc.robot.commands.IntakeCube;
-import frc.robot.commands.SetDriveTarget;
+import frc.robot.commands.arm.MoveArmToPosition;
+import frc.robot.commands.drive.DefaultDriveUpdatePose;
+import frc.robot.commands.drive.SetDriveTarget;
+import frc.robot.commands.floorArm.FloorMoveArmToPostion;
+import frc.robot.commands.intake.armIntake.DropCone;
+import frc.robot.commands.intake.armIntake.DropCube;
+import frc.robot.commands.intake.armIntake.IntakeCone;
+import frc.robot.commands.intake.armIntake.IntakeCube;
+import frc.robot.commands.intake.floor.FloorDrop;
+import frc.robot.commands.intake.floor.FloorPickup;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.FloorArmSubsystem;
 import frc.robot.subsystems.FloorIntake;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Vision;
 import frc.robot.util.AutoGenerator;
+import frc.robot.util.DPadButton;
 import frc.robot.util.JoystickModification;
 
 public class RobotContainer {
   private final Vision vision = new Vision();
   private final DrivetrainSubsystem drivetrainSubsystem = new DrivetrainSubsystem();
   private final Intake intake = new Intake();
+  private final FloorIntake floorIntake = new FloorIntake();
+  private final FloorArmSubsystem floorArm = new FloorArmSubsystem();
+  private final ArmSubsystem arm = new ArmSubsystem();
   private final AutoGenerator autoGenerator = new AutoGenerator(drivetrainSubsystem);
 
   private final JoystickModification mod = new JoystickModification();
 
   private final Joystick driverController = new Joystick(Constants.DRIVER_CONTROLLER);
   private final Joystick operatorController = new Joystick(Constants.OPERATOR_CONTROLLER);
+  
   private final JoystickButton driverControllerBackButton = new JoystickButton(driverController, Constants.BACK_BUTTON);
-  private final JoystickButton driverControllerBButton = new JoystickButton(driverController, Constants.B_BUTTON);
-  private final JoystickButton driverControllerYButton = new JoystickButton(driverController, Constants.Y_BUTTON);
-  private final JoystickButton driverControllerAButton = new JoystickButton(driverController, Constants.A_BUTTON);
   private final JoystickButton driverControllerXButton = new JoystickButton(driverController, Constants.X_BUTTON);
+  private final JoystickButton driverControllerAButton = new JoystickButton(driverController, Constants.A_BUTTON);
+  private final JoystickButton driverControllerBButton = new JoystickButton(driverController, Constants.B_BUTTON);
+  private final JoystickButton driverControllerLeftBumper = new JoystickButton(driverController, Constants.LEFT_BUMPER);
+  private final JoystickButton driverControllerRightBumper = new JoystickButton(driverController, Constants.RIGHT_BUMPER);
+
   private final JoystickButton operatorControllerBButton = new JoystickButton(operatorController, Constants.B_BUTTON);
   private final JoystickButton operatorControllerYButton = new JoystickButton(operatorController, Constants.Y_BUTTON);
   private final JoystickButton operatorControllerAButton = new JoystickButton(operatorController, Constants.A_BUTTON);
-  private final JoystickButton operatorControllerXButton = new JoystickButton(operatorController, Constants.X_BUTTON);
-  private final FloorIntake floorIntake = new FloorIntake();
+  private final JoystickButton operatorControllerLeftBumper = new JoystickButton(operatorController, Constants.LEFT_BUMPER);
+  private final JoystickButton operatorControllerRightBumper = new JoystickButton(operatorController, Constants.RIGHT_BUMPER);
+
+  private final DPadButton operatorDPadUp = new DPadButton(operatorController, DPadButton.Direction.UP);
+  private final DPadButton operatorDPadRight = new DPadButton(operatorController, DPadButton.Direction.RIGHT);
+  private final DPadButton operatorDPadLeft = new DPadButton(operatorController, DPadButton.Direction.LEFT);
+  private final DPadButton operatorDPadDown = new DPadButton(operatorController, DPadButton.Direction.DOWN);
 
   private boolean armIsInsideRobot() {
     return false;
@@ -58,32 +77,115 @@ public class RobotContainer {
     configureBindings();
   }
 
+  private boolean armIsExtended() {
+    return arm.getTargetPosition() != Constants.ARM_INSIDE_ROBOT_POSITION;
+  }
+
+  private boolean floorArmIsExtended() {
+    return floorArm.getTargetPosition() != Constants.FLOOR_ARM_INSIDE_ROBOT_POSITION;
+  }
+
   private void configureBindings() {
-    drivetrainSubsystem.setDefaultCommand(new DefaultDriveUpdatePose(
-        vision, 
-        drivetrainSubsystem,
-        () -> mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_X_AXIS))
-        * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-        () -> -mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_Y_AXIS))
-        * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
-        () -> -mod.modifyAxis(driverController.getRawAxis(Constants.RIGHT_X_AXIS))
-        * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
-        () -> mod.modifyAxis(driverController.getRawAxis(Constants.RIGHT_TRIGGER)),
-        () -> !floorArmIsInsideRobot() || !armIsInsideRobot()
-      )
-    );
+    //driver
+    {
+        //drivetrain
+        drivetrainSubsystem.setDefaultCommand(new DefaultDriveUpdatePose(
+            vision, 
+            drivetrainSubsystem,
+            () -> mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_X_AXIS))
+            * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_Y_AXIS))
+            * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -mod.modifyAxis(driverController.getRawAxis(Constants.RIGHT_X_AXIS))
+            * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
+            () -> mod.modifyAxis(driverController.getRawAxis(Constants.RIGHT_TRIGGER)),
+            () -> !floorArmIsInsideRobot() || !armIsInsideRobot())
+        );
+        driverControllerBackButton.onTrue(new InstantCommand(drivetrainSubsystem::zeroGyroscope));
+        driverControllerLeftBumper.onTrue(new SetDriveTarget(drivetrainSubsystem, 0));
+        driverControllerRightBumper.onTrue(new SetDriveTarget(drivetrainSubsystem, 180));
 
-    driverControllerBackButton.onTrue(new InstantCommand(drivetrainSubsystem::zeroGyroscope));
-    operatorControllerXButton.onTrue(new FloorPickup(floorIntake));
-    operatorControllerAButton.onTrue(new FloorDrop(floorIntake));
+        //main intake
+        driverControllerAButton.whileTrue(
+          new ConditionalCommand(
+            new DropCube(intake),
+            new ConditionalCommand(
+              new FloorDrop(floorIntake, Constants.FLOOR_INTAKE_NORMAL_SPEED),
+              new PrintCommand("Cannot output"),
+              ()-> floorArmIsExtended()),
+            ()-> armIsExtended()
+          )
+        );
 
-    driverControllerAButton.onTrue(new SetDriveTarget(drivetrainSubsystem, 0));
-    driverControllerYButton.onTrue(new SetDriveTarget(drivetrainSubsystem, 180));
+        driverControllerXButton.whileTrue(
+          new ConditionalCommand(
+            new DropCone(intake),
+            new PrintCommand("Arm inside robot"), 
+            () -> armIsExtended()
+        ));
 
-    operatorControllerAButton.onTrue(new DropCone(intake));
-    operatorControllerBButton.onTrue(new DropCube(intake));
-    operatorControllerXButton.onTrue(new IntakeCone(intake));
-    operatorControllerYButton.onTrue(new IntakeCube(intake));
+        driverControllerBButton.whileTrue(
+          new ConditionalCommand(
+            new FloorDrop(floorIntake, Constants.FLOOR_INTAKE_FAST_SPEED), 
+            new PrintCommand("Floor arm inside robot"),
+            () -> floorArmIsExtended()
+        ));
+    }
+
+    //operator
+    {
+        //floor arm
+        operatorControllerYButton.onTrue(
+          new SequentialCommandGroup(
+            new MoveArmToPosition(arm, Constants.ARM_INSIDE_ROBOT_POSITION),
+            new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_GROUND_POSITION)
+          )
+        );
+        operatorControllerBButton.onTrue(
+          new SequentialCommandGroup(
+            new MoveArmToPosition(arm, Constants.ARM_INSIDE_ROBOT_POSITION),
+            new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_SHOOTING_POSITION)
+          )
+        );
+        operatorControllerAButton.onTrue(new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_INSIDE_ROBOT_POSITION));
+
+        //primary arm
+        operatorDPadUp.onTrue(
+          new SequentialCommandGroup(
+            new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_INSIDE_ROBOT_POSITION),
+            new MoveArmToPosition(arm, Constants.ARM_SCORE_HIGH_POSITION)
+        ));
+        operatorDPadRight.onTrue(
+          new SequentialCommandGroup(
+            new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_INSIDE_ROBOT_POSITION),
+            new MoveArmToPosition(arm, Constants.ARM_SCORE_MID_POSITION)
+        ));
+        operatorDPadLeft.onTrue(
+          new SequentialCommandGroup(
+            new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_INSIDE_ROBOT_POSITION),
+            new MoveArmToPosition(arm, Constants.ARM_HUMAN_PLAYER_POSITION)
+          )
+        );
+        operatorDPadDown.onTrue(new MoveArmToPosition(arm, Constants.ARM_INSIDE_ROBOT_POSITION));
+
+        //floor intake
+        operatorControllerLeftBumper.whileTrue(
+          new ConditionalCommand(
+            new IntakeCone(intake),
+            new PrintCommand("Floor arm inside robot"),
+            () -> floorArmIsExtended()
+        ));
+        operatorControllerRightBumper.whileTrue(
+          new ConditionalCommand(
+            new IntakeCube(intake),
+            new ConditionalCommand(
+              new FloorPickup(floorIntake),
+              new PrintCommand("Cannot intake"),
+              ()-> floorArmIsExtended()),
+            ()-> armIsExtended()
+          )
+        );
+    }
   }
 
   public Command getAutonomousCommand() {
