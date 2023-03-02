@@ -5,6 +5,7 @@ import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.networktables.DoubleTopic;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import frc.robot.Constants;
 
 public class JoystickModification {
   private NetworkTable table = NetworkTableInstance.getDefault().getTable("Drivetrain");
@@ -35,7 +36,8 @@ public class JoystickModification {
   public double modifyAxis(double value) {
     value = deadband(value, 0.05);
     value = Math.copySign(value * value, value);
-    value = value * speedScalerSub.get();; // scale down value to slow robot
+    //value = value * speedScalerSub.get();; // scale down value to slow robot
+    value = value * Constants.DRIVE_SPEED_SCALER;
 
     return value;
   }
