@@ -63,16 +63,6 @@ public class RobotContainer {
   private final DPadButton operatorDPadLeft = new DPadButton(operatorController, DPadButton.Direction.LEFT);
   private final DPadButton operatorDPadDown = new DPadButton(operatorController, DPadButton.Direction.DOWN);
 
-  private boolean armIsInsideRobot() {
-    return false;
-    //return arm.getTargetPosition() == Constants.ARM_INSIDE_ROBOT;
-  }
-
-  private boolean floorArmIsInsideRobot() {
-    return false;
-    //return floorArm.getTargetPosition() == Constants.FLOOR_ARM_INSIDE_ROBOT;
-  }
-
   public RobotContainer() {
     configureBindings();
   }
@@ -99,7 +89,7 @@ public class RobotContainer {
             () -> -mod.modifyAxis(driverController.getRawAxis(Constants.RIGHT_X_AXIS))
             * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
             () -> mod.modifyAxis(driverController.getRawAxis(Constants.RIGHT_TRIGGER)),
-            () -> !floorArmIsInsideRobot() || !armIsInsideRobot())
+            () -> floorArmIsExtended() || floorArmIsExtended())
         );
         driverControllerBackButton.onTrue(new InstantCommand(drivetrainSubsystem::zeroGyroscope));
         driverControllerLeftBumper.onTrue(new SetDriveTarget(drivetrainSubsystem, 0));
