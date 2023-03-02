@@ -82,9 +82,9 @@ public class RobotContainer {
         drivetrainSubsystem.setDefaultCommand(new DefaultDriveUpdatePose(
             vision, 
             drivetrainSubsystem,
-            () -> mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_X_AXIS))
-            * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
             () -> -mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_Y_AXIS))
+            * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
+            () -> -mod.modifyAxis(driverController.getRawAxis(Constants.LEFT_X_AXIS))
             * DrivetrainSubsystem.MAX_VELOCITY_METERS_PER_SECOND,
             () -> -mod.modifyAxis(driverController.getRawAxis(Constants.RIGHT_X_AXIS))
             * DrivetrainSubsystem.MAX_ANGULAR_VELOCITY_RADIANS_PER_SECOND,
@@ -162,8 +162,8 @@ public class RobotContainer {
         operatorControllerLeftBumper.whileTrue(
           new ConditionalCommand(
             new IntakeCone(intake),
-            new PrintCommand("Floor arm inside robot"),
-            () -> floorArmIsExtended()
+            new PrintCommand("Arm inside robot"),
+            () -> armIsExtended()
         ));
         operatorControllerRightBumper.whileTrue(
           new ConditionalCommand(
@@ -179,6 +179,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autoGenerator.getAutoCommand();
+    return null;
+    //return autoGenerator.getAutoCommand();
   }
 }

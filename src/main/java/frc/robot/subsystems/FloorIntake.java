@@ -12,7 +12,7 @@ public class FloorIntake extends SubsystemBase {
   /** Creates a new FloorIntake. */
   private CANSparkMax intakeMotor = new CANSparkMax( Constants.FLOOR_INTAKE_MOTOR, MotorType.kBrushless);
   public FloorIntake() {
-
+    intakeMotor.setInverted(true);
   }
 
   public void intakeStop(){
