@@ -69,12 +69,13 @@ public final class Constants {
       public static final double ARM_P_COEFF = 2.5;
       public static final double ARM_I_COEFF = 0;
       public static final double ARM_D_COEFF = 0;
-      public static final double ARM_SCORE_HIGH_POSITION = 0.84;
-      public static final double ARM_SCORE_MID_POSITION = 0.92;
-      public static final double ARM_HUMAN_PLAYER_POSITION = 0.88;
-      public static final double ARM_INSIDE_ROBOT_POSITION = 0.1677;
+      public static final double ARM_SCORE_HIGH_POSITION = 0.4009;
+      public static final double ARM_SCORE_MID_POSITION = 0.4614;
+      public static final double ARM_HUMAN_PLAYER_POSITION = 0.4038;
+      public static final double ARM_INSIDE_ROBOT_POSITION = 0.6527;
       public static final double ARM_MAX_POSITION = 0.0;//fully within robot
       public static final double ARM_MIN_POSITION = 0.0;//completely outside robot
+      public static final double ARM_ENCODER_COUNT_ERROR = 1.0;
 
       //intake constants 
       public static final double INTAKE_SPEED = 1;
@@ -86,10 +87,10 @@ public final class Constants {
       public static final double FLOOR_ARM_P_COEFF = 2;
       public static final double FLOOR_ARM_I_COEFF = 0;
       public static final double FLOOR_ARM_D_COEFF = 0;
-      public static final double FLOOR_ARM_GROUND_POSITION = 0.05451;
-      public static final double FLOOR_ARM_INSIDE_ROBOT_POSITION = 0.74;
-      public static final double FLOOR_ARM_SHOOTING_POSITION = 0.8311;
-      public static final double FLOOR_ARM_MAX_POSITION = 0.68878;
+      public static final double FLOOR_ARM_GROUND_POSITION = 0.0652;
+      public static final double FLOOR_ARM_INSIDE_ROBOT_POSITION = 0.7043;
+      public static final double FLOOR_ARM_SHOOTING_POSITION = 0.8302;
+      public static final double FLOOR_ARM_MAX_POSITION = 0;
       public static final double FLOOR_ARM_MIN_POSITION = 0;
 
       //floor intake constants
