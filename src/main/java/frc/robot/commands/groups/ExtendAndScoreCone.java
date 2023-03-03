@@ -14,9 +14,9 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.FloorArmSubsystem;
 import frc.robot.subsystems.Intake;
 
-public class ExtendAndScore extends SequentialCommandGroup {
+public class ExtendAndScoreCone extends SequentialCommandGroup {
 
-  public ExtendAndScore(DrivetrainSubsystem drive, FloorArmSubsystem floorArm, ArmSubsystem arm, Intake intake) {
+  public ExtendAndScoreCone(DrivetrainSubsystem drive, FloorArmSubsystem floorArm, ArmSubsystem arm, Intake intake) {
     addCommands(
       new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_SHOOTING_POSITION),
       new WaitCommand(0.5),
