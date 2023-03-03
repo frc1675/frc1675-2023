@@ -24,8 +24,8 @@ public class DefaultDriveCommand extends CommandBase {
     private double trigger;
     private boolean forceSlow;
 
-    private double[] rollingInputX = new double[50];
-    private double[] rollingInputY = new double[50];
+    private double[] rollingInputX = new double[Constants.INPUT_ROLLING_AVERAGE_SAMPLE_SIZE];
+    private double[] rollingInputY = new double[Constants.INPUT_ROLLING_AVERAGE_SAMPLE_SIZE];
     private int index = 0;
 
     public DefaultDriveCommand(DrivetrainSubsystem drivetrainSubsystem, DoubleSupplier translationXSupplier,
@@ -51,7 +51,7 @@ public class DefaultDriveCommand extends CommandBase {
         rollingInputX[index] = x;
         rollingInputY[index] = y;
         index++;
-        if(index == 50) {
+        if(index == Constants.INPUT_ROLLING_AVERAGE_SAMPLE_SIZE) {
             index = 0;
         }
 
