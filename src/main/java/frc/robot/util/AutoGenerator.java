@@ -16,6 +16,7 @@ import frc.robot.Constants;
 import frc.robot.commands.groups.ExtendAndScore;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.FloorArmSubsystem;
 import frc.robot.subsystems.Intake;
 
 public class AutoGenerator {
@@ -42,7 +43,7 @@ public class AutoGenerator {
         }
     }
 
-    public AutoGenerator(DrivetrainSubsystem drivetrainSubsystem, ArmSubsystem armSubsystem, Intake intake) {   
+    public AutoGenerator(DrivetrainSubsystem drivetrainSubsystem, FloorArmSubsystem floorArmSubsystem, ArmSubsystem armSubsystem, Intake intake) {   
         SwerveDriveKinematics kinematics = drivetrainSubsystem.getKinematics();
 
         builder = new SwerveAutoBuilder(
@@ -63,14 +64,16 @@ public class AutoGenerator {
         actionSelector.setDefaultOption("Score and exit", AutoActions.SCORE_AND_EXIT);
         actionSelector.addOption("Score, exit community and balance", AutoActions.SCORE_EXIT_BALANCE);
 
-        eventMap.put("scoreConeHigh", new ExtendAndScore(drivetrainSubsystem, armSubsystem, intake));
+        eventMap.put("scoreConeHigh", new ExtendAndScore(drivetrainSubsystem, floorArmSubsystem, armSubsystem, intake));
         eventMap.put("autoBalance", new PrintCommand("Auto balance begin"));
     }
 
     public Command getAutoCommand() {
         if(actionSelector.getSelected() == AutoActions.SCORE_EXIT_BALANCE) {
+            System.out.print("Auto: Score, exit, and balance");
             return getExitAndBalance(locationSelector.getSelected());
         }else if(actionSelector.getSelected() == AutoActions.SCORE_AND_EXIT) {
+            System.out.print("Auto: Score and exit");
             return getScoreAndExit(locationSelector.getSelected());
         }
         return null;
@@ -79,6 +82,7 @@ public class AutoGenerator {
     public Command getExitAndBalance(StartLocation startArea) {
         if(startArea == StartLocation.ONE || startArea == StartLocation.TWO) {
             PathPlannerTrajectory path = PathPlanner.loadPath("ExitAndBalance A" + startArea.value, defaulPathConstraints);
+            System.out.println(" (Area " + startArea.value + " )");
             return builder.fullAuto(path);
         }else {
             return null;
@@ -88,6 +92,7 @@ public class AutoGenerator {
     public Command getScoreAndExit(StartLocation startArea) {
         if(startArea == StartLocation.ONE || startArea == StartLocation.TWO) {
             PathPlannerTrajectory path = PathPlanner.loadPath("ScoreAndExit A" + startArea.value, defaulPathConstraints);
+            System.out.println(" (Area " + startArea.value + " )");
             return builder.fullAuto(path);
         }else {
             return null;

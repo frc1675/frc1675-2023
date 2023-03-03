@@ -38,7 +38,7 @@ public class RobotContainer {
   private final FloorIntake floorIntake = new FloorIntake();
   private final FloorArmSubsystem floorArm = new FloorArmSubsystem();
   private final ArmSubsystem arm = new ArmSubsystem();
-  private final AutoGenerator autoGenerator = new AutoGenerator(drivetrainSubsystem, arm, intake);
+  private final AutoGenerator autoGenerator = new AutoGenerator(drivetrainSubsystem, floorArm, arm, intake);
 
   private final JoystickModification mod = new JoystickModification();
 

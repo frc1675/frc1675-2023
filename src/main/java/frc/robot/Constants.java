@@ -40,9 +40,9 @@ public final class Constants {
       public static final double ROTATION_INTEGRAL_COEFFICENT = 0.5;
       public static final double ROTATION_DERIVATIVE_COEFFICENT = 0.5;
 
-      public static final double TRANSLATION_PROPORTIONAL_COEFFICENT = 0.6;
-      public static final double TRANSLATION_INTEGRAL_COEFFICENT = 0;
-      public static final double TRANSLATION_DERIVATIVE_COEFFICENT = 0.01;
+      public static final double TRANSLATION_PROPORTIONAL_COEFFICENT = 0.5;
+      public static final double TRANSLATION_INTEGRAL_COEFFICENT = 0.5;
+      public static final double TRANSLATION_DERIVATIVE_COEFFICENT = 0.5;
   
       //swerve module constants
       public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 3;
@@ -90,8 +90,8 @@ public final class Constants {
       public static final double ARM_P_COEFF = 2.5;
       public static final double ARM_I_COEFF = 0;
       public static final double ARM_D_COEFF = 0;
-      public static final double ARM_SCORE_HIGH_POSITION = 0.3709;  
-      public static final double ARM_SCORE_MID_POSITION = 0.4309; 
+      public static final double ARM_SCORE_HIGH_POSITION = 0.33;  
+      public static final double ARM_SCORE_MID_POSITION = 0.39; 
       public static final double ARM_HUMAN_PLAYER_POSITION = 0.3709;
       public static final double ARM_INSIDE_ROBOT_POSITION = 0.6527;
       public static final double ARM_MAX_POSITION = 0.0;//fully within robot
@@ -108,7 +108,7 @@ public final class Constants {
       public static final double FLOOR_ARM_P_COEFF = 2;
       public static final double FLOOR_ARM_I_COEFF = 0;
       public static final double FLOOR_ARM_D_COEFF = 0;
-      public static final double FLOOR_ARM_GROUND_POSITION = 0.2301;
+      public static final double FLOOR_ARM_GROUND_POSITION = 0.21;
       public static final double FLOOR_ARM_INSIDE_ROBOT_POSITION = 0.8848;
       public static final double FLOOR_ARM_SHOOTING_POSITION = 0.9872;
       public static final double FLOOR_ARM_MAX_POSITION = 0;
