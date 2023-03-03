@@ -226,6 +226,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         public void setRotationTarget(Rotation2d rotationTarget) {
                 this.rotationTarget = rotationTarget;
+                drive(0, 0, 0);
         }
 
         public Rotation2d getRotationTarget() {
@@ -234,6 +235,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         public void setTranslationTarget(Translation2d translationTarget) {
                 this.translationTarget = translationTarget;
+                drive(0, 0, 0);
         }
 
         public Translation2d getTranslationTarget() {

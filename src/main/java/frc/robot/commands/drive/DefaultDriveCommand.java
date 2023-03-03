@@ -44,16 +44,15 @@ public class DefaultDriveCommand extends CommandBase {
         trigger = triggerSupplier.getAsDouble();
         forceSlow = forceSlowSupplier.getAsBoolean();
     
-        
+        if (rotation != 0) {
+            drivetrainSubsystem.setRotationTarget(null);
+        }
+
         //if(activateSlowDrive(drivetrainSubsystem.getPose()) && trigger == 0 || forceSlow && trigger == 0) {
         if(forceSlow && trigger == 0) {
             drivetrainSubsystem.drive(x * Constants.SLOW_DRIVE_SCALING, y * Constants.SLOW_DRIVE_SCALING, rotation * Constants.SLOW_DRIVE_SCALING);
         } else {
             drivetrainSubsystem.drive(x, y, rotation);
-        }
-
-        if (rotation != 0) {
-            drivetrainSubsystem.setRotationTarget(null);
         }
     }
 
