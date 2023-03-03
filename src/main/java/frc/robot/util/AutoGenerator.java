@@ -30,7 +30,8 @@ public class AutoGenerator {
 
     public enum AutoActions {
         SCORE_EXIT_BALANCE,
-        SCORE_AND_EXIT
+        SCORE_CONE_AND_EXIT,
+        SCORE_CUBE_AND_EXIT
     } 
 
     public enum StartLocation {
@@ -61,10 +62,12 @@ public class AutoGenerator {
         locationSelector.setDefaultOption("Area One", StartLocation.ONE);
         locationSelector.addOption("Area Two", StartLocation.TWO);
 
-        actionSelector.setDefaultOption("Score and exit", AutoActions.SCORE_AND_EXIT);
-        actionSelector.addOption("Score, exit community and balance", AutoActions.SCORE_EXIT_BALANCE);
+        actionSelector.setDefaultOption("Score cube and exit", AutoActions.SCORE_CUBE_AND_EXIT);
+        actionSelector.addOption("Score and exit", AutoActions.SCORE_CONE_AND_EXIT);
+        actionSelector.addOption("Score cone, exit community and balance", AutoActions.SCORE_EXIT_BALANCE);
 
-        eventMap.put("scoreConeHigh", new ExtendAndScore(drivetrainSubsystem, floorArmSubsystem, armSubsystem, intake));
+        //eventMap.put("scoreConeHigh", new ExtendAndScore(drivetrainSubsystem, floorArmSubsystem, armSubsystem, intake));
+        eventMap.put("scoreConeHigh", new PrintCommand("uoweofuhweoifhwoiehf"));
         eventMap.put("autoBalance", new PrintCommand("Auto balance begin"));
     }
 
@@ -72,9 +75,9 @@ public class AutoGenerator {
         if(actionSelector.getSelected() == AutoActions.SCORE_EXIT_BALANCE) {
             System.out.print("Auto: Score, exit, and balance");
             return getExitAndBalance(locationSelector.getSelected());
-        }else if(actionSelector.getSelected() == AutoActions.SCORE_AND_EXIT) {
+        }else if(actionSelector.getSelected() == AutoActions.SCORE_CONE_AND_EXIT) {
             System.out.print("Auto: Score and exit");
-            return getScoreAndExit(locationSelector.getSelected());
+            return getScoreConeAndExit(locationSelector.getSelected());
         }
         return null;
     }
@@ -89,10 +92,20 @@ public class AutoGenerator {
         }
     }
 
-    public Command getScoreAndExit(StartLocation startArea) {
+    public Command getScoreConeAndExit(StartLocation startArea) {
         if(startArea == StartLocation.ONE || startArea == StartLocation.TWO) {
-            PathPlannerTrajectory path = PathPlanner.loadPath("ScoreAndExit A" + startArea.value, defaulPathConstraints);
-            System.out.println(" (Area " + startArea.value + " )");
+            PathPlannerTrajectory path = PathPlanner.loadPath("ScoreConeAndExit A" + startArea.value, defaulPathConstraints);
+            System.out.println(" (Area " + startArea.value + ")");
+            return builder.fullAuto(path);
+        }else {
+            return null;
+        }
+    }
+
+    public Command getScoreCubeAndExit(StartLocation startArea) {
+        if(startArea == StartLocation.ONE || startArea == StartLocation.TWO) {
+            PathPlannerTrajectory path = PathPlanner.loadPath("ScoreCubeAndExit A" + startArea.value, defaulPathConstraints);
+            System.out.println(" (Area " + startArea.value + ")");
             return builder.fullAuto(path);
         }else {
             return null;
