@@ -22,6 +22,7 @@ import frc.robot.commands.intake.armIntake.IntakeCube;
 import frc.robot.commands.intake.floor.FloorDrop;
 import frc.robot.commands.intake.floor.FloorPickup;
 import frc.robot.commands.vision.TurnOnLED;
+import frc.robot.commands.vision.TurnOffLED;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.FloorArmSubsystem;
@@ -58,7 +59,7 @@ public class RobotContainer {
   private final JoystickButton operatorControllerAButton = new JoystickButton(operatorController, Constants.A_BUTTON);
   private final JoystickButton operatorControllerLeftBumper = new JoystickButton(operatorController, Constants.LEFT_BUMPER);
   private final JoystickButton operatorControllerRightBumper = new JoystickButton(operatorController, Constants.RIGHT_BUMPER);
-  private final JoystickButton  operatorControllerRight
+  private final JoystickButton operatorControllerStartButton = new JoystickButton(operatorController, Constants.START_BUTTON);
 
   private final DPadButton operatorDPadUp = new DPadButton(operatorController, DPadButton.Direction.UP);
   private final DPadButton operatorDPadRight = new DPadButton(operatorController, DPadButton.Direction.RIGHT);
@@ -178,7 +179,7 @@ public class RobotContainer {
           )
         );
         //vision
-        operatorController
+        operatorControllerStartButton.toggleOnTrue(new TurnOnLED(vision));
     }
   }
 

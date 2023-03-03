@@ -3,13 +3,13 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands.vision;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Vision;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class TurnOnLED extends CommandBase {
-  /** Creates a new TurnOnLED. */
+public class TurnOffLED extends CommandBase {
+  /** Creates a new TurnOffLED. */
   private final Vision vision;
-  public TurnOnLED(Vision vision) {
+  public TurnOffLED(Vision vision) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.vision = vision;
     addRequirements(this.vision);
@@ -18,19 +18,16 @@ public class TurnOnLED extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    vision.setLEDMode(Vision.LEDMode.ON);
+    vision.setLEDMode(Vision.LEDMode.OFF);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    vision.setLEDMode(Vision.LEDMode.OFF);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

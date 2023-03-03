@@ -3,9 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
-
-import javax.lang.model.util.ElementScanner14;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTable;
@@ -34,7 +31,8 @@ public class Vision extends SubsystemBase {
     BLINK(2),
     ON(3);
 
-    public final int value;
+    int value;
+
     private LEDMode(int value){
       this.value = value;
     }
@@ -88,6 +86,7 @@ public class Vision extends SubsystemBase {
       table.getEntry("LEDMode").setNumber(0);
     }
     else if(ledmode == LEDMode.ON){
+
       table.getEntry("LEDMode").setNumber(1); 
     }
     else if(ledmode == LEDMode.BLINK){
@@ -97,4 +96,5 @@ public class Vision extends SubsystemBase {
       table.getEntry("LEDMode").setNumber(3);
     }
 
+  }
 }
