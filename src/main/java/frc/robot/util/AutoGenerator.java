@@ -14,9 +14,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.Constants;
 import frc.robot.commands.groups.ExtendAndScore;
+import frc.robot.commands.groups.RotateAndScoreCube;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.FloorArmSubsystem;
+import frc.robot.subsystems.FloorIntake;
 import frc.robot.subsystems.Intake;
 
 public class AutoGenerator {
@@ -44,7 +46,7 @@ public class AutoGenerator {
         }
     }
 
-    public AutoGenerator(DrivetrainSubsystem drivetrainSubsystem, FloorArmSubsystem floorArmSubsystem, ArmSubsystem armSubsystem, Intake intake) {   
+    public AutoGenerator(DrivetrainSubsystem drivetrainSubsystem, FloorArmSubsystem floorArmSubsystem, ArmSubsystem armSubsystem, Intake intake, FloorIntake floorIntake) {   
         SwerveDriveKinematics kinematics = drivetrainSubsystem.getKinematics();
 
         builder = new SwerveAutoBuilder(
@@ -66,8 +68,8 @@ public class AutoGenerator {
         actionSelector.addOption("Score and exit", AutoActions.SCORE_CONE_AND_EXIT);
         actionSelector.addOption("Score cone, exit community and balance", AutoActions.SCORE_EXIT_BALANCE);
 
-        //eventMap.put("scoreConeHigh", new ExtendAndScore(drivetrainSubsystem, floorArmSubsystem, armSubsystem, intake));
-        eventMap.put("scoreConeHigh", new PrintCommand("uoweofuhweoifhwoiehf"));
+        eventMap.put("scoreConeHigh", new ExtendAndScore(drivetrainSubsystem, floorArmSubsystem, armSubsystem, intake));
+        eventMap.put("scoreCubeHigh", new RotateAndScoreCube(drivetrainSubsystem, floorArmSubsystem, armSubsystem, floorIntake));
         eventMap.put("autoBalance", new PrintCommand("Auto balance begin"));
     }
 
@@ -78,6 +80,9 @@ public class AutoGenerator {
         }else if(actionSelector.getSelected() == AutoActions.SCORE_CONE_AND_EXIT) {
             System.out.print("Auto: Score and exit");
             return getScoreConeAndExit(locationSelector.getSelected());
+        }else if(actionSelector.getSelected() == AutoActions.SCORE_CUBE_AND_EXIT) {
+            System.out.print("auto: Score cube and exit");
+            return getScoreCubeAndExit(locationSelector.getSelected());
         }
         return null;
     }
