@@ -17,14 +17,19 @@ public class RotateAndScoreCube extends SequentialCommandGroup {
   public RotateAndScoreCube(DrivetrainSubsystem drive, FloorArmSubsystem floorArm, ArmSubsystem arm, FloorIntake intake) {
     addCommands(
       new SetDriveRotationTarget(drive, 180),
-      new WaitUntilCommand(() -> Math.abs(drive.getRotation().getDegrees() - 180) < 2),
+      new WaitUntilCommand(() -> Math.abs(drive.getRotation().getDegrees() - 180) < 5),
+      new SetDriveRotationTarget(drive), 
+
       new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_SHOOTING_POSITION),
       new WaitCommand(0.5),
       new FloorDrop(intake, Constants.FLOOR_INTAKE_FAST_SPEED).withTimeout(1),
       new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_INSIDE_ROBOT_POSITION),
+
       new SetDriveRotationTarget(drive, 0),
-      new WaitUntilCommand(() -> Math.abs(drive.getRotation().getDegrees()) < 2),
+      new WaitUntilCommand(() -> Math.abs(drive.getRotation().getDegrees()) < 5),
+      new SetDriveRotationTarget(drive), 
       new WaitCommand(0.5)
+      
     );
   }
 }

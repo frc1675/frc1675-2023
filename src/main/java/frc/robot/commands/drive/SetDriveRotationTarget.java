@@ -7,17 +7,22 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 public class SetDriveRotationTarget extends CommandBase{
     
     private DrivetrainSubsystem drivetrainSubsystem;
-    private double target;
+    private Rotation2d target;
 
     public SetDriveRotationTarget(DrivetrainSubsystem drivetrainSubsystem, double target) {
         this.drivetrainSubsystem = drivetrainSubsystem;
-        this.target = target;
+        this.target = Rotation2d.fromDegrees(target);
+        addRequirements(drivetrainSubsystem);
+    }
+
+    public SetDriveRotationTarget(DrivetrainSubsystem drivetrainSubsystem) {
+        this.drivetrainSubsystem = drivetrainSubsystem;
         addRequirements(drivetrainSubsystem);
     }
 
     @Override
     public void initialize() {
-        drivetrainSubsystem.setRotationTarget(Rotation2d.fromDegrees(target));
+        drivetrainSubsystem.setRotationTarget(target);
     }
 
     @Override
