@@ -9,12 +9,16 @@ import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.Constants;
+import frc.robot.commands.groups.CollectCube;
 import frc.robot.commands.groups.ExtendAndScore;
 import frc.robot.commands.groups.RotateAndScoreCube;
+import frc.robot.commands.groups.ScoreCubeLow;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.FloorArmSubsystem;
@@ -30,15 +34,19 @@ public class AutoGenerator {
     private SendableChooser<AutoActions> actionSelector = new SendableChooser<AutoActions>();
     private SendableChooser<StartLocation> locationSelector = new SendableChooser<StartLocation>();
 
+    private ShuffleboardTab autoTab = Shuffleboard.getTab("Auto");
+
     public enum AutoActions {
         SCORE_EXIT_BALANCE,
         SCORE_CONE_AND_EXIT,
-        SCORE_CUBE_AND_EXIT
+        SCORE_CUBE_AND_EXIT,
+        SCORE_CUBE_LOW
     } 
 
     public enum StartLocation {
         ONE(1),
-        TWO(2);
+        TWO(2),
+        THREE(3);
 
         public final int value;
         private StartLocation(int value) {
@@ -61,16 +69,23 @@ public class AutoGenerator {
             drivetrainSubsystem
         );
 
-        locationSelector.setDefaultOption("Area One", StartLocation.ONE);
+        locationSelector.setDefaultOption("Area One", StartLocation.ONE); 
         locationSelector.addOption("Area Two", StartLocation.TWO);
+        locationSelector.addOption("Area Three", StartLocation.THREE);
 
-        actionSelector.setDefaultOption("Score cube and exit", AutoActions.SCORE_CUBE_AND_EXIT);
+        actionSelector.setDefaultOption("Score cube low", AutoActions.SCORE_CUBE_LOW);
+        actionSelector.addOption("Score cube and exit", AutoActions.SCORE_CUBE_AND_EXIT);
         actionSelector.addOption("Score and exit", AutoActions.SCORE_CONE_AND_EXIT);
         actionSelector.addOption("Score cone, exit community and balance", AutoActions.SCORE_EXIT_BALANCE);
 
+        autoTab.add(locationSelector);
+        autoTab.add(actionSelector);
+
+        eventMap.put("scoreCubeLow", new ScoreCubeLow(drivetrainSubsystem, floorArmSubsystem, intake));
         eventMap.put("scoreConeHigh", new ExtendAndScore(drivetrainSubsystem, floorArmSubsystem, armSubsystem, intake));
         eventMap.put("scoreCubeHigh", new RotateAndScoreCube(drivetrainSubsystem, floorArmSubsystem, armSubsystem, floorIntake));
         eventMap.put("autoBalance", new PrintCommand("Auto balance begin"));
+        eventMap.put("collectCube", new CollectCube(floorArmSubsystem, floorIntake));
     }
 
     public Command getAutoCommand() {
@@ -83,6 +98,8 @@ public class AutoGenerator {
         }else if(actionSelector.getSelected() == AutoActions.SCORE_CUBE_AND_EXIT) {
             System.out.print("auto: Score cube and exit");
             return getScoreCubeAndExit(locationSelector.getSelected());
+        }else if(actionSelector.getSelected() == AutoActions.SCORE_CUBE_LOW) {
+            return getScoreCubeLowAndExit(locationSelector.getSelected());
         }
         return null;
     }
@@ -110,6 +127,16 @@ public class AutoGenerator {
     public Command getScoreCubeAndExit(StartLocation startArea) {
         if(startArea == StartLocation.ONE || startArea == StartLocation.TWO) {
             PathPlannerTrajectory path = PathPlanner.loadPath("ScoreCubeAndExit A" + startArea.value, defaulPathConstraints);
+            System.out.println(" (Area " + startArea.value + ")");
+            return builder.fullAuto(path);
+        }else {
+            return null;
+        }
+    }
+
+    public Command getScoreCubeLowAndExit(StartLocation startArea) {
+        if(startArea == StartLocation.ONE || startArea == StartLocation.TWO || startArea == StartLocation.THREE) {
+            PathPlannerTrajectory path = PathPlanner.loadPath("ScoreCubeLowAndExit A" + startArea.value, defaulPathConstraints);
             System.out.println(" (Area " + startArea.value + ")");
             return builder.fullAuto(path);
         }else {
