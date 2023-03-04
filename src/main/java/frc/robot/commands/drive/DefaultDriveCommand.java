@@ -47,6 +47,9 @@ public class DefaultDriveCommand extends CommandBase {
         rotation = rotationSupplier.getAsDouble();
         trigger = triggerSupplier.getAsDouble();
         forceSlow = forceSlowSupplier.getAsBoolean();
+    
+        if (rotation != 0) {
+            drivetrainSubsystem.setRotationTarget(null);
         
         rollingInputX[index] = x;
         rollingInputY[index] = y;
@@ -60,10 +63,6 @@ public class DefaultDriveCommand extends CommandBase {
             drivetrainSubsystem.drive(getAverage(rollingInputX) * Constants.SLOW_DRIVE_SCALING, getAverage(rollingInputY) * Constants.SLOW_DRIVE_SCALING, rotation * Constants.SLOW_DRIVE_SCALING);
         } else {
             drivetrainSubsystem.drive(getAverage(rollingInputX), getAverage(rollingInputY), rotation);
-        }
-
-        if (rotation != 0) {
-            drivetrainSubsystem.setRotationTarget(null);
         }
     }
 
