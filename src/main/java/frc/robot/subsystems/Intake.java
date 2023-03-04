@@ -20,7 +20,7 @@ public class Intake extends SubsystemBase {
   public Intake() {
     intakeMotor.setInverted(true);
     armIntakeTab.addNumber("Current", () -> getCurrent());
-    // intakeMotor.setSmartCurrentLimit(LIMIT IN AMPS);  
+    intakeMotor.setSmartCurrentLimit(Constants.INTAKE_CURRENT_LIMIT);  
   }
 
   public double getCurrent(){
