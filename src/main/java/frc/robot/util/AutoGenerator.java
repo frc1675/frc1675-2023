@@ -16,10 +16,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import frc.robot.Constants;
-import frc.robot.commands.groups.CollectCube;
+import frc.robot.commands.groups.BeginCollectCube;
+import frc.robot.commands.groups.EndCollectCube;
 import frc.robot.commands.groups.ExtendAndScoreCone;
 import frc.robot.commands.groups.RotateAndScoreCube;
-import frc.robot.commands.groups.ScoreCubeLow;
+import frc.robot.commands.groups.ScoreLow;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.FloorArmSubsystem;
@@ -41,7 +42,7 @@ public class AutoGenerator {
         SCORE_EXIT_BALANCE,
         SCORE_CONE_AND_EXIT,
         SCORE_CUBE_AND_EXIT,
-        SCORE_CUBE_LOW
+        SCORE_LOW
     } 
 
     public enum StartLocation {
@@ -57,6 +58,14 @@ public class AutoGenerator {
 
     public AutoGenerator(DrivetrainSubsystem drivetrainSubsystem, FloorArmSubsystem floorArmSubsystem, ArmSubsystem armSubsystem, Intake intake, FloorIntake floorIntake) {   
         SwerveDriveKinematics kinematics = drivetrainSubsystem.getKinematics();
+
+        eventMap.put("scoreLow", new ScoreLow(drivetrainSubsystem, floorArmSubsystem, intake));
+        eventMap.put("scoreConeHigh", new ExtendAndScoreCone(drivetrainSubsystem, floorArmSubsystem, armSubsystem, intake));
+        eventMap.put("scoreCubeHigh", new RotateAndScoreCube(drivetrainSubsystem, floorArmSubsystem, armSubsystem, floorIntake));
+        eventMap.put("autoBalance", new PrintCommand("Auto balance begin"));
+        eventMap.put("beginCollectCube", new BeginCollectCube(floorArmSubsystem, floorIntake));
+        eventMap.put("beginCollectCube", new PrintCommand("========================beginCollectCube==================="));
+        eventMap.put("endCollectCube", new EndCollectCube(floorArmSubsystem, floorIntake));
 
         builder = new SwerveAutoBuilder(
             drivetrainSubsystem::getPose,
@@ -74,19 +83,13 @@ public class AutoGenerator {
         locationSelector.addOption("Area Two", StartLocation.TWO);
         locationSelector.addOption("Area Three", StartLocation.THREE);
 
-        actionSelector.setDefaultOption("Score cube low and exit", AutoActions.SCORE_CUBE_LOW);
+        actionSelector.setDefaultOption("Score something low and exit", AutoActions.SCORE_LOW);
         actionSelector.addOption("Score cube high and exit", AutoActions.SCORE_CUBE_AND_EXIT);
         actionSelector.addOption("Score cone high and exit", AutoActions.SCORE_CONE_AND_EXIT);
         actionSelector.addOption("Score cone high, exit community, and balance", AutoActions.SCORE_EXIT_BALANCE);
 
         autoTab.add("Auto Location", locationSelector).withSize(2, 1);
         autoTab.add("Auto Action", actionSelector).withSize(2, 1);
-
-        eventMap.put("scoreCubeLow", new ScoreCubeLow(drivetrainSubsystem, floorArmSubsystem, intake));
-        eventMap.put("scoreConeHigh", new ExtendAndScoreCone(drivetrainSubsystem, floorArmSubsystem, armSubsystem, intake));
-        eventMap.put("scoreCubeHigh", new RotateAndScoreCube(drivetrainSubsystem, floorArmSubsystem, armSubsystem, floorIntake));
-        eventMap.put("autoBalance", new PrintCommand("Auto balance begin"));
-        eventMap.put("collectCube", new CollectCube(floorArmSubsystem, floorIntake));
     }
 
     public Command getAutoCommand() {
@@ -102,9 +105,9 @@ public class AutoGenerator {
             DriverStation.reportWarning("Auto: Score cube high and exit", false);
             return getScoreCubeAndExit(locationSelector.getSelected());
 
-        }else if(actionSelector.getSelected() == AutoActions.SCORE_CUBE_LOW) {
-            DriverStation.reportWarning("Auto: score cube low and exit", false);
-            return getScoreCubeLowAndExit(locationSelector.getSelected());
+        }else if(actionSelector.getSelected() == AutoActions.SCORE_LOW) {
+            DriverStation.reportWarning("Auto: score something low and exit", false);
+            return getScoreLowAndExit(locationSelector.getSelected());
         }
         return null;
     }
@@ -139,9 +142,9 @@ public class AutoGenerator {
         }
     }
 
-    public Command getScoreCubeLowAndExit(StartLocation startArea) {
+    public Command getScoreLowAndExit(StartLocation startArea) {
         if(startArea == StartLocation.ONE || startArea == StartLocation.TWO || startArea == StartLocation.THREE) {
-            PathPlannerTrajectory path = PathPlanner.loadPath("ScoreCubeLowAndExit A" + startArea.value, defaulPathConstraints);
+            PathPlannerTrajectory path = PathPlanner.loadPath("ScoreLowAndExit A" + startArea.value, defaulPathConstraints);
             DriverStation.reportWarning("Auto Area: " + startArea.value, false);
             return builder.fullAuto(path);
         }else {
