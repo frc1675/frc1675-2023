@@ -64,7 +64,6 @@ public class AutoGenerator {
         eventMap.put("scoreCubeHigh", new RotateAndScoreCube(drivetrainSubsystem, floorArmSubsystem, armSubsystem, floorIntake));
         eventMap.put("autoBalance", new PrintCommand("Auto balance begin"));
         eventMap.put("beginCollectCube", new BeginCollectCube(floorArmSubsystem, floorIntake));
-        eventMap.put("beginCollectCube", new PrintCommand("========================beginCollectCube==================="));
         eventMap.put("endCollectCube", new EndCollectCube(floorArmSubsystem, floorIntake));
 
         builder = new SwerveAutoBuilder(
