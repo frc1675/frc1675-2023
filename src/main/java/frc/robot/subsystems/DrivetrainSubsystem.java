@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import static frc.robot.Constants.*;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.swervedrivespecialties.swervelib.Mk4ModuleConfiguration;
 import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
@@ -90,11 +91,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 SmartDashboard.putData("Field Sim", field);
 
                 ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
+                Mk4ModuleConfiguration config = new Mk4ModuleConfiguration();
+                config.setDriveCurrentLimit(40);
 
                 frontLeftModule = Mk4SwerveModuleHelper.createNeo(
                                 tab.getLayout("Front Left Module", BuiltInLayouts.kList)
                                                 .withSize(2, 4)
                                                 .withPosition(0, 0),
+                                config,
                                 Mk4SwerveModuleHelper.GearRatio.L3,
                                 FRONT_LEFT_MODULE_DRIVE_MOTOR,
                                 FRONT_LEFT_MODULE_STEER_MOTOR,
@@ -105,6 +109,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                                 tab.getLayout("Front Right Module", BuiltInLayouts.kList)
                                                 .withSize(2, 4)
                                                 .withPosition(2, 0),
+                                config,
                                 Mk4SwerveModuleHelper.GearRatio.L3,
                                 FRONT_RIGHT_MODULE_DRIVE_MOTOR,
                                 FRONT_RIGHT_MODULE_STEER_MOTOR,
@@ -115,6 +120,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                                 tab.getLayout("Back Left Module", BuiltInLayouts.kList)
                                                 .withSize(2, 4)
                                                 .withPosition(4, 0),
+                                config,
                                 Mk4SwerveModuleHelper.GearRatio.L3,
                                 BACK_LEFT_MODULE_DRIVE_MOTOR,
                                 BACK_LEFT_MODULE_STEER_MOTOR,
@@ -125,6 +131,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                                 tab.getLayout("Back Right Module", BuiltInLayouts.kList)
                                                 .withSize(2, 4)
                                                 .withPosition(6, 0),
+                                config,
                                 Mk4SwerveModuleHelper.GearRatio.L3,
                                 BACK_RIGHT_MODULE_DRIVE_MOTOR,
                                 BACK_RIGHT_MODULE_STEER_MOTOR,

@@ -24,6 +24,10 @@ public class DefaultDriveCommand extends CommandBase {
     private double trigger;
     private boolean forceSlow;
 
+    private double[] rollingInputX = new double[Constants.INPUT_ROLLING_AVERAGE_SAMPLE_SIZE];
+    private double[] rollingInputY = new double[Constants.INPUT_ROLLING_AVERAGE_SAMPLE_SIZE];
+    private int index = 0;
+
     public DefaultDriveCommand(DrivetrainSubsystem drivetrainSubsystem, DoubleSupplier translationXSupplier,
             DoubleSupplier translationYSupplier, DoubleSupplier rotationSupplier, DoubleSupplier triggerSupplier, BooleanSupplier forceSlowSupplier) {
         this.drivetrainSubsystem = drivetrainSubsystem;
@@ -46,14 +50,28 @@ public class DefaultDriveCommand extends CommandBase {
     
         if (rotation != 0) {
             drivetrainSubsystem.setRotationTarget(null);
+        
+        rollingInputX[index] = x;
+        rollingInputY[index] = y;
+        index++;
+        if(index == Constants.INPUT_ROLLING_AVERAGE_SAMPLE_SIZE) {
+            index = 0;
         }
 
         //if(activateSlowDrive(drivetrainSubsystem.getPose()) && trigger == 0 || forceSlow && trigger == 0) {
         if(forceSlow && trigger == 0) {
-            drivetrainSubsystem.drive(x * Constants.SLOW_DRIVE_SCALING, y * Constants.SLOW_DRIVE_SCALING, rotation * Constants.SLOW_DRIVE_SCALING);
+            drivetrainSubsystem.drive(getAverage(rollingInputX) * Constants.SLOW_DRIVE_SCALING, getAverage(rollingInputY) * Constants.SLOW_DRIVE_SCALING, rotation * Constants.SLOW_DRIVE_SCALING);
         } else {
-            drivetrainSubsystem.drive(x, y, rotation);
+            drivetrainSubsystem.drive(getAverage(rollingInputX), getAverage(rollingInputY), rotation);
         }
+    }
+
+    private double getAverage(double[] arr) {
+        double rtn = 0;
+        for(double i : arr) {
+            rtn+=i;
+        }
+        return rtn / arr.length;
     }
 
     private boolean activateSlowDrive(Pose2d pose) {
