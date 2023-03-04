@@ -31,7 +31,7 @@ public final class Constants {
       public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.5969; //Measured on robot
       public static final double DRIVETRAIN_WHEELBASE_METERS = 0.5969;
       public static final double DRIVE_ROTATE_TOLERANCE_DEGREES = 1.0;
-      public static final double DRIVE_SPEED_SCALER = 0.5;
+      public static final double DRIVE_SPEED_SCALER = 0.6;
       public static final double SLOW_DRIVE_SCALING = 0.3;
   
       //PID constants
