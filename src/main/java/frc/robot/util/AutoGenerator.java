@@ -47,7 +47,7 @@ public class AutoGenerator {
 
     public enum StartLocation {
         ONE(1),
-        TWO(2);
+        THREE(3);
 
         public final int value;
         private StartLocation(int value) {
@@ -78,7 +78,7 @@ public class AutoGenerator {
         );
 
         locationSelector.setDefaultOption("Area One", StartLocation.ONE); 
-        locationSelector.addOption("Area Two", StartLocation.TWO);
+        locationSelector.addOption("Area Two", StartLocation.THREE);
 
         actionSelector.setDefaultOption("Score something low and exit", AutoActions.SCORE_LOW);
         actionSelector.addOption("Score cube high and exit", AutoActions.SCORE_CUBE_AND_EXIT);
@@ -110,7 +110,7 @@ public class AutoGenerator {
     }
 
     public Command getExitAndBalance(StartLocation startArea) {
-        if(startArea == StartLocation.ONE || startArea == StartLocation.TWO) {
+        if(startArea == StartLocation.ONE || startArea == StartLocation.THREE) {
             PathPlannerTrajectory path = PathPlanner.loadPath("ExitAndBalance A" + startArea.value, defaulPathConstraints);
             DriverStation.reportWarning("Auto Area: " + startArea.value, false);
             return builder.fullAuto(path);
@@ -120,7 +120,7 @@ public class AutoGenerator {
     }
 
     public Command getScoreConeAndExit(StartLocation startArea) {
-        if(startArea == StartLocation.ONE || startArea == StartLocation.TWO) {
+        if(startArea == StartLocation.ONE || startArea == StartLocation.THREE) {
             PathPlannerTrajectory path = PathPlanner.loadPath("ScoreConeAndExit A" + startArea.value, defaulPathConstraints);
             DriverStation.reportWarning("Auto Area: " + startArea.value, false);
             return builder.fullAuto(path);
@@ -130,7 +130,7 @@ public class AutoGenerator {
     }
 
     public Command getScoreCubeAndExit(StartLocation startArea) {
-        if(startArea == StartLocation.ONE || startArea == StartLocation.TWO) {
+        if(startArea == StartLocation.ONE || startArea == StartLocation.THREE) {
             PathPlannerTrajectory path = PathPlanner.loadPath("ScoreCubeAndExit A" + startArea.value, defaulPathConstraints);
             DriverStation.reportWarning("Auto Area: " + startArea.value, false);
             return builder.fullAuto(path);
@@ -140,7 +140,7 @@ public class AutoGenerator {
     }
 
     public Command getScoreLowAndExit(StartLocation startArea) {
-        if(startArea == StartLocation.ONE || startArea == StartLocation.TWO) {
+        if(startArea == StartLocation.ONE || startArea == StartLocation.THREE) {
             PathPlannerTrajectory path = PathPlanner.loadPath("ScoreLowAndExit A" + startArea.value, defaulPathConstraints);
             DriverStation.reportWarning("Auto Area: " + startArea.value, false);
             return builder.fullAuto(path);
