@@ -47,8 +47,7 @@ public class AutoGenerator {
 
     public enum StartLocation {
         ONE(1),
-        TWO(2),
-        THREE(3);
+        TWO(2);
 
         public final int value;
         private StartLocation(int value) {
@@ -80,7 +79,6 @@ public class AutoGenerator {
 
         locationSelector.setDefaultOption("Area One", StartLocation.ONE); 
         locationSelector.addOption("Area Two", StartLocation.TWO);
-        locationSelector.addOption("Area Three", StartLocation.THREE);
 
         actionSelector.setDefaultOption("Score something low and exit", AutoActions.SCORE_LOW);
         actionSelector.addOption("Score cube high and exit", AutoActions.SCORE_CUBE_AND_EXIT);
@@ -142,7 +140,7 @@ public class AutoGenerator {
     }
 
     public Command getScoreLowAndExit(StartLocation startArea) {
-        if(startArea == StartLocation.ONE || startArea == StartLocation.TWO || startArea == StartLocation.THREE) {
+        if(startArea == StartLocation.ONE || startArea == StartLocation.TWO) {
             PathPlannerTrajectory path = PathPlanner.loadPath("ScoreLowAndExit A" + startArea.value, defaulPathConstraints);
             DriverStation.reportWarning("Auto Area: " + startArea.value, false);
             return builder.fullAuto(path);
