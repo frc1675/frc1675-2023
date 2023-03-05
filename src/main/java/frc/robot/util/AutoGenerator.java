@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants;
 import frc.robot.commands.groups.BeginCollectCube;
 import frc.robot.commands.groups.EndCollectCube;
@@ -62,7 +62,7 @@ public class AutoGenerator {
         eventMap.put("scoreLow", new ScoreLow(drivetrainSubsystem, floorArmSubsystem, intake));
         eventMap.put("scoreConeHigh", new ExtendAndScoreCone(drivetrainSubsystem, floorArmSubsystem, armSubsystem, intake));
         eventMap.put("scoreCubeHigh", new RotateAndScoreCube(drivetrainSubsystem, floorArmSubsystem, armSubsystem, floorIntake));
-        eventMap.put("autoBalance", new PrintCommand("Auto balance begin"));
+        eventMap.put("autoBalance", new InstantCommand(drivetrainSubsystem::setBalanceTargetDefault, drivetrainSubsystem));
         eventMap.put("beginCollectCube", new BeginCollectCube(floorArmSubsystem, floorIntake));
         eventMap.put("endCollectCube", new EndCollectCube(floorArmSubsystem, floorIntake));
 

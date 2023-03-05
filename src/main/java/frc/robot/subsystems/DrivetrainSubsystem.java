@@ -258,6 +258,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 drive(0, 0, 0);
         }
 
+        public void setBalanceTargetDefault() {
+                setBalanceTarget(Rotation2d.fromDegrees(0));
+        }
+
         public Rotation2d getBalanceTarget() {
                 return balanceTarget;
         }
@@ -283,7 +287,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                                 totalMetersTranslated += chassisSpeeds.vxMetersPerSecond * (Timer.getFPGATimestamp() - lastUpdateTimeBalanceTarget);
                                 lastUpdateTime = Timer.getFPGATimestamp();
                         }
-                        
+
                         if(totalMetersTranslated > MAX_AUTO_BALANCE_TRANSLATION_METERS) {
                                 balanceTarget = null;
                                 DriverStation.reportError("Auto balance disabled as measured translation has exceeded safety limit.", false);
