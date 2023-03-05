@@ -34,6 +34,8 @@ public final class Constants {
       public static final double DRIVE_SPEED_SCALER = 0.6;
       public static final double SLOW_DRIVE_SCALING = 0.3;
       public static final int INPUT_ROLLING_AVERAGE_SAMPLE_SIZE = 20;
+      public static final double AUTO_BALANCE_TOLERANCE_DEGREES = 5;
+      public static final double MAX_AUTO_BALANCE_TRANSLATION_METERS = 0;
   
       //PID constants
       public static final double ROTATION_PROPORTIONAL_COEFFICENT = 3.0;
