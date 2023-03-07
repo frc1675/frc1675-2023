@@ -181,4 +181,8 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     return autoGenerator.getAutoCommand();
   }
+
+  public void updateAutoSelectorPose() {
+    autoGenerator.updateSelectorPose();
+  }
 }
