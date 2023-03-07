@@ -71,9 +71,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         private Rotation2d rotationTarget;
         private Translation2d translationTarget;
         private Rotation2d balanceTarget;
-
-        private double totalMetersTranslated = 0;
-        private double lastUpdateTimeBalanceTarget = 0;
+        private Pose2d balanceTargetOriginalPose;
 
         private PIDController yPID = new PIDController(TRANSLATION_PROPORTIONAL_COEFFICENT, TRANSLATION_INTEGRAL_COEFFICENT,
         TRANSLATION_DERIVATIVE_COEFFICENT);
@@ -255,6 +253,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         public void setBalanceTarget(Rotation2d balanceTarget) {
                 this.balanceTarget = balanceTarget;
+                balanceTargetOriginalPose = getPose();
                 drive(0, 0, 0);
         }
 
@@ -280,15 +279,13 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 if(balanceTarget != null ) {
                         if (Math.abs(getGyroscopePitch().getDegrees()) >= AUTO_BALANCE_TOLERANCE_DEGREES) {
                                 chassisSpeeds.vyMetersPerSecond = yPID.calculate(getGyroscopePitch().minus(balanceTarget).getRadians());
-                                totalMetersTranslated += chassisSpeeds.vyMetersPerSecond * (Timer.getFPGATimestamp() - lastUpdateTimeBalanceTarget);
                                 lastUpdateTime = Timer.getFPGATimestamp();
                         } else if (Math.abs(getGyroscopeRoll().getDegrees()) >= AUTO_BALANCE_TOLERANCE_DEGREES) {
                                 chassisSpeeds.vxMetersPerSecond = xPID.calculate(getGyroscopeRoll().minus(balanceTarget).getRadians());
-                                totalMetersTranslated += chassisSpeeds.vxMetersPerSecond * (Timer.getFPGATimestamp() - lastUpdateTimeBalanceTarget);
                                 lastUpdateTime = Timer.getFPGATimestamp();
                         }
 
-                        if(totalMetersTranslated > MAX_AUTO_BALANCE_TRANSLATION_METERS) {
+                        if(balanceTargetOriginalPose.getTranslation().getDistance(getPose().getTranslation()) > MAX_AUTO_BALANCE_TRANSLATION_METERS ) {
                                 balanceTarget = null;
                                 DriverStation.reportError("Auto balance disabled as measured translation has exceeded safety limit.", false);
                         }
