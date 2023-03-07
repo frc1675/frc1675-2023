@@ -163,9 +163,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 navx.reset();
                 navx.setAngleAdjustment(pose.getRotation().getDegrees());
                 if(Robot.isSimulation()) {
-                        simRotation = pose.getRotation().getDegrees();
+                        simRotation = pose.getRotation().getRadians();
                 }
-                
+
                 odometry.resetPosition(
                         getGyroscopeRotation(),
                         getModulePositions(), 
