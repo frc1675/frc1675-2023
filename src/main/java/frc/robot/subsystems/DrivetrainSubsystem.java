@@ -145,9 +145,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 );
         }
 
-        public void zeroGyroscope() {
-                navx.zeroYaw();
+        public void zeroRotation() {
+                resetPose(new Pose2d(getPose().getTranslation(), Rotation2d.fromDegrees(0)));
         }
+
 
         private SwerveModulePosition[] getModulePositions() {
                 return new SwerveModulePosition[] {
@@ -159,6 +160,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
         }
 
         public void resetPose(Pose2d pose) {
+                navx.reset();
+                navx.setAngleAdjustment(pose.getRotation().getDegrees());
+                if(Robot.isSimulation()) {
+                        simRotation = pose.getRotation().getDegrees();
+                }
+                
                 odometry.resetPosition(
                         getGyroscopeRotation(),
                         getModulePositions(), 
