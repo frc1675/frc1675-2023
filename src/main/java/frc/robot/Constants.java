@@ -85,6 +85,7 @@ public final class Constants {
       public static final int BACK_BUTTON = 7;
       public static final int START_BUTTON = 8;
       public static final int LEFT_JOYSTICK_BUTTON = 9;
+      public static final int RIGHT_JOYSTICK_BUTTON = 10;
 
       //arm constants
       public static final double ARM_POWER_SCALING = 0.1;

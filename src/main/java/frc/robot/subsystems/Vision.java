@@ -3,7 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTable;
@@ -20,10 +19,23 @@ public class Vision extends SubsystemBase {
   private NetworkTableEntry targetArea; // proxy for distance from target
   private NetworkTableEntry targetID;
   private NetworkTableEntry botpose;
+  
 
   public static enum CamMode {
     VISION,
     DRIVER
+  }
+  public static enum LEDMode {
+    PIPELINE(0),
+    OFF(1),
+    BLINK(2),
+    ON(3);
+
+    int value;
+
+    private LEDMode(int value){
+      this.value = value;
+    }
   }
 
   public Vision() {
@@ -67,5 +79,22 @@ public class Vision extends SubsystemBase {
       table.getEntry("camMode").setNumber(1);
     }
   }
+  
+  
+  public void setLEDMode(LEDMode ledmode) {
+    if(ledmode == LEDMode.PIPELINE){
+      table.getEntry("LEDMode").setNumber(0);
+    }
+    else if(ledmode == LEDMode.ON){
 
+      table.getEntry("LEDMode").setNumber(1); 
+    }
+    else if(ledmode == LEDMode.BLINK){
+      table.getEntry("LEDMode").setNumber(2); 
+    }
+    else{
+      table.getEntry("LEDMode").setNumber(3);
+    }
+
+  }
 }
