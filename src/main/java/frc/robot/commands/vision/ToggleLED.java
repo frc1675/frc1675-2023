@@ -6,10 +6,10 @@ package frc.robot.commands.vision;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Vision;
 
-public class TurnOnLED extends CommandBase {
+public class ToggleLED extends CommandBase {
   /** Creates a new TurnOnLED. */
   private final Vision vision;
-  public TurnOnLED(Vision vision) {
+  public ToggleLED(Vision vision) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.vision = vision;
     addRequirements(this.vision);

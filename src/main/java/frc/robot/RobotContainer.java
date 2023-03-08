@@ -21,8 +21,7 @@ import frc.robot.commands.intake.armIntake.IntakeCone;
 import frc.robot.commands.intake.armIntake.IntakeCube;
 import frc.robot.commands.intake.floor.FloorDrop;
 import frc.robot.commands.intake.floor.FloorPickup;
-import frc.robot.commands.vision.TurnOnLED;
-import frc.robot.commands.vision.TurnOffLED;
+import frc.robot.commands.vision.ToggleLED;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.FloorArmSubsystem;
@@ -179,7 +178,7 @@ public class RobotContainer {
           )
         );
         //vision
-        operatorControllerStartButton.toggleOnTrue(new TurnOnLED(vision));
+        operatorControllerStartButton.toggleOnTrue(new ToggleLED(vision));
     }
   }
 
