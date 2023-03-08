@@ -46,7 +46,8 @@ public class AutoGenerator {
 
     public enum PathActions {
         SCORE_EXIT_BALANCE("ExitAndBalance"),
-        SCORE_AND_EXIT("ScoreAndExit");
+        SCORE_AND_EXIT("ScoreAndExit"),
+        SCORE_ROTATE_AND_EXIT("ScoreRotateAndExit");
 
         public final String value;
         private PathActions(String value) {
@@ -105,6 +106,7 @@ public class AutoGenerator {
 
         pathActionSelector.setDefaultOption("Score game piece and exit", PathActions.SCORE_AND_EXIT);
         pathActionSelector.addOption("Score cone high, exit community, and balance", PathActions.SCORE_EXIT_BALANCE);
+        pathActionSelector.addOption("Score game piece, rotate and exit", PathActions.SCORE_ROTATE_AND_EXIT);
 
         startActionSelector.setDefaultOption("Score cone low", StartActions.SCORE_CONE_LOW);
         startActionSelector.addOption("Score cube low", StartActions.SCORE_CUBE_LOW);

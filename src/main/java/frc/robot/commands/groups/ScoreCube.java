@@ -1,6 +1,5 @@
 package frc.robot.commands.groups;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
@@ -18,8 +17,7 @@ public class ScoreCube extends SequentialCommandGroup {
       new WaitCommand(0.5),
       new FloorDrop(intake, Constants.FLOOR_INTAKE_FAST_SPEED).withTimeout(1),
       new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_INSIDE_ROBOT_POSITION),
-      new WaitCommand(0.5),
-      new InstantCommand(drive::zeroRotation, drive)
+      new WaitCommand(0.5)
     );
   }
 }
