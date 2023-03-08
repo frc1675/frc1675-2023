@@ -10,6 +10,8 @@ import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -114,7 +116,8 @@ public class AutoGenerator {
         autoTab.add("Auto Start Action", startActionSelector).withSize(2, 1).withPosition(5, 0);
         autoTab.addString("Current Auto Path: ", () -> getSelectedPath()).withSize(2, 1).withPosition(0, 1);
         autoTab.addString("Current Starting Action: ", () -> getSelectedStartAction()).withSize(2, 1).withPosition(0, 2);
-        autoTab.add("Current Auto Trajectory", field).withSize(6, 4).withPosition(2, 1).withProperties(Map.of("colors", "yellow"));
+        autoTab.add("Current Auto Trajectory (Always appears on blue side)", field).withSize(6, 4).withPosition(2, 1);
+        autoTab.addBoolean("Current Alliance", ()-> DriverStation.getAlliance() == Alliance.Blue).withSize(1, 1).withPosition(7, 0).withProperties(Map.of("color when true", "blue", "color when false", "red"));
     }
 
     private String getSelectedPath() {
