@@ -9,6 +9,7 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -24,11 +25,13 @@ import frc.robot.commands.groups.EndCollectCube;
 import frc.robot.commands.groups.ExtendAndScoreCone;
 import frc.robot.commands.groups.ScoreCube;
 import frc.robot.commands.groups.ScoreLow;
+import frc.robot.commands.groups.UpdatePoseParallel;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.FloorArmSubsystem;
 import frc.robot.subsystems.FloorIntake;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Vision;
 
 public class AutoGenerator {
     private SwerveAutoBuilder builder;
@@ -77,12 +80,30 @@ public class AutoGenerator {
         }
     }
 
-    public AutoGenerator(DrivetrainSubsystem drivetrainSubsystem, FloorArmSubsystem floorArmSubsystem, ArmSubsystem armSubsystem, Intake intake, FloorIntake floorIntake) {   
+    public AutoGenerator(DrivetrainSubsystem drivetrainSubsystem, FloorArmSubsystem floorArmSubsystem, ArmSubsystem armSubsystem, Intake intake, FloorIntake floorIntake, Vision vision) {   
         SwerveDriveKinematics kinematics = drivetrainSubsystem.getKinematics();
         
+        locationSelector.setDefaultOption("Area One", StartLocation.ONE); 
+        locationSelector.addOption("Area Three", StartLocation.THREE);
+
+        pathActionSelector.setDefaultOption("Score game piece and exit", PathActions.SCORE_AND_EXIT);
+        pathActionSelector.addOption("Score cone high, exit community, and balance", PathActions.SCORE_EXIT_BALANCE);
+        pathActionSelector.addOption("Score game piece, rotate and exit", PathActions.SCORE_ROTATE_AND_EXIT);
+
+        startActionSelector.setDefaultOption("Score cone low", StartActions.SCORE_CONE_LOW);
+        startActionSelector.addOption("Score cube low", StartActions.SCORE_CUBE_LOW);
+        startActionSelector.addOption("Score cone high", StartActions.SCORE_CONE_HIGH);
+        startActionSelector.addOption("Score cube high", StartActions.SCORE_CUBE_HIGH);
+
         startActionMap.put("scoreConeLow", new ScoreLow(drivetrainSubsystem, floorArmSubsystem, intake, true));
         startActionMap.put("scoreCubeLow", new ScoreLow(drivetrainSubsystem, floorArmSubsystem, intake, false));
-        startActionMap.put("scoreConeHigh", new ExtendAndScoreCone(drivetrainSubsystem, floorArmSubsystem, armSubsystem, intake));
+        startActionMap.put(
+            "scoreConeHigh", 
+            new UpdatePoseParallel(
+                new ExtendAndScoreCone(drivetrainSubsystem, floorArmSubsystem, armSubsystem, intake, () -> getCurrentStartingPose()),
+                vision,
+                drivetrainSubsystem)
+            );
         startActionMap.put("scoreCubeHigh", new ScoreCube(drivetrainSubsystem, floorArmSubsystem, floorIntake));
 
         eventMap.put("autoBalance", new InstantCommand(drivetrainSubsystem::setBalanceTargetDefault, drivetrainSubsystem));
@@ -101,18 +122,6 @@ public class AutoGenerator {
             drivetrainSubsystem
         );
 
-        locationSelector.setDefaultOption("Area One", StartLocation.ONE); 
-        locationSelector.addOption("Area Three", StartLocation.THREE);
-
-        pathActionSelector.setDefaultOption("Score game piece and exit", PathActions.SCORE_AND_EXIT);
-        pathActionSelector.addOption("Score cone high, exit community, and balance", PathActions.SCORE_EXIT_BALANCE);
-        pathActionSelector.addOption("Score game piece, rotate and exit", PathActions.SCORE_ROTATE_AND_EXIT);
-
-        startActionSelector.setDefaultOption("Score cone low", StartActions.SCORE_CONE_LOW);
-        startActionSelector.addOption("Score cube low", StartActions.SCORE_CUBE_LOW);
-        startActionSelector.addOption("Score cone high", StartActions.SCORE_CONE_HIGH);
-        startActionSelector.addOption("Score cube high", StartActions.SCORE_CUBE_HIGH);
-
         autoTab.add("Auto Location", locationSelector).withSize(2, 1).withPosition(0, 0);
         autoTab.add("Auto Path Action", pathActionSelector).withSize(3, 1).withPosition(2, 0);
         autoTab.add("Auto Start Action", startActionSelector).withSize(2, 1).withPosition(5, 0);
@@ -120,6 +129,10 @@ public class AutoGenerator {
         autoTab.addString("Current Starting Action: ", () -> getSelectedStartAction()).withSize(2, 1).withPosition(0, 2);
         autoTab.add("Current Auto Trajectory (Always appears on blue side)", field).withSize(6, 4).withPosition(2, 1);
         autoTab.addBoolean("Current Alliance", ()-> DriverStation.getAlliance() == Alliance.Blue).withSize(1, 1).withPosition(7, 0).withProperties(Map.of("color when true", "blue", "color when false", "red"));
+    }
+
+    public Pose2d getCurrentStartingPose() {
+        return PathPlanner.loadPath(getSelectedPath(), defaulPathConstraints).getInitialPose();
     }
 
     private String getSelectedPath() {
