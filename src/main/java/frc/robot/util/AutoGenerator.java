@@ -22,7 +22,7 @@ import frc.robot.Constants;
 import frc.robot.commands.groups.BeginCollectCube;
 import frc.robot.commands.groups.EndCollectCube;
 import frc.robot.commands.groups.ExtendAndScoreCone;
-import frc.robot.commands.groups.RotateAndScoreCube;
+import frc.robot.commands.groups.ScoreCube;
 import frc.robot.commands.groups.ScoreLow;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -82,7 +82,7 @@ public class AutoGenerator {
         startActionMap.put("scoreConeLow", new ScoreLow(drivetrainSubsystem, floorArmSubsystem, intake, true));
         startActionMap.put("scoreCubeLow", new ScoreLow(drivetrainSubsystem, floorArmSubsystem, intake, false));
         startActionMap.put("scoreConeHigh", new ExtendAndScoreCone(drivetrainSubsystem, floorArmSubsystem, armSubsystem, intake));
-        startActionMap.put("scoreCubeHigh", new RotateAndScoreCube(drivetrainSubsystem, floorArmSubsystem, armSubsystem, floorIntake));
+        startActionMap.put("scoreCubeHigh", new ScoreCube(drivetrainSubsystem, floorArmSubsystem, floorIntake));
 
         eventMap.put("autoBalance", new PrintCommand("Auto balance begin"));
         eventMap.put("beginCollectCube", new BeginCollectCube(floorArmSubsystem, floorIntake));

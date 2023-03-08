@@ -3,7 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands.intake.floor;
-import frc.robot.Constants;
 import frc.robot.subsystems.FloorIntake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 

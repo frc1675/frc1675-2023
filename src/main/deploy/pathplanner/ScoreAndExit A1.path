@@ -43,11 +43,9 @@
       "isLocked": false,
       "isStopPoint": true,
       "stopEvent": {
-        "names": [
-          "beginCollectCube"
-        ],
+        "names": [],
         "executionBehavior": "sequential",
-        "waitBehavior": "after",
+        "waitBehavior": "none",
         "waitTime": 1.0
       }
     },
@@ -76,5 +74,12 @@
       }
     }
   ],
-  "markers": []
+  "markers": [
+    {
+      "position": 1.0,
+      "names": [
+        "beginCollectCube"
+      ]
+    }
+  ]
 }

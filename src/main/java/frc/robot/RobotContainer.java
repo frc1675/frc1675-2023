@@ -91,7 +91,7 @@ public class RobotContainer {
             () -> mod.modifyAxis(driverController.getRawAxis(Constants.RIGHT_TRIGGER)),
             () -> armIsExtended())
         );
-        driverControllerBackButton.onTrue(new InstantCommand(drivetrainSubsystem::zeroGyroscope));
+        driverControllerBackButton.onTrue(new InstantCommand(drivetrainSubsystem::zeroRotation));
         driverControllerLeftBumper.onTrue(new SetDriveRotationTarget(drivetrainSubsystem, 0));
         driverControllerRightBumper.onTrue(new SetDriveRotationTarget(drivetrainSubsystem, 180));
 

@@ -121,4 +121,5 @@ public final class Constants {
       public static final double FLOOR_INTAKE_NORMAL_SPEED = 0.5;
       public static final double FLOOR_INTAKE_FAST_SPEED = 1;
       public static final int FLOOR_INTAKE_MOTOR = 16;
+      public static final int FLOOR_INTAKE_CURRENT_LIMIT = 20;
 }
