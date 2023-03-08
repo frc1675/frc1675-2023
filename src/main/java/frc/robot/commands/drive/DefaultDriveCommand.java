@@ -49,6 +49,7 @@ public class DefaultDriveCommand extends CommandBase {
 
         if (x != 0 || y != 0) {
             drivetrainSubsystem.setBalanceTarget(null);
+            drivetrainSubsystem.setTranslationTarget(null);
         }
     
         if (rotation != 0) {

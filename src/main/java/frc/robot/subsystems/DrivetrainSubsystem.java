@@ -279,14 +279,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 if(balanceTarget != null ) {
                         if (Math.abs(getGyroscopePitch().getDegrees()) >= AUTO_BALANCE_TOLERANCE_DEGREES) {
                                 chassisSpeeds.vyMetersPerSecond = yPID.calculate(getGyroscopePitch().minus(balanceTarget).getRadians());
-                                lastUpdateTime = Timer.getFPGATimestamp();
                         } else if (Math.abs(getGyroscopeRoll().getDegrees()) >= AUTO_BALANCE_TOLERANCE_DEGREES) {
                                 chassisSpeeds.vxMetersPerSecond = xPID.calculate(getGyroscopeRoll().minus(balanceTarget).getRadians());
-                                lastUpdateTime = Timer.getFPGATimestamp();
                         }
 
                         if(balanceTargetOriginalPose.getTranslation().getDistance(getPose().getTranslation()) > MAX_AUTO_BALANCE_TRANSLATION_METERS ) {
-                                balanceTarget = null;
+                                setBalanceTarget(null);
                                 DriverStation.reportError("Auto balance disabled as measured translation has exceeded safety limit.", false);
                         }
                         
