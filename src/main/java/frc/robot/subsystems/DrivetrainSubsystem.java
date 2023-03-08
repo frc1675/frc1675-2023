@@ -18,10 +18,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.networktables.DoublePublisher;
-import edu.wpi.first.networktables.DoubleTopic;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.SPI;
@@ -70,14 +66,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
         private double simRotation = 0;
         private final Pose2d RED_ORIGIN = new Pose2d(new Translation2d(Constants.RED_ORIGIN_POS_X_METERS, Constants.RED_ORIGIN_POS_Y_METERS),Rotation2d.fromDegrees(Constants.RED_ORIGIN_ROTATION_DEG));
 
-        private NetworkTable table = NetworkTableInstance.getDefault().getTable("Drivetrain");
-        private DoubleTopic gyroTopic = table.getDoubleTopic("Gyro Rotation");
-        private DoublePublisher gyroReading = gyroTopic.publish();
-
         private ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
         private Rotation2d rotationTarget;
         private Translation2d translationTarget;
+        private Rotation2d balanceTarget;
+        private Pose2d balanceTargetOriginalPose;
 
         private PIDController yPID = new PIDController(TRANSLATION_PROPORTIONAL_COEFFICENT, TRANSLATION_INTEGRAL_COEFFICENT,
         TRANSLATION_DERIVATIVE_COEFFICENT);
@@ -229,6 +223,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 return Rotation2d.fromDegrees(360.0 - navx.getYaw());
         }
 
+        private Rotation2d getGyroscopePitch() {
+                return Rotation2d.fromDegrees(navx.getPitch());
+        }
+
+        private Rotation2d getGyroscopeRoll() {
+                return Rotation2d.fromDegrees(navx.getRoll());
+        }
+
         public void drive(ChassisSpeeds chassisSpeeds) {
                 this.chassisSpeeds = chassisSpeeds;
         }
@@ -256,6 +258,20 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 return translationTarget;
         }
 
+        public void setBalanceTarget(Rotation2d balanceTarget) {
+                this.balanceTarget = balanceTarget;
+                balanceTargetOriginalPose = getPose();
+                drive(0, 0, 0);
+        }
+
+        public void setBalanceTargetDefault() {
+                setBalanceTarget(Rotation2d.fromDegrees(0));
+        }
+
+        public Rotation2d getBalanceTarget() {
+                return balanceTarget;
+        }
+
         @Override
         public void periodic() {
                 if(rotationTarget != null && chassisSpeeds.omegaRadiansPerSecond == 0) {
@@ -267,6 +283,20 @@ public class DrivetrainSubsystem extends SubsystemBase {
                         chassisSpeeds.vyMetersPerSecond = yPID.calculate(getPose().getTranslation().minus(translationTarget).getY());
                 }
 
+                if(balanceTarget != null ) {
+                        if (Math.abs(getGyroscopePitch().getDegrees()) >= AUTO_BALANCE_TOLERANCE_DEGREES) {
+                                chassisSpeeds.vyMetersPerSecond = yPID.calculate(getGyroscopePitch().minus(balanceTarget).getRadians());
+                        } else if (Math.abs(getGyroscopeRoll().getDegrees()) >= AUTO_BALANCE_TOLERANCE_DEGREES) {
+                                chassisSpeeds.vxMetersPerSecond = xPID.calculate(getGyroscopeRoll().minus(balanceTarget).getRadians());
+                        }
+
+                        if(balanceTargetOriginalPose.getTranslation().getDistance(getPose().getTranslation()) > MAX_AUTO_BALANCE_TRANSLATION_METERS ) {
+                                setBalanceTarget(null);
+                                DriverStation.reportError("Auto balance disabled as measured translation has exceeded safety limit.", false);
+                        }
+                        
+                }
+
                 states = kinematics.toSwerveModuleStates(chassisSpeeds);
                 SwerveDriveKinematics.desaturateWheelSpeeds(states, MAX_VELOCITY_METERS_PER_SECOND);
 
@@ -276,7 +306,5 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
 
                 updatePose();
-
-                gyroReading.set(getGyroscopeRotation().getDegrees());
         }
 }

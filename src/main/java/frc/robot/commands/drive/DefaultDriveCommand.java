@@ -46,6 +46,11 @@ public class DefaultDriveCommand extends CommandBase {
         rotation = rotationSupplier.getAsDouble();
         trigger = triggerSupplier.getAsDouble();
         forceSlow = forceSlowSupplier.getAsBoolean();
+
+        if (x != 0 || y != 0) {
+            drivetrainSubsystem.setBalanceTarget(null);
+            drivetrainSubsystem.setTranslationTarget(null);
+        }
     
         if (rotation != 0) {
             drivetrainSubsystem.setRotationTarget(null);
