@@ -1,4 +1,4 @@
-// Copyright (c) FIRST and other WPILib contributors.
+// 1opyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
@@ -96,5 +96,23 @@ public class Vision extends SubsystemBase {
       table.getEntry("LEDMode").setNumber(3);
     }
 
+  }
+  
+  public Pose2d shiftRight(){
+    if(hasTarget()){
+      double[] arr = botpose.getDoubleArray(new double[6]);
+      return new Pose2d(arr[0], arr[1], Rotation2d.fromDegrees(arr[5]));
+    }else{
+      return null;
+    }
+  }
+
+  public Pose2d shiftLeft(){
+    if(hasTarget()){
+      double[] arr = botpose.getDoubleArray(new double[6]);
+      return new Pose2d(arr[0], arr[1], Rotation2d.fromDegrees(arr[5]));
+    }else{
+      return null;
+    }
   }
 }

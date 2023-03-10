@@ -36,6 +36,7 @@ public final class Constants {
       public static final int INPUT_ROLLING_AVERAGE_SAMPLE_SIZE = 20;
       public static final double AUTO_BALANCE_TOLERANCE_DEGREES = 5;
       public static final double MAX_AUTO_BALANCE_TRANSLATION_METERS = 0;
+      public static final double NODE_SHIFT_DISTANCE_METERS = 1.38;
   
       //PID constants
       public static final double ROTATION_PROPORTIONAL_COEFFICENT = 3.0;
