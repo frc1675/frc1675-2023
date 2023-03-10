@@ -1,28 +1,9 @@
 package frc.robot.subsystems;
 
-import static frc.robot.Constants.BACK_LEFT_MODULE_DRIVE_MOTOR;
-import static frc.robot.Constants.BACK_LEFT_MODULE_STEER_ENCODER;
-import static frc.robot.Constants.BACK_LEFT_MODULE_STEER_MOTOR;
-import static frc.robot.Constants.BACK_LEFT_MODULE_STEER_OFFSET;
-import static frc.robot.Constants.BACK_RIGHT_MODULE_DRIVE_MOTOR;
-import static frc.robot.Constants.BACK_RIGHT_MODULE_STEER_ENCODER;
-import static frc.robot.Constants.BACK_RIGHT_MODULE_STEER_MOTOR;
-import static frc.robot.Constants.BACK_RIGHT_MODULE_STEER_OFFSET;
-import static frc.robot.Constants.DERIVATIVE_COEFFICENT;
-import static frc.robot.Constants.DRIVETRAIN_TRACKWIDTH_METERS;
-import static frc.robot.Constants.DRIVETRAIN_WHEELBASE_METERS;
-import static frc.robot.Constants.FRONT_LEFT_MODULE_DRIVE_MOTOR;
-import static frc.robot.Constants.FRONT_LEFT_MODULE_STEER_ENCODER;
-import static frc.robot.Constants.FRONT_LEFT_MODULE_STEER_MOTOR;
-import static frc.robot.Constants.FRONT_LEFT_MODULE_STEER_OFFSET;
-import static frc.robot.Constants.FRONT_RIGHT_MODULE_DRIVE_MOTOR;
-import static frc.robot.Constants.FRONT_RIGHT_MODULE_STEER_ENCODER;
-import static frc.robot.Constants.FRONT_RIGHT_MODULE_STEER_MOTOR;
-import static frc.robot.Constants.FRONT_RIGHT_MODULE_STEER_OFFSET;
-import static frc.robot.Constants.INTEGRAL_COEFFICENT;
-import static frc.robot.Constants.PROPORTIONAL_COEFFICENT;
+import static frc.robot.Constants.*;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.swervedrivespecialties.swervelib.Mk4ModuleConfiguration;
 import com.swervedrivespecialties.swervelib.Mk4SwerveModuleHelper;
 import com.swervedrivespecialties.swervelib.SdsModuleConfigurations;
 import com.swervedrivespecialties.swervelib.SwerveModule;
@@ -37,10 +18,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.networktables.DoublePublisher;
-import edu.wpi.first.networktables.DoubleTopic;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.SPI;
@@ -84,36 +61,38 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         private SwerveModuleState[] states;
         private SwerveDriveOdometry odometry;
-        private Pose2d robotPose;
+        private Pose2d robotPose = new Pose2d();
         private Field2d field = new Field2d();
         private double simRotation = 0;
         private final Pose2d RED_ORIGIN = new Pose2d(new Translation2d(Constants.RED_ORIGIN_POS_X_METERS, Constants.RED_ORIGIN_POS_Y_METERS),Rotation2d.fromDegrees(Constants.RED_ORIGIN_ROTATION_DEG));
 
-        private NetworkTable table = NetworkTableInstance.getDefault().getTable("Drivetrain");
-        private DoubleTopic gyroTopic = table.getDoubleTopic("Gyro Rotation");
-        private DoublePublisher gyroReading = gyroTopic.publish();
-
         private ChassisSpeeds chassisSpeeds = new ChassisSpeeds(0.0, 0.0, 0.0);
 
         private Rotation2d rotationTarget;
+        private Translation2d translationTarget;
+        private Rotation2d balanceTarget;
+        private Pose2d balanceTargetOriginalPose;
 
-        private PIDController yPID = new PIDController(PROPORTIONAL_COEFFICENT, INTEGRAL_COEFFICENT,
-                        DERIVATIVE_COEFFICENT);
-        private PIDController xPID = new PIDController(PROPORTIONAL_COEFFICENT, INTEGRAL_COEFFICENT,
-                        DERIVATIVE_COEFFICENT);
-        private PIDController rotationPID = new PIDController(PROPORTIONAL_COEFFICENT, INTEGRAL_COEFFICENT,
-                        DERIVATIVE_COEFFICENT);
+        private PIDController yPID = new PIDController(TRANSLATION_PROPORTIONAL_COEFFICENT, TRANSLATION_INTEGRAL_COEFFICENT,
+        TRANSLATION_DERIVATIVE_COEFFICENT);
+        private PIDController xPID = new PIDController(TRANSLATION_PROPORTIONAL_COEFFICENT, TRANSLATION_INTEGRAL_COEFFICENT,
+        TRANSLATION_DERIVATIVE_COEFFICENT);
+        private PIDController rotationPID = new PIDController(ROTATION_PROPORTIONAL_COEFFICENT, ROTATION_INTEGRAL_COEFFICENT,
+        ROTATION_DERIVATIVE_COEFFICENT);
 
         public DrivetrainSubsystem() {
                 states = kinematics.toSwerveModuleStates(chassisSpeeds);
                 SmartDashboard.putData("Field Sim", field);
 
                 ShuffleboardTab tab = Shuffleboard.getTab("Drivetrain");
+                Mk4ModuleConfiguration config = new Mk4ModuleConfiguration();
+                config.setDriveCurrentLimit(40);
 
                 frontLeftModule = Mk4SwerveModuleHelper.createNeo(
                                 tab.getLayout("Front Left Module", BuiltInLayouts.kList)
                                                 .withSize(2, 4)
                                                 .withPosition(0, 0),
+                                config,
                                 Mk4SwerveModuleHelper.GearRatio.L3,
                                 FRONT_LEFT_MODULE_DRIVE_MOTOR,
                                 FRONT_LEFT_MODULE_STEER_MOTOR,
@@ -124,6 +103,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                                 tab.getLayout("Front Right Module", BuiltInLayouts.kList)
                                                 .withSize(2, 4)
                                                 .withPosition(2, 0),
+                                config,
                                 Mk4SwerveModuleHelper.GearRatio.L3,
                                 FRONT_RIGHT_MODULE_DRIVE_MOTOR,
                                 FRONT_RIGHT_MODULE_STEER_MOTOR,
@@ -134,6 +114,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                                 tab.getLayout("Back Left Module", BuiltInLayouts.kList)
                                                 .withSize(2, 4)
                                                 .withPosition(4, 0),
+                                config,
                                 Mk4SwerveModuleHelper.GearRatio.L3,
                                 BACK_LEFT_MODULE_DRIVE_MOTOR,
                                 BACK_LEFT_MODULE_STEER_MOTOR,
@@ -144,6 +125,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                                 tab.getLayout("Back Right Module", BuiltInLayouts.kList)
                                                 .withSize(2, 4)
                                                 .withPosition(6, 0),
+                                config,
                                 Mk4SwerveModuleHelper.GearRatio.L3,
                                 BACK_RIGHT_MODULE_DRIVE_MOTOR,
                                 BACK_RIGHT_MODULE_STEER_MOTOR,
@@ -157,9 +139,10 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 );
         }
 
-        public void zeroGyroscope() {
-                navx.zeroYaw();
+        public void zeroRotation() {
+                resetPose(new Pose2d(getPose().getTranslation(), Rotation2d.fromDegrees(0)));
         }
+
 
         private SwerveModulePosition[] getModulePositions() {
                 return new SwerveModulePosition[] {
@@ -171,6 +154,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
         }
 
         public void resetPose(Pose2d pose) {
+                navx.reset();
+                navx.setAngleAdjustment(pose.getRotation().getDegrees());
+                if(Robot.isSimulation()) {
+                        simRotation = pose.getRotation().getRadians();
+                }
+
                 odometry.resetPosition(
                         getGyroscopeRotation(),
                         getModulePositions(), 
@@ -234,6 +223,14 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 return Rotation2d.fromDegrees(360.0 - navx.getYaw());
         }
 
+        private Rotation2d getGyroscopePitch() {
+                return Rotation2d.fromDegrees(navx.getPitch());
+        }
+
+        private Rotation2d getGyroscopeRoll() {
+                return Rotation2d.fromDegrees(navx.getRoll());
+        }
+
         public void drive(ChassisSpeeds chassisSpeeds) {
                 this.chassisSpeeds = chassisSpeeds;
         }
@@ -245,16 +242,59 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         public void setRotationTarget(Rotation2d rotationTarget) {
                 this.rotationTarget = rotationTarget;
+                drive(0, 0, 0);
         }
 
         public Rotation2d getRotationTarget() {
                 return rotationTarget;
         }
 
+        public void setTranslationTarget(Translation2d translationTarget) {
+                this.translationTarget = translationTarget;
+                drive(0, 0, 0);
+        }
+
+        public Translation2d getTranslationTarget() {
+                return translationTarget;
+        }
+
+        public void setBalanceTarget(Rotation2d balanceTarget) {
+                this.balanceTarget = balanceTarget;
+                balanceTargetOriginalPose = getPose();
+                drive(0, 0, 0);
+        }
+
+        public void setBalanceTargetDefault() {
+                setBalanceTarget(Rotation2d.fromDegrees(0));
+        }
+
+        public Rotation2d getBalanceTarget() {
+                return balanceTarget;
+        }
+
         @Override
         public void periodic() {
                 if(rotationTarget != null && chassisSpeeds.omegaRadiansPerSecond == 0) {
                         chassisSpeeds.omegaRadiansPerSecond = rotationPID.calculate(getRotation().minus(rotationTarget).getRadians());
+                }
+
+                if(translationTarget != null && chassisSpeeds.vxMetersPerSecond == 0 && chassisSpeeds.vyMetersPerSecond == 0) {
+                        chassisSpeeds.vxMetersPerSecond = xPID.calculate(getPose().getTranslation().minus(translationTarget).getX());
+                        chassisSpeeds.vyMetersPerSecond = yPID.calculate(getPose().getTranslation().minus(translationTarget).getY());
+                }
+
+                if(balanceTarget != null ) {
+                        if (Math.abs(getGyroscopePitch().getDegrees()) >= AUTO_BALANCE_TOLERANCE_DEGREES) {
+                                chassisSpeeds.vyMetersPerSecond = yPID.calculate(getGyroscopePitch().minus(balanceTarget).getRadians());
+                        } else if (Math.abs(getGyroscopeRoll().getDegrees()) >= AUTO_BALANCE_TOLERANCE_DEGREES) {
+                                chassisSpeeds.vxMetersPerSecond = xPID.calculate(getGyroscopeRoll().minus(balanceTarget).getRadians());
+                        }
+
+                        if(balanceTargetOriginalPose.getTranslation().getDistance(getPose().getTranslation()) > MAX_AUTO_BALANCE_TRANSLATION_METERS ) {
+                                setBalanceTarget(null);
+                                DriverStation.reportError("Auto balance disabled as measured translation has exceeded safety limit.", false);
+                        }
+                        
                 }
 
                 states = kinematics.toSwerveModuleStates(chassisSpeeds);
@@ -266,7 +306,5 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
 
                 updatePose();
-
-                gyroReading.set(getGyroscopeRotation().getDegrees());
         }
 }

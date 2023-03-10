@@ -5,11 +5,12 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder;
-import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -18,33 +19,30 @@ import frc.robot.Constants;
 public class ArmSubsystem extends SubsystemBase {
   private ShuffleboardTab armTab = Shuffleboard.getTab("ArmSubsystem");
   private CANSparkMax armMotor;
-  private PIDController pid;
+  private ProfiledPIDController pid;
   private SparkMaxAbsoluteEncoder absEncoder;
-  private double targetPosition;
-
-
- 
-
-
-  
+  private double targetPosition = Constants.ARM_INSIDE_ROBOT_POSITION;
 
   public ArmSubsystem() {
     armMotor = new CANSparkMax(Constants.ARM_MOTOR, MotorType.kBrushless);
-    pid = new PIDController(Constants.ARM_P_COEFF,Constants.ARM_I_COEFF,Constants.ARM_D_COEFF);
-    
+    armMotor.setInverted(true);
+
+    pid = new ProfiledPIDController(Constants.ARM_P_COEFF, Constants.ARM_I_COEFF,Constants.ARM_D_COEFF, new Constraints(Constants.MAX_ARM_VELOCITY, Constants.MAX_ARM_ACCELERATION));
+    pid.enableContinuousInput(0, 1);
+
+    setTargetPosition(targetPosition);
+
     absEncoder = armMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
+
     armTab.addNumber("Position", () -> getPosition());
     setSoftLimit();
-    
-
-
   }
   
    public void setSoftLimit(){
-    armMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    armMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    armMotor.setSoftLimit(SoftLimitDirection.kForward, Constants.ARM_MAX_POSITION);
-    armMotor.setSoftLimit(SoftLimitDirection.kReverse, Constants.ARM_MIN_POSITION);
+    armMotor.enableSoftLimit(SoftLimitDirection.kForward, false);
+    armMotor.enableSoftLimit(SoftLimitDirection.kReverse, false);
+    armMotor.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.ARM_MAX_POSITION);
+    armMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.ARM_MIN_POSITION);
    }
 
   public void moveArm(double power) {
@@ -58,12 +56,17 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void setTargetPosition(double position){
     targetPosition = position;
+    pid.setGoal(targetPosition);
+  }
+
+  public double getTargetPosition() {
+    return targetPosition;
   }
 
   @Override
   public void periodic() {
     
-    armMotor.set(pid.calculate(getPosition()-targetPosition));
+    armMotor.set(pid.calculate(getPosition()));
   
   }
 }

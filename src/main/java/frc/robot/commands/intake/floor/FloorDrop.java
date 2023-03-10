@@ -3,16 +3,18 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands.intake.floor;
-import frc.robot.Constants;
 import frc.robot.subsystems.FloorIntake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class FloorDrop extends CommandBase {
   /** Creates a new FloorIntakeOut. */
-  FloorIntake floorIntake;
-  public FloorDrop(FloorIntake floorIntake) {
+  private FloorIntake floorIntake;
+  private double speed;
+
+  public FloorDrop(FloorIntake floorIntake, double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.floorIntake = floorIntake;
+    this.speed = speed;
     addRequirements(this.floorIntake);
   }
 
@@ -23,7 +25,7 @@ public class FloorDrop extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    floorIntake.intakeDrop(Constants.FLOOR_INTAKE_SPEED);
+    floorIntake.intakeDrop(speed);
   }
 
   // Called once the command ends or is interrupted.

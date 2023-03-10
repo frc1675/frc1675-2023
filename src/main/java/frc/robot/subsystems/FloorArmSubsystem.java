@@ -20,31 +20,24 @@ public class FloorArmSubsystem extends SubsystemBase {
   private CANSparkMax floorArmMotor;
   private PIDController pid;
   private SparkMaxAbsoluteEncoder absEncoder;
-  private double targetPosition;
-
-
- 
-
-
-  
+  private double targetPosition = Constants.FLOOR_ARM_INSIDE_ROBOT_POSITION;
 
   public FloorArmSubsystem() {
     floorArmMotor = new CANSparkMax(Constants.FLOOR_ARM_MOTOR, MotorType.kBrushless);
+    floorArmMotor.setInverted(false);
     pid = new PIDController(Constants.FLOOR_ARM_P_COEFF,Constants.FLOOR_ARM_I_COEFF,Constants.FLOOR_ARM_D_COEFF);
-    
+    pid.enableContinuousInput(0, 1);
+    setTargetPosition(targetPosition);
     absEncoder = floorArmMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
     floorArmTab.addNumber("Position", () -> getPosition());
     setSoftLimit();
-    
-
-
   }
   
    public void setSoftLimit(){
-    floorArmMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    floorArmMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    floorArmMotor.setSoftLimit(SoftLimitDirection.kForward, Constants.FLOOR_ARM_MAX_POSITION);
-    floorArmMotor.setSoftLimit(SoftLimitDirection.kReverse, Constants.FLOOR_ARM_MIN_POSITION);
+    floorArmMotor.enableSoftLimit(SoftLimitDirection.kForward, false);
+    floorArmMotor.enableSoftLimit(SoftLimitDirection.kReverse, false);
+    floorArmMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.FLOOR_ARM_MAX_POSITION);
+    floorArmMotor.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.FLOOR_ARM_MIN_POSITION);
    }
 
   public void moveArm(double power) {
@@ -58,12 +51,15 @@ public class FloorArmSubsystem extends SubsystemBase {
 
   public void setTargetPosition(double position){
     targetPosition = position;
+    pid.setSetpoint(targetPosition);
+  }
+
+  public double getTargetPosition() {
+    return targetPosition;
   }
 
   @Override
   public void periodic() {
-    
-    floorArmMotor.set(pid.calculate(getPosition()-targetPosition));
-  
+    floorArmMotor.set(pid.calculate(getPosition()));
   }
 }

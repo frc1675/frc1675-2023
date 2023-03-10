@@ -2,13 +2,13 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 1.882004999164394,
-        "y": 4.826890508887907
+        "x": 1.8153615404617995,
+        "y": 0.44746322271741984
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.681726503595526,
-        "y": 4.836411002988277
+        "x": 2.8153615404618018,
+        "y": 0.44746322271741984
       },
       "holonomicAngle": 0,
       "isReversal": false,
@@ -26,37 +26,37 @@
     },
     {
       "anchorPoint": {
-        "x": 5.652120662911161,
-        "y": 4.2747018510664105
+        "x": 5.452190286803377,
+        "y": 0.7045165634274263
       },
       "prevControl": {
-        "x": 4.895586048052651,
-        "y": 4.928655501198341
+        "x": 4.452190286803377,
+        "y": 0.7045165634274263
       },
       "nextControl": {
-        "x": 6.213829814833028,
-        "y": 3.789156651947509
+        "x": 6.452190286803377,
+        "y": 0.7045165634274263
       },
       "holonomicAngle": 0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
-      "isStopPoint": false,
+      "isStopPoint": true,
       "stopEvent": {
         "names": [],
         "executionBehavior": "parallel",
-        "waitBehavior": "none",
+        "waitBehavior": "after",
         "waitTime": 0
       }
     },
     {
       "anchorPoint": {
-        "x": 4.3192514888592735,
-        "y": 2.58957439530081
+        "x": 7.0135513192641605,
+        "y": 0.7902010103307618
       },
       "prevControl": {
-        "x": 5.423628804502266,
-        "y": 2.6181358776019223
+        "x": 6.732870803033769,
+        "y": 0.7473587868790941
       },
       "nextControl": null,
       "holonomicAngle": 0,
@@ -66,7 +66,7 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "autoBalance"
+          "endCollectCube"
         ],
         "executionBehavior": "parallel",
         "waitBehavior": "none",
@@ -74,8 +74,12 @@
       }
     }
   ],
-  "maxVelocity": null,
-  "maxAcceleration": 3.0,
-  "isReversed": null,
-  "markers": []
+  "markers": [
+    {
+      "position": 1.0,
+      "names": [
+        "beginCollectCube"
+      ]
+    }
+  ]
 }
