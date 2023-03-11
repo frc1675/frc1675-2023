@@ -285,9 +285,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
                 if(balanceTarget != null ) {
                         if (Math.abs(getGyroscopePitch().getDegrees()) >= AUTO_BALANCE_TOLERANCE_DEGREES) {
-                                chassisSpeeds.vyMetersPerSecond = yPID.calculate(-getGyroscopePitch().minus(balanceTarget).getDegrees());       
+                                chassisSpeeds.vyMetersPerSecond = yPID.calculate(-getGyroscopePitch().minus(balanceTarget).getDegrees());
+                                chassisSpeeds.vxMetersPerSecond = xPID.calculate(-getGyroscopePitch().minus(balanceTarget).getDegrees());
                         } else if (Math.abs(getGyroscopeRoll().getDegrees()) >= AUTO_BALANCE_TOLERANCE_DEGREES) {
-                                chassisSpeeds.vxMetersPerSecond = xPID.calculate(-getGyroscopeRoll().minus(balanceTarget).getDegrees());       
+                                chassisSpeeds.vyMetersPerSecond = yPID.calculate(-getGyroscopeRoll().minus(balanceTarget).getDegrees());
+                                chassisSpeeds.vxMetersPerSecond = xPID.calculate(-getGyroscopeRoll().minus(balanceTarget).getDegrees());
                         }
 
                         if(balanceTargetOriginalPose.getTranslation().getDistance(getPose().getTranslation()) > MAX_AUTO_BALANCE_TRANSLATION_METERS ) {
