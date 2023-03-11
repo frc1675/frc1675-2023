@@ -34,7 +34,7 @@ public final class Constants {
       public static final double DRIVE_SPEED_SCALER = 0.7;
       public static final double SLOW_DRIVE_SCALING = 0.3;
       public static final int INPUT_ROLLING_AVERAGE_SAMPLE_SIZE = 20;
-      public static final double AUTO_BALANCE_TOLERANCE_DEGREES = 2;
+      public static final double AUTO_BALANCE_TOLERANCE_DEGREES = 1;
       public static final double MAX_AUTO_BALANCE_TRANSLATION_METERS = 2;
   
       //PID constants
@@ -42,8 +42,8 @@ public final class Constants {
       public static final double ROTATION_INTEGRAL_COEFFICENT = 0.5;
       public static final double ROTATION_DERIVATIVE_COEFFICENT = 0.5;
 
-      public static final double TRANSLATION_PROPORTIONAL_COEFFICENT = 0.04;
-      public static final double TRANSLATION_INTEGRAL_COEFFICENT = 0;
+      public static final double TRANSLATION_PROPORTIONAL_COEFFICENT = 0.032;
+      public static final double TRANSLATION_INTEGRAL_COEFFICENT = 0.0025;
       public static final double TRANSLATION_DERIVATIVE_COEFFICENT = 0;
   
       //swerve module constants

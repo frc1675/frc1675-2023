@@ -284,12 +284,16 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 }
 
                 if(balanceTarget != null ) {
-                        if (Math.abs(getGyroscopePitch().getDegrees()) >= AUTO_BALANCE_TOLERANCE_DEGREES) {
+
+                        if (Math.abs(getGyroscopePitch().getDegrees()) >= AUTO_BALANCE_TOLERANCE_DEGREES && Math.abs(getGyroscopePitch().getDegrees()) > Math.abs(getGyroscopeRoll().getDegrees())) {
                                 chassisSpeeds.vyMetersPerSecond = yPID.calculate(-getGyroscopePitch().minus(balanceTarget).getDegrees());
-                                chassisSpeeds.vxMetersPerSecond = xPID.calculate(-getGyroscopePitch().minus(balanceTarget).getDegrees());
-                        } else if (Math.abs(getGyroscopeRoll().getDegrees()) >= AUTO_BALANCE_TOLERANCE_DEGREES) {
-                                chassisSpeeds.vyMetersPerSecond = yPID.calculate(-getGyroscopeRoll().minus(balanceTarget).getDegrees());
+                        } else if (Math.abs(getGyroscopeRoll().getDegrees()) >= AUTO_BALANCE_TOLERANCE_DEGREES && Math.abs(getGyroscopeRoll().getDegrees()) > Math.abs(getGyroscopePitch().getDegrees())) {
                                 chassisSpeeds.vxMetersPerSecond = xPID.calculate(-getGyroscopeRoll().minus(balanceTarget).getDegrees());
+                        }else {
+                                chassisSpeeds.vyMetersPerSecond = 0;
+                                chassisSpeeds.vxMetersPerSecond = 0;
+                                xPID.reset();
+                                yPID.reset();
                         }
 
                         if(balanceTargetOriginalPose.getTranslation().getDistance(getPose().getTranslation()) > MAX_AUTO_BALANCE_TRANSLATION_METERS ) {
@@ -313,3 +317,4 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 SmartDashboard.putBoolean("Balance Target", getBalanceTarget() != null);
         }
 }
+
