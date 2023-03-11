@@ -22,6 +22,8 @@ import frc.robot.Constants;
 import frc.robot.commands.groups.BeginCollectCube;
 import frc.robot.commands.groups.EndCollectCube;
 import frc.robot.commands.groups.ExtendAndScoreCone;
+import frc.robot.commands.groups.ExtendFloorIntake;
+import frc.robot.commands.groups.RetractFloorIntake;
 import frc.robot.commands.groups.ScoreCube;
 import frc.robot.commands.groups.ScoreLow;
 import frc.robot.subsystems.ArmSubsystem;
@@ -88,6 +90,8 @@ public class AutoGenerator {
         eventMap.put("autoBalance", new InstantCommand(drivetrainSubsystem::setBalanceTargetDefault, drivetrainSubsystem));
         eventMap.put("beginCollectCube", new BeginCollectCube(floorArmSubsystem, floorIntake));
         eventMap.put("endCollectCube", new EndCollectCube(floorArmSubsystem, floorIntake));
+        eventMap.put("extendFloorIntake", new ExtendFloorIntake(floorArmSubsystem));
+        eventMap.put("retractFloorIntake", new RetractFloorIntake(floorArmSubsystem));
 
         builder = new SwerveAutoBuilder(
             drivetrainSubsystem::getPose,
