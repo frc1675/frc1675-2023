@@ -22,6 +22,8 @@ public final class Constants {
       public static final double FIELD_WIDTH_METERS = 16;
       public static final double FIELD_HEIGHT_METERS = 7.85;
 
+      public static final double MAX_TRANSLATION_DISTANCE_METERS = 1;
+
       //sim constants
       public static final double RED_ORIGIN_POS_X_METERS = 16.541748984;
       public static final double RED_ORIGIN_POS_Y_METERS = 8.01367968;
