@@ -7,9 +7,7 @@ package frc.robot;
 import java.util.HashMap;
 
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -79,12 +77,7 @@ public class RobotContainer {
   private final HashMap<String, Translation2d> coordinateMap = new HashMap<String, Translation2d>();
 
   public RobotContainer() {
-    if(DriverStation.getAlliance() == Alliance.Red) {
-      coordinateMap.put("HumanPlayerConePickup", new Translation2d(15.7, 0.5));
-    }else {
-      coordinateMap.put("HumanPlayerConePickup", new Translation2d(15.7, 7.5));
-    }
-      
+    coordinateMap.put("HumanPlayerConePickup", new Translation2d(15.7, 7.5));
 
     configureBindings();
   }
