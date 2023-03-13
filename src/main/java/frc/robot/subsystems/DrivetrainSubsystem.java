@@ -284,10 +284,16 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 }
 
                 if(balanceTarget != null ) {
-                        if (Math.abs(getGyroscopePitch().getDegrees()) >= AUTO_BALANCE_TOLERANCE_DEGREES) {
-                                chassisSpeeds.vyMetersPerSecond = yPID.calculate(getGyroscopePitch().minus(balanceTarget).getRadians());
-                        } else if (Math.abs(getGyroscopeRoll().getDegrees()) >= AUTO_BALANCE_TOLERANCE_DEGREES) {
-                                chassisSpeeds.vxMetersPerSecond = xPID.calculate(getGyroscopeRoll().minus(balanceTarget).getRadians());
+
+                        if (Math.abs(getGyroscopePitch().getDegrees()) >= AUTO_BALANCE_TOLERANCE_DEGREES && Math.abs(getGyroscopePitch().getDegrees()) > Math.abs(getGyroscopeRoll().getDegrees())) {
+                                chassisSpeeds.vyMetersPerSecond = yPID.calculate(-getGyroscopePitch().minus(balanceTarget).getDegrees());
+                        } else if (Math.abs(getGyroscopeRoll().getDegrees()) >= AUTO_BALANCE_TOLERANCE_DEGREES && Math.abs(getGyroscopeRoll().getDegrees()) > Math.abs(getGyroscopePitch().getDegrees())) {
+                                chassisSpeeds.vxMetersPerSecond = xPID.calculate(-getGyroscopeRoll().minus(balanceTarget).getDegrees());
+                        }else {
+                                chassisSpeeds.vyMetersPerSecond = 0;
+                                chassisSpeeds.vxMetersPerSecond = 0;
+                                xPID.reset();
+                                yPID.reset();
                         }
 
                         if(balanceTargetOriginalPose.getTranslation().getDistance(getPose().getTranslation()) > MAX_AUTO_BALANCE_TRANSLATION_METERS ) {
@@ -306,5 +312,9 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 backRightModule.set(states[3].speedMetersPerSecond / MAX_VELOCITY_METERS_PER_SECOND * MAX_VOLTAGE, states[3].angle.getRadians());
 
                 updatePose();
+                SmartDashboard.putNumber("Gyro Roll", getGyroscopeRoll().getDegrees());
+                SmartDashboard.putNumber("Gyro Pitch", getGyroscopePitch().getDegrees());
+                SmartDashboard.putBoolean("Balance Target", getBalanceTarget() != null);
         }
 }
+
