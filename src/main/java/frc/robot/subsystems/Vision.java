@@ -98,21 +98,4 @@ public class Vision extends SubsystemBase {
 
   }
   
-  public Pose2d shiftRight(){
-    if(hasTarget()){
-      double[] arr = botpose.getDoubleArray(new double[6]);
-      return new Pose2d(arr[0], arr[1], Rotation2d.fromDegrees(arr[5]));
-    }else{
-      return null;
-    }
-  }
-
-  public Pose2d shiftLeft(){
-    if(hasTarget()){
-      double[] arr = botpose.getDoubleArray(new double[6]);
-      return new Pose2d(arr[0], arr[1], Rotation2d.fromDegrees(arr[5]));
-    }else{
-      return null;
-    }
-  }
 }
