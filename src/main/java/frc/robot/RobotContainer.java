@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import java.util.HashMap;
+
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
@@ -14,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.arm.MoveArmToPosition;
 import frc.robot.commands.drive.DefaultDriveUpdatePose;
 import frc.robot.commands.drive.SetDriveRotationTarget;
+import frc.robot.commands.drive.SetDriveTranslationTarget;
 import frc.robot.commands.floorArm.FloorMoveArmToPostion;
 import frc.robot.commands.intake.armIntake.DropCone;
 import frc.robot.commands.intake.armIntake.DropCube;
@@ -54,6 +58,11 @@ public class RobotContainer {
   private final JoystickButton driverControllerRightBumper = new JoystickButton(driverController, Constants.RIGHT_BUMPER);
   private final JoystickButton driverControllerStartButton = new JoystickButton(driverController, Constants.START_BUTTON);
 
+  private final DPadButton driverDPadUp = new DPadButton(driverController, DPadButton.Direction.UP);
+  private final DPadButton driverDPadRight = new DPadButton(driverController, DPadButton.Direction.RIGHT);
+  private final DPadButton driverDPadLeft = new DPadButton(driverController, DPadButton.Direction.LEFT);
+  private final DPadButton driverDPadDown = new DPadButton(driverController, DPadButton.Direction.DOWN);
+
   private final JoystickButton operatorControllerBButton = new JoystickButton(operatorController, Constants.B_BUTTON);
   private final JoystickButton operatorControllerYButton = new JoystickButton(operatorController, Constants.Y_BUTTON);
   private final JoystickButton operatorControllerAButton = new JoystickButton(operatorController, Constants.A_BUTTON);
@@ -66,7 +75,11 @@ public class RobotContainer {
   private final DPadButton operatorDPadLeft = new DPadButton(operatorController, DPadButton.Direction.LEFT);
   private final DPadButton operatorDPadDown = new DPadButton(operatorController, DPadButton.Direction.DOWN);
 
+  private final HashMap<String, Translation2d> coordinateMap = new HashMap<String, Translation2d>();
+
   public RobotContainer() {
+    coordinateMap.put("HumanPlayerConePickup", new Translation2d(15.7, 7.5));
+
     configureBindings();
   }
 
@@ -98,6 +111,14 @@ public class RobotContainer {
         driverControllerBackButton.onTrue(new InstantCommand(drivetrainSubsystem::zeroRotation));
         driverControllerLeftBumper.onTrue(new SetDriveRotationTarget(drivetrainSubsystem, 0));
         driverControllerRightBumper.onTrue(new SetDriveRotationTarget(drivetrainSubsystem, 180));
+
+        driverDPadUp.onTrue(
+          new ConditionalCommand(
+              new SetDriveTranslationTarget(drivetrainSubsystem, coordinateMap.get("HumanPlayerConePickup")),
+              new PrintCommand("Too far away from destination pose to set translation target"),
+              () -> drivetrainSubsystem.getPose().getTranslation().getDistance(coordinateMap.get("HumanPlayerConePickup")) <= Constants.MAX_TRANSLATION_DISTANCE_METERS
+            )
+          );
 
         //main intake
         driverControllerAButton.whileTrue(
