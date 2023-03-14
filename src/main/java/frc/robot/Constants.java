@@ -102,6 +102,7 @@ public final class Constants {
       public static final double ARM_ENCODER_COUNT_ERROR = 1.0;
       public static final double MAX_ARM_VELOCITY = 0.5;
       public static final double MAX_ARM_ACCELERATION = MAX_ARM_VELOCITY * 2;
+      public static final double ARM_ENCODER_COUNT_MAX_DIFF = -0.1;
 
       //intake constants 
       public static final int INTAKE_CURRENT_LIMIT = 20;

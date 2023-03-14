@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.arm.IncrementArm;
 import frc.robot.commands.arm.MoveArmToPosition;
 import frc.robot.commands.drive.DefaultDriveUpdatePose;
 import frc.robot.commands.drive.SetDriveRotationTarget;
@@ -159,10 +160,14 @@ public class RobotContainer {
         operatorDPadLeft.onTrue(
           new SequentialCommandGroup(
             new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_INSIDE_ROBOT_POSITION),
-            new MoveArmToPosition(arm, Constants.ARM_HUMAN_PLAYER_POSITION)
+            new MoveArmToPosition(arm, Constants.ARM_HUMAN_PLAYER_POSITION),
+            new IncrementArm(arm, () -> mod.modifyAxis(operatorController.getRawAxis(Constants.RIGHT_TRIGGER)))
           )
         );
+
         operatorDPadDown.onTrue(new MoveArmToPosition(arm, Constants.ARM_INSIDE_ROBOT_POSITION));
+
+
 
         //floor intake
         operatorControllerLeftBumper.whileTrue(
