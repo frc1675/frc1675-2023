@@ -19,7 +19,7 @@ public class IncrementArm extends CommandBase {
   public IncrementArm(ArmSubsystem arm, DoubleSupplier power) {
     this.arm = arm; 
     this.power = power;
-    startPos = arm.getTargetPosition();
+    startPos = Constants.ARM_HUMAN_PLAYER_POSITION;
     addRequirements(this.arm);
 
   }
