@@ -21,6 +21,7 @@ import frc.robot.commands.intake.armIntake.IntakeCone;
 import frc.robot.commands.intake.armIntake.IntakeCube;
 import frc.robot.commands.intake.floor.FloorDrop;
 import frc.robot.commands.intake.floor.FloorPickup;
+import frc.robot.commands.vision.NodeShifter;
 import frc.robot.commands.vision.ToggleLED;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -64,6 +65,12 @@ public class RobotContainer {
   private final DPadButton operatorDPadRight = new DPadButton(operatorController, DPadButton.Direction.RIGHT);
   private final DPadButton operatorDPadLeft = new DPadButton(operatorController, DPadButton.Direction.LEFT);
   private final DPadButton operatorDPadDown = new DPadButton(operatorController, DPadButton.Direction.DOWN);
+
+  private final DPadButton driverDPadUp = new DPadButton(operatorController, DPadButton.Direction.UP);
+  private final DPadButton driverDPadRight = new DPadButton(operatorController, DPadButton.Direction.RIGHT);
+  private final DPadButton driverDPadLeft = new DPadButton(operatorController, DPadButton.Direction.LEFT);
+  private final DPadButton driverDPadDown = new DPadButton(operatorController, DPadButton.Direction.DOWN);
+
 
   public RobotContainer() {
     configureBindings();
@@ -181,6 +188,9 @@ public class RobotContainer {
         );
         //vision
         operatorControllerStartButton.toggleOnTrue(new ToggleLED(vision));
+        driverDPadLeft.toggleOnTrue(new NodeShifter(vision, drivetrainSubsystem, false));
+        driverDPadRight.toggleOnTrue(new NodeShifter(vision, drivetrainSubsystem, true));
+        
     }
   }
 
