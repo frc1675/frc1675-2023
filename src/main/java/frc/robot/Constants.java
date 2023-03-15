@@ -57,22 +57,22 @@ public final class Constants {
       public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 3;
       public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 4;
       public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 12; 
-      public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(40.07);
+      public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(71.37);
   
       public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 1;
       public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 2; 
       public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 10; 
-      public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(207.8);
+      public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(192.74);
   
       public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 7; 
       public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 8; 
       public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 11; 
-      public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(146.6);
+      public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(145.90);
   
       public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 5; 
       public static final int BACK_LEFT_MODULE_STEER_MOTOR = 6; 
       public static final int BACK_LEFT_MODULE_STEER_ENCODER = 9; 
-      public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(289.33);
+      public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(288.90);
   
       //controller constants
       public static final int DRIVER_CONTROLLER = 0;
@@ -81,7 +81,7 @@ public final class Constants {
       public static final int LEFT_Y_AXIS= 1;
       public static final int RIGHT_X_AXIS = 4;
       public static final int RIGHT_Y_AXIS = 5;
-      public static final int RIGHT_TRIGGER = 6;
+      public static final int RIGHT_TRIGGER = 3;
   
       public static final int A_BUTTON = 1;
       public static final int B_BUTTON = 2;
@@ -109,6 +109,7 @@ public final class Constants {
       public static final double ARM_ENCODER_COUNT_ERROR = 1.0;
       public static final double MAX_ARM_VELOCITY = 0.5;
       public static final double MAX_ARM_ACCELERATION = MAX_ARM_VELOCITY * 2;
+      public static final double ARM_ENCODER_COUNT_MAX_DIFF = 0.1;
 
       //intake constants 
       public static final int INTAKE_CURRENT_LIMIT = 20;
