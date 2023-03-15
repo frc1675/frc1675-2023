@@ -20,9 +20,9 @@ public class VisionPoseUpdate extends CommandBase {
   
   @Override
   public void execute() {
-    if(vision.hasTarget()) {
-      drivetrainSubsystem.resetPose(vision.getBotpose());
-    }
+    // if(vision.hasTarget()) {
+    //   drivetrainSubsystem.resetPose(vision.getBotpose());
+    // }
   }
 
   @Override
