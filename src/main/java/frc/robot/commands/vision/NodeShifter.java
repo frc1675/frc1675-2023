@@ -13,22 +13,22 @@ public class NodeShifter extends CommandBase {
   /** Creates a new NodeShifter. */
   private final DrivetrainSubsystem drivetrainSubsystem;
   private final Vision vision;
-  boolean leftOrRight;
-  public NodeShifter(Vision vision, DrivetrainSubsystem drivetrainSubsystem, boolean leftOrRight) {
+  boolean shiftRight;
+  public NodeShifter(Vision vision, DrivetrainSubsystem drivetrainSubsystem, boolean shiftRight) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.vision = vision;
     this.drivetrainSubsystem = drivetrainSubsystem;
-    this.leftOrRight = leftOrRight;
+    this.shiftRight = shiftRight;
     addRequirements(this.vision, this.drivetrainSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if(vision.hasTarget() && leftOrRight == true){
+    if(vision.hasTarget() && shiftRight == true){
       Translation2d nodeShift = new Translation2d(vision.getBotpose().getX(), vision.getBotpose().getY() + Constants.NODE_SHIFT_DISTANCE_METERS);
       drivetrainSubsystem.setTranslationTarget(nodeShift);
-    }else if(vision.hasTarget() && leftOrRight == false){
+    }else if(vision.hasTarget() && shiftRight == false){
       Translation2d nodeShift = new Translation2d(vision.getBotpose().getX(), vision.getBotpose().getY() - Constants.NODE_SHIFT_DISTANCE_METERS);
       drivetrainSubsystem.setTranslationTarget(nodeShift);
     }
