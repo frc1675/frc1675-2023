@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+
 public final class Constants {
       //auto constants
       public static final double AUTO_MAX_VELOCITY = 3;
@@ -21,6 +24,10 @@ public final class Constants {
 
       public static final double FIELD_WIDTH_METERS = 16;
       public static final double FIELD_HEIGHT_METERS = 7.85;
+      public static final Pose2d RED_ALLIANCE_HUMAN_BOUNDARY = new Pose2d(3.3, 5.5, Rotation2d.fromDegrees(180));
+      public static final Pose2d BLUE_ALLIANCE_HUMAN_BOUNDARY = new Pose2d(13.0, 5.5, Rotation2d.fromDegrees(0));
+
+
 
       //sim constants
       public static final double RED_ORIGIN_POS_X_METERS = 16.541748984;

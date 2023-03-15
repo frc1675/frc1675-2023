@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.vision.VisionPoseUpdate;
 import frc.robot.commands.arm.MoveArmToPosition;
 import frc.robot.commands.drive.DefaultDriveUpdatePose;
 import frc.robot.commands.drive.SetDriveRotationTarget;
@@ -21,6 +22,7 @@ import frc.robot.commands.intake.armIntake.IntakeCone;
 import frc.robot.commands.intake.armIntake.IntakeCube;
 import frc.robot.commands.intake.floor.FloorDrop;
 import frc.robot.commands.intake.floor.FloorPickup;
+import frc.robot.commands.vision.PlayerStationAutoAlign;
 import frc.robot.commands.vision.ToggleLED;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -65,6 +67,11 @@ public class RobotContainer {
   private final DPadButton operatorDPadRight = new DPadButton(operatorController, DPadButton.Direction.RIGHT);
   private final DPadButton operatorDPadLeft = new DPadButton(operatorController, DPadButton.Direction.LEFT);
   private final DPadButton operatorDPadDown = new DPadButton(operatorController, DPadButton.Direction.DOWN);
+
+  private final DPadButton driverDPadUp = new DPadButton(operatorController, DPadButton.Direction.UP);
+  private final DPadButton driverDPadRight = new DPadButton(operatorController, DPadButton.Direction.RIGHT);
+  private final DPadButton driverDPadLeft = new DPadButton(operatorController, DPadButton.Direction.LEFT);
+  private final DPadButton driverDPadDown = new DPadButton(operatorController, DPadButton.Direction.DOWN);
 
   public RobotContainer() {
     configureBindings();
@@ -183,6 +190,7 @@ public class RobotContainer {
         );
         //vision
         operatorControllerStartButton.toggleOnTrue(new ToggleLED(vision));
+        driverDPadUp.toggleOnTrue(new PlayerStationAutoAlign(drivetrainSubsystem, vision));
     }
   }
 
