@@ -24,8 +24,8 @@ public final class Constants {
 
       public static final double FIELD_WIDTH_METERS = 16;
       public static final double FIELD_HEIGHT_METERS = 7.85;
-      public static final Pose2d RED_ALLIANCE_HUMAN_BOUNDARY = new Pose2d(3.3, 5.5, Rotation2d.fromDegrees(180));
-      public static final Pose2d BLUE_ALLIANCE_HUMAN_BOUNDARY = new Pose2d(13.0, 5.5, Rotation2d.fromDegrees(0));
+      public static final Pose2d RED_ALLIANCE_HUMAN_BOUNDARY = new Pose2d(3.7, 5.5, Rotation2d.fromDegrees(180));
+      public static final Pose2d BLUE_ALLIANCE_HUMAN_BOUNDARY = new Pose2d(12.6, 5.5, Rotation2d.fromDegrees(0));
 
 
 

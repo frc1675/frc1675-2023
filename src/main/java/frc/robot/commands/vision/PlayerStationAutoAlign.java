@@ -26,7 +26,11 @@ public class PlayerStationAutoAlign extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(vision.getAlliance()){
+    if(vision.getTargetID() == 4){
+      drivetrainSubsystem.setRotationTarget(Constants.BLUE_ALLIANCE_HUMAN_BOUNDARY.getRotation());
+    }else if(vision.getTargetID() == 5){
+      drivetrainSubsystem.setRotationTarget(Constants.RED_ALLIANCE_HUMAN_BOUNDARY.getRotation());
+    }else if(vision.getAlliance()){
       if(vision.getBotpose().getX() < Constants.RED_ALLIANCE_HUMAN_BOUNDARY.getX() && vision.getBotpose().getY() > Constants.RED_ALLIANCE_HUMAN_BOUNDARY.getY()){
         drivetrainSubsystem.setRotationTarget(Constants.RED_ALLIANCE_HUMAN_BOUNDARY.getRotation());
       }
