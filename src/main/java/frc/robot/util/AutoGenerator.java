@@ -22,6 +22,8 @@ import frc.robot.Constants;
 import frc.robot.commands.groups.BeginCollectCube;
 import frc.robot.commands.groups.EndCollectCube;
 import frc.robot.commands.groups.ExtendAndScoreCone;
+import frc.robot.commands.groups.ExtendFloorIntake;
+import frc.robot.commands.groups.RetractFloorIntake;
 import frc.robot.commands.groups.ScoreCube;
 import frc.robot.commands.groups.ScoreLow;
 import frc.robot.subsystems.ArmSubsystem;
@@ -69,6 +71,7 @@ public class AutoGenerator {
 
     public enum StartLocation {
         ONE(1),
+        TWO(2),
         THREE(3);
 
         public final int value;
@@ -88,6 +91,8 @@ public class AutoGenerator {
         eventMap.put("autoBalance", new InstantCommand(drivetrainSubsystem::setBalanceTargetDefault, drivetrainSubsystem));
         eventMap.put("beginCollectCube", new BeginCollectCube(floorArmSubsystem, floorIntake));
         eventMap.put("endCollectCube", new EndCollectCube(floorArmSubsystem, floorIntake));
+        eventMap.put("extendFloorIntake", new ExtendFloorIntake(floorArmSubsystem));
+        eventMap.put("retractFloorIntake", new RetractFloorIntake(floorArmSubsystem));
 
         builder = new SwerveAutoBuilder(
             drivetrainSubsystem::getPose,
@@ -102,10 +107,11 @@ public class AutoGenerator {
         );
 
         locationSelector.setDefaultOption("Area One", StartLocation.ONE); 
+        locationSelector.addOption("Area Two", StartLocation.TWO);
         locationSelector.addOption("Area Three", StartLocation.THREE);
 
         pathActionSelector.setDefaultOption("Score game piece and exit", PathActions.SCORE_AND_EXIT);
-        pathActionSelector.addOption("Score cone high, exit community, and balance", PathActions.SCORE_EXIT_BALANCE);
+        pathActionSelector.addOption("Score game piece, exit community, and balance", PathActions.SCORE_EXIT_BALANCE);
         pathActionSelector.addOption("Score game piece, rotate and exit", PathActions.SCORE_ROTATE_AND_EXIT);
 
         startActionSelector.setDefaultOption("Score cone low", StartActions.SCORE_CONE_LOW);
