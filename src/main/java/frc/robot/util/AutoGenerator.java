@@ -30,7 +30,6 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.FloorArmSubsystem;
 import frc.robot.subsystems.FloorIntake;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Vision;
 
 public class AutoGenerator {
     private SwerveAutoBuilder builder;
@@ -79,7 +78,7 @@ public class AutoGenerator {
         }
     }
 
-    public AutoGenerator(DrivetrainSubsystem drivetrainSubsystem, FloorArmSubsystem floorArmSubsystem, ArmSubsystem armSubsystem, Intake intake, FloorIntake floorIntake, Vision vision) {   
+    public AutoGenerator(DrivetrainSubsystem drivetrainSubsystem, FloorArmSubsystem floorArmSubsystem, ArmSubsystem armSubsystem, Intake intake, FloorIntake floorIntake) {   
         SwerveDriveKinematics kinematics = drivetrainSubsystem.getKinematics();
         
         locationSelector.setDefaultOption("Area One", StartLocation.ONE); 

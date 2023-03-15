@@ -1,8 +1,10 @@
 package frc.robot.commands.groups;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.commands.arm.MoveArmToPosition;
@@ -22,11 +24,19 @@ public class ExtendAndScoreCone extends SequentialCommandGroup {
       new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_INSIDE_ROBOT_POSITION),
       new MoveArmToPosition(arm, Constants.ARM_SCORE_HIGH_POSITION),
       new WaitCommand(1),
-      new RepeatCommand(new InstantCommand(() -> drive.drive(-1, 0, 0), drive)).withTimeout(0.5),
+      driveDistance(drive, 0.5, -1),
       new DropCone(intake).withTimeout(0.5),
-      new RepeatCommand(new InstantCommand(() -> drive.drive(1, 0, 0), drive)).withTimeout(0.5),
+      driveDistance(drive, 0.5, 1).withTimeout(0.5),
       new MoveArmToPosition(arm, Constants.ARM_INSIDE_ROBOT_POSITION)
     );
+  }
+
+  private Command driveDistance(DrivetrainSubsystem drive, double distance, double velocity) {
+    return new StartEndCommand(
+      () -> new RepeatCommand(new InstantCommand(() ->drive.drive(velocity, 0, 0), drive)),
+      () -> drive.drive(0, 0, 0),
+      drive
+      ).withTimeout(Math.abs(distance / velocity));// (m / ms^-1 = s)
   }
 
 }
