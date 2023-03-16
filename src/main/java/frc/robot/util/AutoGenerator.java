@@ -144,7 +144,9 @@ public class AutoGenerator {
     /* Called periodically while disabled */
     public void updateSelectorPose() {
         PathPlannerTrajectory path = PathPlanner.loadPath(getSelectedPath(), defaulPathConstraints);
-        field.setRobotPose(path.getInitialPose());
-        field.getObject("traj").setTrajectory(path);
+        if(path != null) {
+            field.setRobotPose(path.getInitialPose());
+            field.getObject("traj").setTrajectory(path);
+        }
     }
 }
