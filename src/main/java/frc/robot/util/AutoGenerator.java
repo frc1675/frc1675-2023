@@ -99,6 +99,7 @@ public class AutoGenerator {
         startActionMap.put("scoreConeLow", new ScoreLow(drivetrainSubsystem, floorArmSubsystem, intake, true));
         startActionMap.put("scoreCubeLow", new ScoreLow(drivetrainSubsystem, floorArmSubsystem, intake, false));
         startActionMap.put("scoreConeHigh", new ExtendAndScoreCone(drivetrainSubsystem, floorArmSubsystem, armSubsystem, intake));
+        
         startActionMap.put("scoreCubeHigh", new ScoreCube(drivetrainSubsystem, floorArmSubsystem, floorIntake));
 
         eventMap.put("autoBalance", new InstantCommand(drivetrainSubsystem::setBalanceTargetDefault, drivetrainSubsystem));
@@ -161,7 +162,9 @@ public class AutoGenerator {
     /* Called periodically while disabled */
     public void updateSelectorPose() {
         PathPlannerTrajectory path = PathPlanner.loadPath(getSelectedPath(), defaulPathConstraints);
-        field.setRobotPose(path.getInitialPose());
-        field.getObject("traj").setTrajectory(path);
+        if(path != null) {
+            field.setRobotPose(path.getInitialPose());
+            field.getObject("traj").setTrajectory(path);   
+        }
     }
 }

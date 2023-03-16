@@ -95,7 +95,7 @@ public final class Constants {
       public static final double ARM_D_COEFF = 0;
       public static final double ARM_SCORE_HIGH_POSITION = 0.3649-.02;  
       public static final double ARM_SCORE_MID_POSITION = 0.4448-.02; 
-      public static final double ARM_HUMAN_PLAYER_POSITION = ARM_SCORE_HIGH_POSITION + 0.005;
+      public static final double ARM_HUMAN_PLAYER_POSITION = 0.3834-.04;
       public static final double ARM_INSIDE_ROBOT_POSITION = 0.63;
       public static final double ARM_MAX_POSITION = 0.0;//fully within robot
       public static final double ARM_MIN_POSITION = 0.0;//completely outside robot
