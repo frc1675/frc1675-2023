@@ -168,13 +168,17 @@ public class RobotContainer {
 
 
 
-        //floor intake
+        //floor intake, bumpers do the same thing
         operatorControllerLeftBumper.whileTrue(
           new ConditionalCommand(
             new IntakeCone(intake),
-            new PrintCommand("Arm inside robot"),
-            () -> armIsExtended()
-        ));
+            new ConditionalCommand(
+              new FloorPickup(floorIntake),
+              new PrintCommand("Cannot intake"),
+              ()-> floorArmIsExtended()),
+            ()-> armIsExtended()
+          )
+        );
         operatorControllerRightBumper.whileTrue(
           new ConditionalCommand(
             new IntakeCone(intake),
