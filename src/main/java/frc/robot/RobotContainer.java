@@ -19,7 +19,6 @@ import frc.robot.commands.floorArm.FloorMoveArmToPostion;
 import frc.robot.commands.intake.armIntake.DropCone;
 import frc.robot.commands.intake.armIntake.DropCube;
 import frc.robot.commands.intake.armIntake.IntakeCone;
-import frc.robot.commands.intake.armIntake.IntakeCube;
 import frc.robot.commands.intake.floor.FloorDrop;
 import frc.robot.commands.intake.floor.FloorPickup;
 import frc.robot.commands.vision.ToggleLED;
@@ -169,16 +168,20 @@ public class RobotContainer {
 
 
 
-        //floor intake
+        //floor intake, bumpers do the same thing
         operatorControllerLeftBumper.whileTrue(
           new ConditionalCommand(
             new IntakeCone(intake),
-            new PrintCommand("Arm inside robot"),
-            () -> armIsExtended()
-        ));
+            new ConditionalCommand(
+              new FloorPickup(floorIntake),
+              new PrintCommand("Cannot intake"),
+              ()-> floorArmIsExtended()),
+            ()-> armIsExtended()
+          )
+        );
         operatorControllerRightBumper.whileTrue(
           new ConditionalCommand(
-            new IntakeCube(intake),
+            new IntakeCone(intake),
             new ConditionalCommand(
               new FloorPickup(floorIntake),
               new PrintCommand("Cannot intake"),
