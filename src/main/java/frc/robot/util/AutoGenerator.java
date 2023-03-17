@@ -49,7 +49,8 @@ public class AutoGenerator {
     public enum PathActions {
         SCORE_EXIT_BALANCE("ExitAndBalance"),
         SCORE_AND_EXIT("ScoreAndExit"),
-        SCORE_ROTATE_AND_EXIT("ScoreRotateAndExit");
+        SCORE_ROTATE_AND_EXIT("ScoreRotateAndExit"),
+        DOUBLE_SCORE("DoubleScore");
 
         public final String value;
         private PathActions(String value) {
@@ -93,6 +94,7 @@ public class AutoGenerator {
         eventMap.put("endCollectCube", new EndCollectCube(floorArmSubsystem, floorIntake));
         eventMap.put("extendFloorIntake", new ExtendFloorIntake(floorArmSubsystem));
         eventMap.put("retractFloorIntake", new RetractFloorIntake(floorArmSubsystem));
+        eventMap.put("secondaryScore", new ScoreCube(drivetrainSubsystem, floorArmSubsystem, floorIntake, true));
 
         builder = new SwerveAutoBuilder(
             drivetrainSubsystem::getPose,
@@ -113,6 +115,7 @@ public class AutoGenerator {
         pathActionSelector.setDefaultOption("Score game piece and exit", PathActions.SCORE_AND_EXIT);
         pathActionSelector.addOption("Score game piece, exit community, and balance", PathActions.SCORE_EXIT_BALANCE);
         pathActionSelector.addOption("Score game piece, rotate and exit", PathActions.SCORE_ROTATE_AND_EXIT);
+        pathActionSelector.addOption("Score game piece, collect and score second cube low", PathActions.DOUBLE_SCORE);
 
         startActionSelector.setDefaultOption("Score cone low", StartActions.SCORE_CONE_LOW);
         startActionSelector.addOption("Score cube low", StartActions.SCORE_CUBE_LOW);
