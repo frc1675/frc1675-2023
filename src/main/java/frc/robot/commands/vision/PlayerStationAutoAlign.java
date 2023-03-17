@@ -30,8 +30,10 @@ public class PlayerStationAutoAlign extends CommandBase {
   @Override
   public void execute() {
     if(vision.getTargetID() == 4){ // Override if Blue Alliance Human Player April Tag is seen
+      drivetrainSubsystem.resetPose(vision.getBotpose());
       drivetrainSubsystem.setRotationTarget(Constants.BLUE_ALLIANCE_HUMAN_BOUNDARY.getRotation());
     }else if(vision.getTargetID() == 5){ // Override if RED Alliance Human Player April Tag is seen
+      drivetrainSubsystem.resetPose(vision.getBotpose());
       drivetrainSubsystem.setRotationTarget(Constants.RED_ALLIANCE_HUMAN_BOUNDARY.getRotation());
     }else if(DriverStation.getAlliance() == Alliance.Red){ // For Red Alliance
       if(vision.getBotpose().getX() < Constants.RED_ALLIANCE_HUMAN_BOUNDARY.getX() && vision.getBotpose().getY() > Constants.RED_ALLIANCE_HUMAN_BOUNDARY.getY()){

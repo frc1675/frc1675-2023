@@ -198,6 +198,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 return kinematics;
         }
 
+        // Should I be using this method?
         public Pose2d getPose() {
                 return robotPose;
         }
