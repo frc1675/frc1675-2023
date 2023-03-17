@@ -36,11 +36,11 @@ public class PlayerStationAutoAlign extends CommandBase {
       drivetrainSubsystem.resetPose(vision.getBotpose());
       drivetrainSubsystem.setRotationTarget(Constants.RED_ALLIANCE_HUMAN_BOUNDARY.getRotation());
     }else if(DriverStation.getAlliance() == Alliance.Red){ // For Red Alliance
-      if(vision.getBotpose().getX() < Constants.RED_ALLIANCE_HUMAN_BOUNDARY.getX() && vision.getBotpose().getY() > Constants.RED_ALLIANCE_HUMAN_BOUNDARY.getY()){
+      if(drivetrainSubsystem.getPose().getX() < Constants.RED_ALLIANCE_HUMAN_BOUNDARY.getX() && drivetrainSubsystem.getPose().getY() > Constants.RED_ALLIANCE_HUMAN_BOUNDARY.getY()){
         drivetrainSubsystem.setRotationTarget(Constants.RED_ALLIANCE_HUMAN_BOUNDARY.getRotation());
       }
     }else{ // For Blue Alliance
-      if(vision.getBotpose().getX() > Constants.BLUE_ALLIANCE_HUMAN_BOUNDARY.getX() && vision.getBotpose().getY() > Constants.BLUE_ALLIANCE_HUMAN_BOUNDARY.getX()){
+      if(drivetrainSubsystem.getPose().getX() > Constants.BLUE_ALLIANCE_HUMAN_BOUNDARY.getX() && drivetrainSubsystem.getPose().getY() > Constants.BLUE_ALLIANCE_HUMAN_BOUNDARY.getX()){
         drivetrainSubsystem.setRotationTarget(Constants.BLUE_ALLIANCE_HUMAN_BOUNDARY.getRotation());
       }
     }
