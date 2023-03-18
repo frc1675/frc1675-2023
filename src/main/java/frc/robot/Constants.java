@@ -65,7 +65,7 @@ public final class Constants {
       public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 5; 
       public static final int BACK_LEFT_MODULE_STEER_MOTOR = 6; 
       public static final int BACK_LEFT_MODULE_STEER_ENCODER = 9; 
-      public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(288.90);
+      public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(104.24+115);
   
       //controller constants
       public static final int DRIVER_CONTROLLER = 0;
