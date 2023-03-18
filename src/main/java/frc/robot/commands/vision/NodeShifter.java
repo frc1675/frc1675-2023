@@ -25,13 +25,7 @@ public class NodeShifter extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if(vision.hasTarget() && shiftRight == true){
-      Translation2d nodeShift = new Translation2d(vision.getBotpose().getX(), vision.getBotpose().getY() + Constants.NODE_SHIFT_DISTANCE_METERS);
-      drivetrainSubsystem.setTranslationTarget(nodeShift);
-    }else if(vision.hasTarget() && shiftRight == false){
-      Translation2d nodeShift = new Translation2d(vision.getBotpose().getX(), vision.getBotpose().getY() - Constants.NODE_SHIFT_DISTANCE_METERS);
-      drivetrainSubsystem.setTranslationTarget(nodeShift);
-    }
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
