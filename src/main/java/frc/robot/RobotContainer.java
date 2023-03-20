@@ -201,4 +201,10 @@ public class RobotContainer {
   public void updateAutoSelectorPose() {
     autoGenerator.updateSelectorPose();
   }
+
+  public void disableDrivetrainTargets() {
+    drivetrainSubsystem.setBalanceTarget(null);
+    drivetrainSubsystem.setRotationTarget(null);
+    drivetrainSubsystem.setTranslationTarget(null);
+  }
 }

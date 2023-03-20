@@ -43,7 +43,7 @@ public class DefaultDriveCommand extends CommandBase {
     public void execute() {
         x = translationXSupplier.getAsDouble();
         y = translationYSupplier.getAsDouble();
-        rotation = rotationSupplier.getAsDouble();
+        rotation = rotationSupplier.getAsDouble()*Constants.SLOW_ROTATION_SCALING;
         trigger = triggerSupplier.getAsDouble();
         forceSlow = forceSlowSupplier.getAsBoolean();
 
