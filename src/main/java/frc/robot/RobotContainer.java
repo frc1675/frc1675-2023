@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.vision.VisionPoseUpdate;
+import frc.robot.commands.arm.IncrementArm;
 import frc.robot.commands.arm.MoveArmToPosition;
 import frc.robot.commands.drive.DefaultDriveUpdatePose;
 import frc.robot.commands.drive.SetDriveRotationTarget;
@@ -19,7 +19,6 @@ import frc.robot.commands.floorArm.FloorMoveArmToPostion;
 import frc.robot.commands.intake.armIntake.DropCone;
 import frc.robot.commands.intake.armIntake.DropCube;
 import frc.robot.commands.intake.armIntake.IntakeCone;
-import frc.robot.commands.intake.armIntake.IntakeCube;
 import frc.robot.commands.intake.floor.FloorDrop;
 import frc.robot.commands.intake.floor.FloorPickup;
 import frc.robot.commands.vision.PlayerStationAutoAlign;
@@ -166,21 +165,29 @@ public class RobotContainer {
         operatorDPadLeft.onTrue(
           new SequentialCommandGroup(
             new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_INSIDE_ROBOT_POSITION),
-            new MoveArmToPosition(arm, Constants.ARM_HUMAN_PLAYER_POSITION)
+            new MoveArmToPosition(arm, Constants.ARM_HUMAN_PLAYER_POSITION),
+            new IncrementArm(arm, () -> mod.modifyAxis(operatorController.getRawAxis(Constants.RIGHT_TRIGGER)))
           )
         );
+
         operatorDPadDown.onTrue(new MoveArmToPosition(arm, Constants.ARM_INSIDE_ROBOT_POSITION));
 
-        //floor intake
+
+
+        //floor intake, bumpers do the same thing
         operatorControllerLeftBumper.whileTrue(
           new ConditionalCommand(
             new IntakeCone(intake),
-            new PrintCommand("Arm inside robot"),
-            () -> armIsExtended()
-        ));
+            new ConditionalCommand(
+              new FloorPickup(floorIntake),
+              new PrintCommand("Cannot intake"),
+              ()-> floorArmIsExtended()),
+            ()-> armIsExtended()
+          )
+        );
         operatorControllerRightBumper.whileTrue(
           new ConditionalCommand(
-            new IntakeCube(intake),
+            new IntakeCone(intake),
             new ConditionalCommand(
               new FloorPickup(floorIntake),
               new PrintCommand("Cannot intake"),
@@ -200,5 +207,11 @@ public class RobotContainer {
 
   public void updateAutoSelectorPose() {
     autoGenerator.updateSelectorPose();
+  }
+
+  public void disableDrivetrainTargets() {
+    drivetrainSubsystem.setBalanceTarget(null);
+    drivetrainSubsystem.setRotationTarget(null);
+    drivetrainSubsystem.setTranslationTarget(null);
   }
 }
