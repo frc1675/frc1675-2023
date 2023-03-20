@@ -29,11 +29,11 @@ public class NodeShifter extends CommandBase {
   public void initialize() {
     if(Arrays.asList(Constants.SCORE_APRIL_TAGS).contains(vision.getTargetID()) && shiftRight == true){
       drivetrainSubsystem.resetPose(vision.getBotpose());
-      Translation2d nodeShift = new Translation2d(vision.getBotpose().getX(), vision.getBotpose().getY() + Constants.NODE_SHIFT_DISTANCE_METERS);
+      Translation2d nodeShift = new Translation2d(drivetrainSubsystem.getPose().getX(), drivetrainSubsystem.getPose().getY() + Constants.NODE_SHIFT_DISTANCE_METERS);
       drivetrainSubsystem.setTranslationTarget(nodeShift);
     }else if(Arrays.asList(Constants.SCORE_APRIL_TAGS).contains(vision.getTargetID()) && shiftRight == false){
       drivetrainSubsystem.resetPose(vision.getBotpose());
-      Translation2d nodeShift = new Translation2d(vision.getBotpose().getX(), vision.getBotpose().getY() - Constants.NODE_SHIFT_DISTANCE_METERS);
+      Translation2d nodeShift = new Translation2d(drivetrainSubsystem.getPose().getX(), drivetrainSubsystem.getPose().getY() - Constants.NODE_SHIFT_DISTANCE_METERS);
       drivetrainSubsystem.setTranslationTarget(nodeShift);
     }
   }
