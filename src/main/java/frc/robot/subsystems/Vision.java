@@ -3,7 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
-import javax.lang.model.element.ModuleElement.DirectiveKind;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -72,14 +71,6 @@ public class Vision extends SubsystemBase {
 
   public boolean hasTarget() {
     return targetValid.getDouble(0) == 1;
-  }
-
-  public boolean getAlliance(){
-    if(DriverStation.getAlliance() == Alliance.Red){
-      return true;
-    }else{
-      return false;
-    }
   }
 
   public void setMode(CamMode mode) {
