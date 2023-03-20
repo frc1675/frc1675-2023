@@ -22,6 +22,10 @@ public final class Constants {
       public static final double FIELD_WIDTH_METERS = 16;
       public static final double FIELD_HEIGHT_METERS = 7.85;
 
+      public static final int[] SCORE_APRIL_TAGS = {1, 2, 3, 5, 6, 7};
+      public static final double NODE_SHIFT_DISTANCE_METERS = 1.38; // 0.46m is the distance between two nodes, the current shunt value should place us in front of the next april tag in the node lineup
+
+
       //sim constants
       public static final double RED_ORIGIN_POS_X_METERS = 16.541748984;
       public static final double RED_ORIGIN_POS_Y_METERS = 8.01367968;
@@ -36,7 +40,6 @@ public final class Constants {
       public static final int INPUT_ROLLING_AVERAGE_SAMPLE_SIZE = 20;
       public static final double AUTO_BALANCE_TOLERANCE_DEGREES = 1;
       public static final double MAX_AUTO_BALANCE_TRANSLATION_METERS = 2;
-      public static final double NODE_SHIFT_DISTANCE_METERS = 1.38;
 
   
       //PID constants

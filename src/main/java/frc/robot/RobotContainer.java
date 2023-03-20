@@ -68,10 +68,10 @@ public class RobotContainer {
   private final DPadButton operatorDPadLeft = new DPadButton(operatorController, DPadButton.Direction.LEFT);
   private final DPadButton operatorDPadDown = new DPadButton(operatorController, DPadButton.Direction.DOWN);
 
-  private final DPadButton driverDPadUp = new DPadButton(operatorController, DPadButton.Direction.UP);
-  private final DPadButton driverDPadRight = new DPadButton(operatorController, DPadButton.Direction.RIGHT);
-  private final DPadButton driverDPadLeft = new DPadButton(operatorController, DPadButton.Direction.LEFT);
-  private final DPadButton driverDPadDown = new DPadButton(operatorController, DPadButton.Direction.DOWN);
+  private final DPadButton driverDPadUp = new DPadButton(driverController, DPadButton.Direction.UP);
+  private final DPadButton driverDPadRight = new DPadButton(driverController, DPadButton.Direction.RIGHT);
+  private final DPadButton driverDPadLeft = new DPadButton(driverController, DPadButton.Direction.LEFT);
+  private final DPadButton driverDPadDown = new DPadButton(driverController, DPadButton.Direction.DOWN);
 
 
   public RobotContainer() {

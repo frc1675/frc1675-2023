@@ -3,6 +3,8 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands.vision;
+
+import java.util.Arrays;
 import frc.robot.Constants;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -19,16 +21,18 @@ public class NodeShifter extends CommandBase {
     this.vision = vision;
     this.drivetrainSubsystem = drivetrainSubsystem;
     this.shiftRight = shiftRight;
-    addRequirements(this.vision, this.drivetrainSubsystem);
+    addRequirements(this.drivetrainSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if(vision.hasTarget() && shiftRight == true){
+    if(Arrays.asList(Constants.SCORE_APRIL_TAGS).contains(vision.getTargetID()) && shiftRight == true){
+      drivetrainSubsystem.resetPose(vision.getBotpose());
       Translation2d nodeShift = new Translation2d(vision.getBotpose().getX(), vision.getBotpose().getY() + Constants.NODE_SHIFT_DISTANCE_METERS);
       drivetrainSubsystem.setTranslationTarget(nodeShift);
-    }else if(vision.hasTarget() && shiftRight == false){
+    }else if(Arrays.asList(Constants.SCORE_APRIL_TAGS).contains(vision.getTargetID()) && shiftRight == false){
+      drivetrainSubsystem.resetPose(vision.getBotpose());
       Translation2d nodeShift = new Translation2d(vision.getBotpose().getX(), vision.getBotpose().getY() - Constants.NODE_SHIFT_DISTANCE_METERS);
       drivetrainSubsystem.setTranslationTarget(nodeShift);
     }
