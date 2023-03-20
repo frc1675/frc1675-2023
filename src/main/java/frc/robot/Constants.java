@@ -22,7 +22,7 @@ public final class Constants {
       public static final double FIELD_WIDTH_METERS = 16;
       public static final double FIELD_HEIGHT_METERS = 7.85;
 
-      public static final int[] SCORE_APRIL_TAGS = {1, 2, 3, 5, 6, 7};
+      public static final int[] SCORE_APRIL_TAGS = {1, 2, 3, 6, 7, 8};
       public static final double NODE_SHIFT_DISTANCE_METERS = 1.38; // 0.46m is the distance between two nodes, the current shunt value should place us in front of the next april tag in the node lineup
 
 
