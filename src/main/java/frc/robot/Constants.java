@@ -26,10 +26,8 @@ public final class Constants {
       public static final double FIELD_WIDTH_METERS = 16;
       public static final double FIELD_HEIGHT_METERS = 7.85;
 
-      public static final HashMap RED_NODE_HASH_MAP = new HashMap<>();
+      public static final int[] SCORE_APRIL_TAGS = {1, 2, 3, 6, 7, 8};
       // This array contains both the beginning and end of the respective x-y range for RED's scorezone.
-      public static final int[] RED_APRIL_TAG_IDS = {6, 7, 8};
-      public static final int[] BLUE_APRIL_TAG_IDS = {1, 2, 3};  
       public static final double[] RED_SCORE_ZONE_BOUNDARY = {14.1, 14.6, 0.42, 5.1}; 
       public static final Pose2d RED_ALLIANCE_SCORE_ZONE = new Pose2d(14.1, 0.42, Rotation2d.fromDegrees(0)); // Only requires beginning coords
       // This array contains both the beginning and end of the respective x-y range for BLUE's scorezone.

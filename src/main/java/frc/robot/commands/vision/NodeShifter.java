@@ -6,7 +6,8 @@ package frc.robot.commands.vision;
 import frc.robot.Constants;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Pose2d;
+import java.util.Arrays;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class NodeShifter extends CommandBase {
@@ -25,7 +26,10 @@ public class NodeShifter extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
+    // if(Arrays.asList(Constants.SCORE_APRIL_TAGS).contains(vision.getTargetID()) 
+    // && drivetrainSubsystem.getPose().getX() == Constants.){
+
+    // }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
