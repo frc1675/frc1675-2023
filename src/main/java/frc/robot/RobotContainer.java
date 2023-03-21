@@ -184,7 +184,7 @@ public class RobotContainer {
             new IntakeCone(intake),
             new ConditionalCommand(
               new FloorPickup(floorIntake),
-              new IntakeCone(intake, false),
+              new IntakeCone(intake, Constants.INTAKE_SPEED_SLOW),
               ()-> floorArmIsExtended()),
             ()-> armIsExtended()
           )
