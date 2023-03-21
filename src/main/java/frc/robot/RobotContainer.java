@@ -21,6 +21,7 @@ import frc.robot.commands.intake.armIntake.DropCube;
 import frc.robot.commands.intake.armIntake.IntakeCone;
 import frc.robot.commands.intake.floor.FloorDrop;
 import frc.robot.commands.intake.floor.FloorPickup;
+import frc.robot.commands.vision.ChangeVisionPipeline;
 import frc.robot.commands.vision.ToggleLED;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -60,6 +61,7 @@ public class RobotContainer {
   private final JoystickButton operatorControllerLeftBumper = new JoystickButton(operatorController, Constants.LEFT_BUMPER);
   private final JoystickButton operatorControllerRightBumper = new JoystickButton(operatorController, Constants.RIGHT_BUMPER);
   private final JoystickButton operatorControllerStartButton = new JoystickButton(operatorController, Constants.START_BUTTON);
+  private final JoystickButton operatorControllerBackButton = new JoystickButton(operatorController, Constants.BACK_BUTTON);
 
   private final DPadButton operatorDPadUp = new DPadButton(operatorController, DPadButton.Direction.UP);
   private final DPadButton operatorDPadRight = new DPadButton(operatorController, DPadButton.Direction.RIGHT);
@@ -184,13 +186,14 @@ public class RobotContainer {
             new IntakeCone(intake),
             new ConditionalCommand(
               new FloorPickup(floorIntake),
-              new PrintCommand("Cannot intake"),
+              new IntakeCone(intake, Constants.INTAKE_SPEED_SLOW),
               ()-> floorArmIsExtended()),
             ()-> armIsExtended()
           )
         );
         //vision
         operatorControllerStartButton.toggleOnTrue(new ToggleLED(vision));
+        operatorControllerBackButton.toggleOnTrue(new ChangeVisionPipeline(vision));
     }
   }
 
@@ -200,5 +203,11 @@ public class RobotContainer {
 
   public void updateAutoSelectorPose() {
     autoGenerator.updateSelectorPose();
+  }
+
+  public void disableDrivetrainTargets() {
+    drivetrainSubsystem.setBalanceTarget(null);
+    drivetrainSubsystem.setRotationTarget(null);
+    drivetrainSubsystem.setTranslationTarget(null);
   }
 }
