@@ -47,8 +47,8 @@ public final class Constants {
       public static final double ROTATION_INTEGRAL_COEFFICENT = 0.5;
       public static final double ROTATION_DERIVATIVE_COEFFICENT = 0.5;
 
-      public static final double TRANSLATION_PROPORTIONAL_COEFFICENT = 0.032;
-      public static final double TRANSLATION_INTEGRAL_COEFFICENT = 0.0025;
+      public static final double TRANSLATION_PROPORTIONAL_COEFFICENT = 0.5;
+      public static final double TRANSLATION_INTEGRAL_COEFFICENT = 0;
       public static final double TRANSLATION_DERIVATIVE_COEFFICENT = 0;
   
       //swerve module constants
