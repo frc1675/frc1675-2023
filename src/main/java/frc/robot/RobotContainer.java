@@ -184,7 +184,7 @@ public class RobotContainer {
             new IntakeCone(intake),
             new ConditionalCommand(
               new FloorPickup(floorIntake),
-              new PrintCommand("Cannot intake"),
+              new IntakeCone(intake, false),
               ()-> floorArmIsExtended()),
             ()-> armIsExtended()
           )

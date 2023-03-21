@@ -11,9 +11,16 @@ import frc.robot.subsystems.Intake;
 public class IntakeCone extends CommandBase {
   /** Creates a new ConeUtil. */
   private final Intake intake;
+  private final boolean fast;
+
   public IntakeCone(Intake intake) {
+    this(intake, true);
+  }
+
+  public IntakeCone(Intake intake, boolean fast) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = intake;
+    this.fast = fast;
     addRequirements(this.intake);
   }
 
@@ -24,7 +31,12 @@ public class IntakeCone extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.conePickup(Constants.INTAKE_SPEED);
+    if(fast) {
+      intake.conePickup(Constants.INTAKE_SPEED);
+    }else {
+      intake.conePickup(Constants.INTAKE_SPEED_SLOW);
+    }
+    
   }
 
   // Called once the command ends or is interrupted.
