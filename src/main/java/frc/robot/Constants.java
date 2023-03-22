@@ -117,6 +117,7 @@ public final class Constants {
       //intake constants 
       public static final int INTAKE_CURRENT_LIMIT = 20;
       public static final double INTAKE_SPEED = 1;
+      public static final double INTAKE_SPEED_SLOW = 0.25;
       public static final int INTAKE_MOTOR = 15;
 
       //floor arm constants
