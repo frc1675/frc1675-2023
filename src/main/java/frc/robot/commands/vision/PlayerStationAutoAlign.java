@@ -7,6 +7,7 @@ package frc.robot.commands.vision;
 import frc.robot.Constants;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.Vision;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -24,11 +25,7 @@ public class PlayerStationAutoAlign extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
+  public void initialize() {
     if(vision.getTargetID() == 4){ // Override if Blue Alliance Human Player April Tag is seen
       drivetrainSubsystem.resetPose(vision.getBotpose());
       drivetrainSubsystem.setRotationTarget(Constants.BLUE_ALLIANCE_HUMAN_BOUNDARY.getRotation());
@@ -36,7 +33,7 @@ public class PlayerStationAutoAlign extends CommandBase {
       drivetrainSubsystem.resetPose(vision.getBotpose());
       drivetrainSubsystem.setRotationTarget(Constants.RED_ALLIANCE_HUMAN_BOUNDARY.getRotation());
     }else if(DriverStation.getAlliance() == Alliance.Red){ // For Red Alliance
-      if(drivetrainSubsystem.getPose().getX() < Constants.RED_ALLIANCE_HUMAN_BOUNDARY.getX() && drivetrainSubsystem.getPose().getY() > Constants.RED_ALLIANCE_HUMAN_BOUNDARY.getY()){
+      if(drivetrainSubsystem.getPose().getX() > Constants.BLUE_ALLIANCE_HUMAN_BOUNDARY.getX() && drivetrainSubsystem.getPose().getY() < Constants.RED_ALLIANCE_HUMAN_BOUNDARY.getY()){
         drivetrainSubsystem.setRotationTarget(Constants.RED_ALLIANCE_HUMAN_BOUNDARY.getRotation());
       }
     }else{ // For Blue Alliance
@@ -46,6 +43,10 @@ public class PlayerStationAutoAlign extends CommandBase {
     }
   }
 
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {}
+
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {}
@@ -53,6 +54,6 @@ public class PlayerStationAutoAlign extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }
