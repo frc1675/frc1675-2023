@@ -31,7 +31,7 @@ public final class Constants {
       public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.5969; //Measured on robot
       public static final double DRIVETRAIN_WHEELBASE_METERS = 0.5969;
       public static final double DRIVE_ROTATE_TOLERANCE_DEGREES = 1.0;
-      public static final double DRIVE_SPEED_SCALER = 0.8;
+      public static final double DRIVE_SPEED_SCALER = 0.85;
       public static final double SLOW_DRIVE_SCALING = 0.3;
       public static final double SLOW_ROTATION_SCALING = 0.5;
       public static final int INPUT_ROLLING_AVERAGE_SAMPLE_SIZE = 20;
@@ -97,8 +97,8 @@ public final class Constants {
       public static final double ARM_SCORE_HIGH_POSITION = 0.5522-.02;  
       public static final double ARM_SCORE_MID_POSITION = 0.6137;
       
-      public static final double ARM_HUMAN_PLAYER_POSITION = 0.6028- .02;
-      public static final double ARM_INSIDE_ROBOT_POSITION = 0.8068;
+      public static final double ARM_HUMAN_PLAYER_POSITION = 0.5522- .02;
+      public static final double ARM_INSIDE_ROBOT_POSITION = 0.8168;
       public static final double ARM_MAX_POSITION = 0.0;//fully within robot
       public static final double ARM_MIN_POSITION = 0.0;//completely outside robot
       public static final double ARM_ENCODER_COUNT_ERROR = 1.0;
@@ -128,5 +128,5 @@ public final class Constants {
       public static final double FLOOR_INTAKE_NORMAL_SPEED = 0.5;
       public static final double FLOOR_INTAKE_FAST_SPEED = 1;
       public static final int FLOOR_INTAKE_MOTOR = 16;
-      public static final int FLOOR_INTAKE_CURRENT_LIMIT = 35;
+      public static final int FLOOR_INTAKE_CURRENT_LIMIT = 40;
 }
