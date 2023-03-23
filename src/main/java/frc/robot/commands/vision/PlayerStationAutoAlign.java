@@ -31,7 +31,7 @@ public class PlayerStationAutoAlign extends CommandBase {
     }else if(vision.getTargetID() == 5){ // Override if RED Alliance Human Player April Tag is seen
       drivetrainSubsystem.resetPose(vision.getBotpose());
       drivetrainSubsystem.setRotationTarget(Constants.HUMAN_STATION_BOUNDARY.getRotation());
-    }else if(DriverStation.getAlliance() == Alliance.Red){ // For Red Alliance
+     }/*else if(DriverStation.getAlliance() == Alliance.Red){ // For Red Alliance
       if(drivetrainSubsystem.getPose().getX() > Constants.HUMAN_STATION_BOUNDARY.getX() && drivetrainSubsystem.getPose().getY() < Constants.HUMAN_STATION_BOUNDARY.getY()){
         drivetrainSubsystem.setRotationTarget(Constants.HUMAN_STATION_BOUNDARY.getRotation());
       }
@@ -39,7 +39,7 @@ public class PlayerStationAutoAlign extends CommandBase {
       if(drivetrainSubsystem.getPose().getX() > Constants.HUMAN_STATION_BOUNDARY.getX() && drivetrainSubsystem.getPose().getY() > Constants.HUMAN_STATION_BOUNDARY.getY()){
         drivetrainSubsystem.setRotationTarget(Constants.HUMAN_STATION_BOUNDARY.getRotation());
       }
-    }
+    }*/
   }
 
   // Called every time the scheduler runs while the command is scheduled.
