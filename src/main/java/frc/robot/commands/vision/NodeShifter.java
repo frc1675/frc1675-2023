@@ -8,8 +8,10 @@ import java.util.Arrays;
 import frc.robot.Constants;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+
 
 public class NodeShifter extends CommandBase {
   /** Creates a new NodeShifter. */
@@ -27,14 +29,17 @@ public class NodeShifter extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if( shiftRight == true){
+    if(Arrays.asList(Constants.SCORE_APRIL_TAGS).contains(vision.getTargetID()) && shiftRight == true){
       //drivetrainSubsystem.resetPose(vision.getBotpose());
       Translation2d nodeShift = new Translation2d(drivetrainSubsystem.getPose().getX(), drivetrainSubsystem.getPose().getY() - Constants.NODE_SHIFT_DISTANCE_METERS);
+      drivetrainSubsystem.setRotationTarget(Rotation2d.fromDegrees(0)); 
       drivetrainSubsystem.setTranslationTarget(nodeShift);
     }else if(Arrays.asList(Constants.SCORE_APRIL_TAGS).contains(vision.getTargetID()) && shiftRight == false){
-      drivetrainSubsystem.resetPose(vision.getBotpose());
+      //drivetrainSubsystem.resetPose(vision.getBotpose());
       Translation2d nodeShift = new Translation2d(drivetrainSubsystem.getPose().getX(), drivetrainSubsystem.getPose().getY() + Constants.NODE_SHIFT_DISTANCE_METERS);
+      drivetrainSubsystem.setRotationTarget(Rotation2d.fromDegrees(0));
       drivetrainSubsystem.setTranslationTarget(nodeShift);
+
     }
   }
 
