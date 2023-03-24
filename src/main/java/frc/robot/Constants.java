@@ -36,6 +36,7 @@ public final class Constants {
       public static final double SLOW_ROTATION_SCALING = 0.5;
       public static final int INPUT_ROLLING_AVERAGE_SAMPLE_SIZE = 20;
       public static final double AUTO_BALANCE_TOLERANCE_DEGREES = 3;
+      public static final double AUTO_BALANCE_ENGAGE_DEGREES = 10;
       public static final double MAX_AUTO_BALANCE_TRANSLATION_METERS = 5;
   
       //PID constants
@@ -51,22 +52,22 @@ public final class Constants {
       public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 3;
       public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 4;
       public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 12; 
-      public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(71.28);
+      public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(71.54);
   
       public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 1;
       public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 2; 
       public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 10; 
-      public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(192.68);
+      public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(192.83);
            
       public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 7; 
       public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 8; 
       public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 11; 
-      public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(146.25);
+      public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(145.90);
   
       public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 5; 
       public static final int BACK_LEFT_MODULE_STEER_MOTOR = 6; 
       public static final int BACK_LEFT_MODULE_STEER_ENCODER = 9; 
-      public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(222.26);
+      public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(221.40);
   
       //controller constants
       public static final int DRIVER_CONTROLLER = 0;
