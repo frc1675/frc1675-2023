@@ -31,12 +31,13 @@ public final class Constants {
       public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.5969; //Measured on robot
       public static final double DRIVETRAIN_WHEELBASE_METERS = 0.5969;
       public static final double DRIVE_ROTATE_TOLERANCE_DEGREES = 1.0;
-      public static final double DRIVE_SPEED_SCALER = 0.8;
+      public static final double DRIVE_SPEED_SCALER = 0.85;
       public static final double SLOW_DRIVE_SCALING = 0.3;
       public static final double SLOW_ROTATION_SCALING = 0.5;
       public static final int INPUT_ROLLING_AVERAGE_SAMPLE_SIZE = 20;
-      public static final double AUTO_BALANCE_TOLERANCE_DEGREES = 1;
-      public static final double MAX_AUTO_BALANCE_TRANSLATION_METERS = 2;
+      public static final double AUTO_BALANCE_TOLERANCE_DEGREES = 3;
+      public static final double AUTO_BALANCE_ENGAGE_DEGREES = 10;
+      public static final double MAX_AUTO_BALANCE_TRANSLATION_METERS = 5;
   
       //PID constants
       public static final double ROTATION_PROPORTIONAL_COEFFICENT = 3.0;
@@ -51,13 +52,13 @@ public final class Constants {
       public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 3;
       public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 4;
       public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 12; 
-      public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(71.37);
+      public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(71.54);
   
       public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 1;
       public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 2; 
       public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 10; 
-      public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(192.74);
-  
+      public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(192.83);
+           
       public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 7; 
       public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 8; 
       public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 11; 
@@ -66,7 +67,7 @@ public final class Constants {
       public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 5; 
       public static final int BACK_LEFT_MODULE_STEER_MOTOR = 6; 
       public static final int BACK_LEFT_MODULE_STEER_ENCODER = 9; 
-      public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(104.24+115);
+      public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(221.40);
   
       //controller constants
       public static final int DRIVER_CONTROLLER = 0;
@@ -94,12 +95,11 @@ public final class Constants {
       public static final double ARM_P_COEFF = 2.5;
       public static final double ARM_I_COEFF = 0;
       public static final double ARM_D_COEFF = 0;
-      public static final double ARM_SCORE_HIGH_POSITION = 0.3649-.02; 
-      public static final double AUTO_ARM_SCORE_HIGH_POSITION = 0.3749; 
-      public static final double ARM_SCORE_MID_POSITION = 0.4448-.02;
-      //3834 
-      public static final double ARM_HUMAN_PLAYER_POSITION = 0.3834-0.02;
-      public static final double ARM_INSIDE_ROBOT_POSITION = 0.63;
+      public static final double ARM_SCORE_HIGH_POSITION = 0.5522-.02;  
+      public static final double ARM_SCORE_MID_POSITION = 0.6137;
+      
+      public static final double ARM_HUMAN_PLAYER_POSITION = 0.5522- .02;
+      public static final double ARM_INSIDE_ROBOT_POSITION = 0.8168;
       public static final double ARM_MAX_POSITION = 0.0;//fully within robot
       public static final double ARM_MIN_POSITION = 0.0;//completely outside robot
       public static final double ARM_ENCODER_COUNT_ERROR = 1.0;
@@ -129,5 +129,5 @@ public final class Constants {
       public static final double FLOOR_INTAKE_NORMAL_SPEED = 0.5;
       public static final double FLOOR_INTAKE_FAST_SPEED = 1;
       public static final int FLOOR_INTAKE_MOTOR = 16;
-      public static final int FLOOR_INTAKE_CURRENT_LIMIT = 35;
+      public static final int FLOOR_INTAKE_CURRENT_LIMIT = 40;
 }

@@ -24,10 +24,10 @@ public class ExtendAndScoreCone extends SequentialCommandGroup {
       new MoveArmToPosition(arm, Constants.ARM_SCORE_HIGH_POSITION),
       new InstantCommand(() -> intake.conePickup(0.5)),
       new WaitCommand(1),
-      driveDistance(drive, 0.7, -1),
+      driveDistance(drive, 0.5, -1),
       new WaitCommand(1),
       new DropCone(intake).withTimeout(0.5),
-      driveDistance(drive, 0.5, 1),
+      driveDistance(drive, 0.4, 1),
       new MoveArmToPosition(arm, Constants.ARM_INSIDE_ROBOT_POSITION)
     );
   }
