@@ -5,6 +5,11 @@
 package frc.robot;
 
 public final class Constants {
+      //balance constants
+      public static final double AUTO_BALANCE_TOLERANCE_DEGREES = 3;
+      public static final double AUTO_BALANCE_ENGAGE_DEGREES = 10;
+      public static final double MAX_AUTO_BALANCE_TRANSLATION_METERS = 5;
+      
       //auto constants
       public static final double AUTO_MAX_VELOCITY = 3;
       public static final double AUTO_MAX_ACCELERATION = 3;
@@ -35,9 +40,6 @@ public final class Constants {
       public static final double SLOW_DRIVE_SCALING = 0.3;
       public static final double SLOW_ROTATION_SCALING = 0.5;
       public static final int INPUT_ROLLING_AVERAGE_SAMPLE_SIZE = 20;
-      public static final double AUTO_BALANCE_TOLERANCE_DEGREES = 3;
-      public static final double AUTO_BALANCE_ENGAGE_DEGREES = 10;
-      public static final double MAX_AUTO_BALANCE_TRANSLATION_METERS = 5;
   
       //PID constants
       public static final double ROTATION_PROPORTIONAL_COEFFICENT = 3.0;
@@ -82,6 +84,7 @@ public final class Constants {
       public static final int B_BUTTON = 2;
       public static final int X_BUTTON = 3;
       public static final int Y_BUTTON = 4;
+
       public static final int LEFT_BUMPER = 5;
       public static final int RIGHT_BUMPER = 6;
       public static final int BACK_BUTTON = 7;
@@ -97,11 +100,8 @@ public final class Constants {
       public static final double ARM_D_COEFF = 0;
       public static final double ARM_SCORE_HIGH_POSITION = 0.5522-.02;  
       public static final double ARM_SCORE_MID_POSITION = 0.6137;
-      
       public static final double ARM_HUMAN_PLAYER_POSITION = 0.5522- .02;
       public static final double ARM_INSIDE_ROBOT_POSITION = 0.8168;
-      public static final double ARM_MAX_POSITION = 0.0;//fully within robot
-      public static final double ARM_MIN_POSITION = 0.0;//completely outside robot
       public static final double ARM_ENCODER_COUNT_ERROR = 1.0;
       public static final double MAX_ARM_VELOCITY = 0.5;
       public static final double MAX_ARM_ACCELERATION = MAX_ARM_VELOCITY * 2;
@@ -122,8 +122,6 @@ public final class Constants {
       public static final double FLOOR_ARM_GROUND_POSITION = 0.21;
       public static final double FLOOR_ARM_INSIDE_ROBOT_POSITION = 0.8848;
       public static final double FLOOR_ARM_SHOOTING_POSITION = 0.9872;
-      public static final double FLOOR_ARM_MAX_POSITION = 0;
-      public static final double FLOOR_ARM_MIN_POSITION = 0;
 
       //floor intake constants
       public static final double FLOOR_INTAKE_NORMAL_SPEED = 0.5;
