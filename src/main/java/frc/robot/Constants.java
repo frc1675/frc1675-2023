@@ -119,9 +119,9 @@ public final class Constants {
       public static final double FLOOR_ARM_P_COEFF = 2;
       public static final double FLOOR_ARM_I_COEFF = 0;
       public static final double FLOOR_ARM_D_COEFF = 0;
-      public static final double FLOOR_ARM_GROUND_POSITION = 0.21;
-      public static final double FLOOR_ARM_INSIDE_ROBOT_POSITION = 0.8848;
-      public static final double FLOOR_ARM_SHOOTING_POSITION = 0.9872;
+      public static final double FLOOR_ARM_GROUND_POSITION = 0.2077;
+      public static final double FLOOR_ARM_INSIDE_ROBOT_POSITION = 0.8585;
+      public static final double FLOOR_ARM_SHOOTING_POSITION = 0.9288;
 
       //floor intake constants
       public static final double FLOOR_INTAKE_NORMAL_SPEED = 0.5;
