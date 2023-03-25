@@ -119,7 +119,8 @@ public final class Constants {
       public static final double FLOOR_ARM_P_COEFF = 2;
       public static final double FLOOR_ARM_I_COEFF = 0;
       public static final double FLOOR_ARM_D_COEFF = 0;
-      public static final double FLOOR_ARM_GROUND_POSITION = 0.20;
+      public static final double FLOOR_ARM_GROUND_POSITION = 0.21 - 0.03;
+      public static final double FLOOR_ARM_AUTO_GROUND_POSITION = 0.20;
       public static final double FLOOR_ARM_INSIDE_ROBOT_POSITION = 0.85;
       public static final double FLOOR_ARM_SHOOTING_POSITION = 0.9564;
 

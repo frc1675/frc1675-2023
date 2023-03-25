@@ -21,7 +21,7 @@ public class AutoBalance extends SequentialCommandGroup {
           new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_SHOOTING_POSITION),
           new InstantCommand(() -> drive.drive(1, 0, 0)),
           new WaitCommand(0.15),
-          new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_GROUND_POSITION),
+          new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_AUTO_GROUND_POSITION),
           new WaitCommand(0.65)
         )
       ).until(
