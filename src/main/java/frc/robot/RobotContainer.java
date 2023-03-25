@@ -19,6 +19,7 @@ import frc.robot.commands.floorArm.FloorMoveArmToPostion;
 import frc.robot.commands.intake.armIntake.DropCone;
 import frc.robot.commands.intake.armIntake.DropCube;
 import frc.robot.commands.intake.armIntake.IntakeCone;
+import frc.robot.commands.intake.armIntake.IntakeCube;
 import frc.robot.commands.intake.floor.FloorDrop;
 import frc.robot.commands.intake.floor.FloorPickup;
 import frc.robot.commands.vision.ChangeVisionPipeline;
@@ -168,16 +169,11 @@ public class RobotContainer {
 
         operatorDPadDown.onTrue(new MoveArmToPosition(arm, Constants.ARM_INSIDE_ROBOT_POSITION));
 
-
-
-        //floor intake, bumpers do the same thing
+        //mildly goofy but this makes sense to me
         operatorControllerLeftBumper.whileTrue(
           new ConditionalCommand(
-            new IntakeCone(intake),
-            new ConditionalCommand(
-              new FloorPickup(floorIntake),
-              new PrintCommand("Cannot intake"),
-              ()-> floorArmIsExtended()),
+            new IntakeCube(intake),
+            new IntakeCube(intake, Constants.INTAKE_SPEED_SLOW),
             ()-> armIsExtended()
           )
         );
