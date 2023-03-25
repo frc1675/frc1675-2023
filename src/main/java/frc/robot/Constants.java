@@ -46,7 +46,7 @@ public final class Constants {
       public static final double ROTATION_INTEGRAL_COEFFICENT = 0.5;
       public static final double ROTATION_DERIVATIVE_COEFFICENT = 0.5;
 
-      public static final double TRANSLATION_PROPORTIONAL_COEFFICENT = 0.042;
+      public static final double TRANSLATION_PROPORTIONAL_COEFFICENT = 0.050;
       public static final double TRANSLATION_INTEGRAL_COEFFICENT = 0.0017;
       public static final double TRANSLATION_DERIVATIVE_COEFFICENT = 0;
   
@@ -119,9 +119,9 @@ public final class Constants {
       public static final double FLOOR_ARM_P_COEFF = 2;
       public static final double FLOOR_ARM_I_COEFF = 0;
       public static final double FLOOR_ARM_D_COEFF = 0;
-      public static final double FLOOR_ARM_GROUND_POSITION = 0.1842;
-      public static final double FLOOR_ARM_INSIDE_ROBOT_POSITION = 0.8585;
-      public static final double FLOOR_ARM_SHOOTING_POSITION = 0.9863 - 0.01;
+      public static final double FLOOR_ARM_GROUND_POSITION = 0.20;
+      public static final double FLOOR_ARM_INSIDE_ROBOT_POSITION = 0.85;
+      public static final double FLOOR_ARM_SHOOTING_POSITION = 0.9564;
 
       //floor intake constants
       public static final double FLOOR_INTAKE_NORMAL_SPEED = 0.5;

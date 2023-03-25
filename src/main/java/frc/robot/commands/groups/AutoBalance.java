@@ -35,7 +35,7 @@ public class AutoBalance extends SequentialCommandGroup {
         && drive.getGyroscopeRoll().getDegrees() <= Constants.AUTO_BALANCE_TOLERANCE_DEGREES
       ),
       new InstantCommand(() -> drive.setBalanceTarget(null)),
-      new RunCommand(() -> drive.drive(-1, 0, 0)).withTimeout(0.25),
+      new RunCommand(() -> drive.drive(-1, 0, 0)).withTimeout(0.35),
       new StartEndCommand(
         () -> drive.drive(0,0,1),
         ()-> drive.drive(0, 0, 0), 
