@@ -223,11 +223,11 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 return Rotation2d.fromDegrees(360.0 - navx.getYaw());
         }
 
-        private Rotation2d getGyroscopePitch() {
+        public Rotation2d getGyroscopePitch() {
                 return Rotation2d.fromDegrees(navx.getPitch());
         }
 
-        private Rotation2d getGyroscopeRoll() {
+        public Rotation2d getGyroscopeRoll() {
                 return Rotation2d.fromDegrees(navx.getRoll());
         }
 

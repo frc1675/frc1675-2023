@@ -80,7 +80,14 @@ public class Vision extends SubsystemBase {
     }
   }
   
+  public void setPipelineDriver(){
+    NetworkTableInstance.getDefault().getTable("limelight-ups").getEntry("pipeline").setNumber(1);
+  }
   
+  public void setPipelineVision(){
+    NetworkTableInstance.getDefault().getTable("limelight-ups").getEntry("pipeline").setNumber(0);
+  }
+
   public void setLEDMode(LEDMode ledmode) {
     if(ledmode == LEDMode.PIPELINE){
       table.getEntry("LEDMode").setNumber(0);
