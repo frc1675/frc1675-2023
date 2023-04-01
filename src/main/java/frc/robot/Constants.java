@@ -30,7 +30,7 @@ public final class Constants {
       public static final double FIELD_WIDTH_METERS = 16;
       public static final double FIELD_HEIGHT_METERS = 7.85;
       
-      public static final Pose2d HUMAN_STATION_BOUNDARY = new Pose2d(12.6, 2.5, Rotation2d.fromDegrees(0));
+      public static final Pose2d HUMAN_STATION_BOUNDARY = new Pose2d(12.6, 2.5, Rotation2d.fromDegrees(180));
 
 
 
