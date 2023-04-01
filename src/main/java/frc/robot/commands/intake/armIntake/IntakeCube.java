@@ -8,11 +8,19 @@ import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class IntakeCube extends CommandBase {
+  private double speed;
   /** Creates a new CubeUtil. */
   private final Intake intake;
   public IntakeCube(Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = intake;
+    this.speed = Constants.INTAKE_SPEED;
+    addRequirements(this.intake);
+  }
+
+  public IntakeCube(Intake intake, double speed) {
+    this.intake = intake;
+    this.speed = speed;
     addRequirements(this.intake);
   }
 
@@ -23,7 +31,7 @@ public class IntakeCube extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.coneDrop(Constants.INTAKE_SPEED);
+    intake.coneDrop(speed);
   }
 
   // Called once the command ends or is interrupted.

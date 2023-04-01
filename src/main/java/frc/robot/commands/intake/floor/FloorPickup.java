@@ -23,7 +23,7 @@ public class FloorPickup extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    floorIntake.intakePickup(Constants.FLOOR_INTAKE_NORMAL_SPEED);
+    floorIntake.intakePickup(Constants.FLOOR_INTAKE_FAST_SPEED);
   }
 
   // Called once the command ends or is interrupted.
