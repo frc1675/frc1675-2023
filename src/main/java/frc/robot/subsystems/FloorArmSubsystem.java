@@ -36,8 +36,6 @@ public class FloorArmSubsystem extends SubsystemBase {
    public void setSoftLimit(){
     floorArmMotor.enableSoftLimit(SoftLimitDirection.kForward, false);
     floorArmMotor.enableSoftLimit(SoftLimitDirection.kReverse, false);
-    floorArmMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.FLOOR_ARM_MAX_POSITION);
-    floorArmMotor.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.FLOOR_ARM_MIN_POSITION);
    }
 
   public void moveArm(double power) {

@@ -2,8 +2,11 @@ package frc.robot.commands.groups;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Constants;
 import frc.robot.commands.floorArm.FloorMoveArmToPostion;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -15,17 +18,30 @@ public class AutoBalance extends SequentialCommandGroup {
     addCommands(
       new RepeatCommand(
         new SequentialCommandGroup(
-          new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_GROUND_POSITION),
-          new InstantCommand(() -> drive.drive(1, 0, 0)).withTimeout(0.25),
           new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_SHOOTING_POSITION),
-          new WaitCommand(0.1)
+          new InstantCommand(() -> drive.drive(1, 0, 0)),
+          new WaitCommand(0.15),
+          new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_AUTO_GROUND_POSITION),
+          new WaitCommand(0.65)
         )
       ).until(
             () -> drive.getGyroscopePitch().getDegrees() >= Constants.AUTO_BALANCE_ENGAGE_DEGREES
             || drive.getGyroscopeRoll().getDegrees() >= Constants.AUTO_BALANCE_ENGAGE_DEGREES
-          ),
-        new InstantCommand(()-> drive.setBalanceTargetDefault(), drive)
-      );
+      ),
+      new InstantCommand(()-> drive.setBalanceTargetDefault(), drive),
+      new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_INSIDE_ROBOT_POSITION),
+      new WaitUntilCommand(
+        () -> drive.getGyroscopePitch().getDegrees() <= Constants.AUTO_BALANCE_TOLERANCE_DEGREES
+        && drive.getGyroscopeRoll().getDegrees() <= Constants.AUTO_BALANCE_TOLERANCE_DEGREES
+      ),
+      new InstantCommand(() -> drive.setBalanceTarget(null)),
+      new RunCommand(() -> drive.drive(-1, 0, 0)).withTimeout(0.35),
+      new StartEndCommand(
+        () -> drive.drive(0,0,1),
+        ()-> drive.drive(0, 0, 0), 
+        drive
+      ).withTimeout(0.01)
+    );
   }
 
 }

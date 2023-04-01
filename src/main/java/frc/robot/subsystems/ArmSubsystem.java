@@ -41,8 +41,6 @@ public class ArmSubsystem extends SubsystemBase {
    public void setSoftLimit(){
     armMotor.enableSoftLimit(SoftLimitDirection.kForward, false);
     armMotor.enableSoftLimit(SoftLimitDirection.kReverse, false);
-    armMotor.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.ARM_MAX_POSITION);
-    armMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.ARM_MIN_POSITION);
    }
 
   public void moveArm(double power) {
