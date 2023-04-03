@@ -195,8 +195,8 @@ public class RobotContainer {
         );
         //vision
         operatorControllerStartButton.toggleOnTrue(new ToggleLED(vision));
-        driverDPadLeft.toggleOnTrue(new NodeShifter(vision, drivetrainSubsystem, false));
-        driverDPadRight.toggleOnTrue(new NodeShifter(vision, drivetrainSubsystem, true));
+        driverDPadLeft.onTrue(new NodeShifter(vision, drivetrainSubsystem, false));
+        driverDPadRight.onTrue(new NodeShifter(vision, drivetrainSubsystem, true));
         
     }
   }

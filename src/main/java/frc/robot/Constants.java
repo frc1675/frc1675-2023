@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import java.util.HashMap;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 
@@ -26,13 +25,10 @@ public final class Constants {
       public static final double FIELD_WIDTH_METERS = 16;
       public static final double FIELD_HEIGHT_METERS = 7.85;
 
-      public static final int[] SCORE_APRIL_TAGS = {1, 2, 3, 6, 7, 8};
-      // This array contains both the beginning and end of the respective x-y range for RED's scorezone.
-      public static final double[] RED_SCORE_ZONE_BOUNDARY = {14.1, 14.6, 0.42, 5.1}; 
-      public static final Pose2d RED_ALLIANCE_SCORE_ZONE = new Pose2d(14.1, 0.42, Rotation2d.fromDegrees(0)); // Only requires beginning coords
-      // This array contains both the beginning and end of the respective x-y range for BLUE's scorezone.
-      public static final double[] BLUE_SCORE_ZONE_BOUNDARY = {1.9, 2.5, 0.42, 5.1}; 
-      public static final Pose2d BLUE_ALLIANCE_SCORE_ZONE = new Pose2d(1.9, 0.42, Rotation2d.fromDegrees(180)); // Only requires beginning coords
+      public static final int[] SCORE_ZONE_APRIL_TAGS = {1, 2, 3, 6, 7, 8};
+      public static final Pose2d SCORE_ZONE_LOWER_BOUNDARY = new Pose2d(3, 0, Rotation2d.fromDegrees(0));
+      public static final Pose2d SCORE_ZONE_UPPER_BOUNDARY = new Pose2d(1.8, 2.5, Rotation2d.fromDegrees(0));
+
 
       //sim constants
       public static final double RED_ORIGIN_POS_X_METERS = 16.541748984;

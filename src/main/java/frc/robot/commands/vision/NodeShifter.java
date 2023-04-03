@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands.vision;
+
 import frc.robot.Constants;
 import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -20,16 +21,18 @@ public class NodeShifter extends CommandBase {
     this.vision = vision;
     this.drivetrainSubsystem = drivetrainSubsystem;
     this.shiftRight = shiftRight;
-    addRequirements(this.vision, this.drivetrainSubsystem);
+    addRequirements(this.drivetrainSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // if(Arrays.asList(Constants.SCORE_APRIL_TAGS).contains(vision.getTargetID()) 
-    // && drivetrainSubsystem.getPose().getX() == Constants.){
-
-    // }
+    // Arrays.asList(Constants.SCORE_ZONE_APRIL_TAGS).contains(vision.getTargetID()
+    if(drivetrainSubsystem.getPose().getX() >= Constants.SCORE_ZONE_LOWER_BOUNDARY.getX() 
+    && (drivetrainSubsystem.getPose().getY() >= Constants.SCORE_ZONE_LOWER_BOUNDARY.getY() 
+    && drivetrainSubsystem.getPose().getY() <= Constants.SCORE_ZONE_LOWER_BOUNDARY.getY())){
+      System.out.println("INSIDE BOUNDS");
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
