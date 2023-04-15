@@ -46,7 +46,7 @@ public final class Constants {
       public static final double DRIVE_SPEED_SCALER = 0.85;
       public static final double SLOW_DRIVE_SCALING = 0.3;
       public static final double SLOW_ROTATION_SCALING = 0.5;
-      public static final int INPUT_ROLLING_AVERAGE_SAMPLE_SIZE = 20;
+      public static final double SLEW_RATE_LIMIT = 6.0;
   
       //PID constants
       public static final double ROTATION_PROPORTIONAL_COEFFICENT = 3.0;
