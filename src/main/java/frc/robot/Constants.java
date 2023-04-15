@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+
 public final class Constants {
       //balance constants
       public static final double AUTO_BALANCE_TOLERANCE_DEGREES = 4;
@@ -26,6 +29,10 @@ public final class Constants {
 
       public static final double FIELD_WIDTH_METERS = 16;
       public static final double FIELD_HEIGHT_METERS = 7.85;
+      
+      public static final Pose2d HUMAN_STATION_BOUNDARY = new Pose2d(12.6, 2.5, Rotation2d.fromDegrees(180));
+
+
 
       //sim constants
       public static final double RED_ORIGIN_POS_X_METERS = 16.541748984;

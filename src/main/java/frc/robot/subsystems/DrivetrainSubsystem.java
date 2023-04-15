@@ -161,7 +161,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 }
 
                 odometry.resetPosition(
-                        getGyroscopeRotation(),
+                        getGyroscopeRotation().times(-1),
                         getModulePositions(), 
                         pose
                 );
@@ -220,7 +220,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                         return Rotation2d.fromDegrees(navx.getFusedHeading());
                 }
 
-                return Rotation2d.fromDegrees(360.0 - navx.getYaw());
+                return  navx.getRotation2d();
         }
 
         public Rotation2d getGyroscopePitch() {
