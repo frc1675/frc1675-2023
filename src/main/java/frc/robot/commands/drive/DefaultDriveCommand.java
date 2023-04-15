@@ -3,6 +3,7 @@ package frc.robot.commands.drive;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
@@ -22,10 +23,8 @@ public class DefaultDriveCommand extends CommandBase {
     private double rotation;
     private double trigger;
     private boolean forceSlow;
-
-    private double[] rollingInputX = new double[Constants.INPUT_ROLLING_AVERAGE_SAMPLE_SIZE];
-    private double[] rollingInputY = new double[Constants.INPUT_ROLLING_AVERAGE_SAMPLE_SIZE];
-    private int index = 0;
+    private SlewRateLimiter filterX = new SlewRateLimiter(Constants.SLEW_RATE_LIMIT);
+    private SlewRateLimiter filterY = new SlewRateLimiter(Constants.SLEW_RATE_LIMIT);
 
     public DefaultDriveCommand(DrivetrainSubsystem drivetrainSubsystem, DoubleSupplier translationXSupplier,
             DoubleSupplier translationYSupplier, DoubleSupplier rotationSupplier, DoubleSupplier triggerSupplier, BooleanSupplier forceSlowSupplier) {
@@ -47,6 +46,10 @@ public class DefaultDriveCommand extends CommandBase {
         trigger = triggerSupplier.getAsDouble();
         forceSlow = forceSlowSupplier.getAsBoolean();
 
+
+        // Slew-rate limits the forward/backward input, limiting forward/backward acceleration
+       
+        
         if (x != 0 || y != 0) {
             drivetrainSubsystem.setBalanceTarget(null);
             drivetrainSubsystem.setTranslationTarget(null);
@@ -55,27 +58,13 @@ public class DefaultDriveCommand extends CommandBase {
         if (rotation != 0) {
             drivetrainSubsystem.setRotationTarget(null);
         }
-        rollingInputX[index] = x;
-        rollingInputY[index] = y;
-        index++;
-        if(index == Constants.INPUT_ROLLING_AVERAGE_SAMPLE_SIZE) {
-            index = 0;
-        }
 
         if(forceSlow && trigger == 0) {
-            drivetrainSubsystem.drive(getAverage(rollingInputX) * Constants.SLOW_DRIVE_SCALING, getAverage(rollingInputY) * Constants.SLOW_DRIVE_SCALING, rotation * Constants.SLOW_DRIVE_SCALING);
+            drivetrainSubsystem.drive(filterX.calculate(x)*Constants.SLOW_DRIVE_SCALING, filterY.calculate(y)*Constants.SLOW_DRIVE_SCALING, rotation*Constants.SLOW_DRIVE_SCALING);
         } else {
-            drivetrainSubsystem.drive(getAverage(rollingInputX), getAverage(rollingInputY), rotation);
+            drivetrainSubsystem.drive(filterX.calculate(x), filterY.calculate(y), rotation);
         }
         
-    }
-
-    private double getAverage(double[] arr) {
-        double rtn = 0;
-        for(double i : arr) {
-            rtn+=i;
-        }
-        return rtn / arr.length;
     }
 
     @Override
