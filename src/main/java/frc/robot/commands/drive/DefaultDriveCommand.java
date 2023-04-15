@@ -26,10 +26,6 @@ public class DefaultDriveCommand extends CommandBase {
     private SlewRateLimiter filterX = new SlewRateLimiter(6.00);
     private SlewRateLimiter filterY = new SlewRateLimiter(6.00);
 
-    private double[] rollingInputX = new double[Constants.INPUT_ROLLING_AVERAGE_SAMPLE_SIZE];
-    private double[] rollingInputY = new double[Constants.INPUT_ROLLING_AVERAGE_SAMPLE_SIZE];
-    private int index = 0;
-
     public DefaultDriveCommand(DrivetrainSubsystem drivetrainSubsystem, DoubleSupplier translationXSupplier,
             DoubleSupplier translationYSupplier, DoubleSupplier rotationSupplier, DoubleSupplier triggerSupplier, BooleanSupplier forceSlowSupplier) {
         this.drivetrainSubsystem = drivetrainSubsystem;
@@ -62,12 +58,6 @@ public class DefaultDriveCommand extends CommandBase {
         if (rotation != 0) {
             drivetrainSubsystem.setRotationTarget(null);
         }
-        rollingInputX[index] = x;
-        rollingInputY[index] = y;
-        index++;
-        if(index == Constants.INPUT_ROLLING_AVERAGE_SAMPLE_SIZE) {
-            index = 0;
-        }
 
         if(forceSlow && trigger == 0) {
             drivetrainSubsystem.drive(filterX.calculate(x)*Constants.SLOW_DRIVE_SCALING, filterY.calculate(y)*Constants.SLOW_DRIVE_SCALING, rotation*Constants.SLOW_DRIVE_SCALING);
@@ -75,14 +65,6 @@ public class DefaultDriveCommand extends CommandBase {
             drivetrainSubsystem.drive(filterX.calculate(x), filterY.calculate(y), rotation);
         }
         
-    }
-
-    private double getAverage(double[] arr) {
-        double rtn = 0;
-        for(double i : arr) {
-            rtn+=i;
-        }
-        return rtn / arr.length;
     }
 
     @Override
