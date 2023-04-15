@@ -23,8 +23,8 @@ public class DefaultDriveCommand extends CommandBase {
     private double rotation;
     private double trigger;
     private boolean forceSlow;
-    private SlewRateLimiter filterX = new SlewRateLimiter(6.00);
-    private SlewRateLimiter filterY = new SlewRateLimiter(6.00);
+    private SlewRateLimiter filterX = new SlewRateLimiter(Constants.SLEW_RATE_LIMIT);
+    private SlewRateLimiter filterY = new SlewRateLimiter(Constants.SLEW_RATE_LIMIT);
 
     public DefaultDriveCommand(DrivetrainSubsystem drivetrainSubsystem, DoubleSupplier translationXSupplier,
             DoubleSupplier translationYSupplier, DoubleSupplier rotationSupplier, DoubleSupplier triggerSupplier, BooleanSupplier forceSlowSupplier) {
