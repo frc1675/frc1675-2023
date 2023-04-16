@@ -1,0 +1,16 @@
+{
+    "maxSpeed": 18,
+    "optimalVoltage": 12,
+    "imu": {
+      "type": "navx",
+      "id": 4,
+      "canbus": null
+    },
+    "invertedIMU": false,
+    "modules": [
+      "frontleft.json",
+      "frontright.json",
+      "backleft.json",
+      "backright.json"
+    ]
+  }
