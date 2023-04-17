@@ -85,7 +85,7 @@ public class RobotContainer {
     //driver
     {
         driverControllerStartButton.onTrue(new InstantCommand(drivetrainSubsystem::setBalanceTargetDefault));
-        //drivetrain
+        //drivetrain  
         drivetrainSubsystem.setDefaultCommand(new DefaultDriveUpdatePose(
             vision, 
             drivetrainSubsystem,
@@ -98,7 +98,8 @@ public class RobotContainer {
             () -> mod.modifyAxis(driverController.getRawAxis(Constants.RIGHT_TRIGGER)),
             () -> armIsExtended())
         );
-        driverControllerBackButton.onTrue(new InstantCommand(drivetrainSubsystem::zeroRotation));
+         
+        driverControllerBackButton.onTrue(new InstantCommand(drivetrainSubsystem::zeroGyroscope));
         driverControllerLeftBumper.onTrue(new SetDriveRotationTarget(drivetrainSubsystem, 0));
         driverControllerRightBumper.onTrue(new SetDriveRotationTarget(drivetrainSubsystem, 180));
 

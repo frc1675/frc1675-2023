@@ -69,6 +69,6 @@ public class DefaultDriveCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        drivetrainSubsystem.drive(new ChassisSpeeds(0.0, 0.0, 0.0));
+        drivetrainSubsystem.setSpeeds(new ChassisSpeeds(0.0, 0.0, 0.0));
     }
 }
