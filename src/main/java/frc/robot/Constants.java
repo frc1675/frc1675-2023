@@ -12,29 +12,9 @@ public final class Constants {
       
       //auto constants
       public static final double AUTO_MAX_VELOCITY = 3;
-      public static final double AUTO_MAX_ACCELERATION = 3;
-
-      public static final double COMMUNITY_MAX_WIDTH_METERS = 4.91;
-      public static final double COMMUNITY_MIN_WIDTH_METERS = 3.36;
-      public static final double COMMUNITY_HEIGHT_METERS = 5.49;
-      public static final double COMMUNITY_MAX_WIDTH_HEIGHT_METERS = 3.98;
-
-      public static final double HUMAN_PLAYER_MAX_WIDTH_METERS = 6.71;
-      public static final double HUMAN_PLAYER_MIN_WIDTH_METERS = 3.36;
-      public static final double HUMAN_PLAYER_HEIGHT_METERS = 2.52;
-      public static final double HUMAN_PLAYER_MIN_WIDTH_HEIGHT_METERS = 1.16;
-
-      public static final double FIELD_WIDTH_METERS = 16;
-      public static final double FIELD_HEIGHT_METERS = 7.85;
-
-      //sim constants
-      public static final double RED_ORIGIN_POS_X_METERS = 16.541748984;
-      public static final double RED_ORIGIN_POS_Y_METERS = 8.01367968;
-      public static final double RED_ORIGIN_ROTATION_DEG = 180.0;      
+      public static final double AUTO_MAX_ACCELERATION = 3;    
 
       //drivetrain constants
-      public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.5969; //Measured on robot
-      public static final double DRIVETRAIN_WHEELBASE_METERS = 0.5969;
       public static final double DRIVE_ROTATE_TOLERANCE_DEGREES = 1.0;
       public static final double DRIVE_SPEED_SCALER = 0.85;
       public static final double SLOW_DRIVE_SCALING = 0.3;
@@ -49,27 +29,6 @@ public final class Constants {
       public static final double TRANSLATION_PROPORTIONAL_COEFFICENT = 0.050;
       public static final double TRANSLATION_INTEGRAL_COEFFICENT = 0.0017;
       public static final double TRANSLATION_DERIVATIVE_COEFFICENT = 0;
-  
-      //swerve module constants
-      public static final int FRONT_RIGHT_MODULE_DRIVE_MOTOR = 3;
-      public static final int FRONT_RIGHT_MODULE_STEER_MOTOR = 4;
-      public static final int FRONT_RIGHT_MODULE_STEER_ENCODER = 12; 
-      public static final double FRONT_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(71.54);
-  
-      public static final int FRONT_LEFT_MODULE_DRIVE_MOTOR = 1;
-      public static final int FRONT_LEFT_MODULE_STEER_MOTOR = 2; 
-      public static final int FRONT_LEFT_MODULE_STEER_ENCODER = 10; 
-      public static final double FRONT_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(192.83);
-           
-      public static final int BACK_RIGHT_MODULE_DRIVE_MOTOR = 7; 
-      public static final int BACK_RIGHT_MODULE_STEER_MOTOR = 8; 
-      public static final int BACK_RIGHT_MODULE_STEER_ENCODER = 11; 
-      public static final double BACK_RIGHT_MODULE_STEER_OFFSET = -Math.toRadians(145.90);
-  
-      public static final int BACK_LEFT_MODULE_DRIVE_MOTOR = 5; 
-      public static final int BACK_LEFT_MODULE_STEER_MOTOR = 6; 
-      public static final int BACK_LEFT_MODULE_STEER_ENCODER = 9; 
-      public static final double BACK_LEFT_MODULE_STEER_OFFSET = -Math.toRadians(221.40);
   
       //controller constants
       public static final int DRIVER_CONTROLLER = 0;
