@@ -1,6 +1,5 @@
 {
     "wheelDiameter": 4,
-    "wheelGripCoefficientOfFriction": 1.19,
     "gearRatio": {
       "drive": 6.12,
       "angle": 12.8
@@ -13,9 +12,10 @@
       "drive": 0.25,
       "angle": 0.25
     },
-    "angleMotorsKV": 0,
     "encoderPulsePerRotation": {
       "drive": 1,
       "angle": 1
+    },
+    "wheelGripCoefficientOfFriction": 1.19,
+    "angleMotorFreeSpeedRPM": 5676
     }
-  }
