@@ -59,7 +59,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                 this.chassisSpeeds = chassisSpeeds;
         }
 
-        public void drive(double x, double y, double rotation) {
+        public void setSpeeds(double x, double y, double rotation) {
                 this.setSpeeds(ChassisSpeeds.fromFieldRelativeSpeeds(x, y, rotation, getGyroscopeYaw()));
         }
 
@@ -101,7 +101,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         public void setRotationTarget(Rotation2d rotationTarget) {
                 this.rotationTarget = rotationTarget;
-                drive(0, 0, 0);
+                setSpeeds(0, 0, 0);
         }
 
         public Rotation2d getRotationTarget() {
@@ -110,7 +110,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
         public void setTranslationTarget(Translation2d translationTarget) {
                 this.translationTarget = translationTarget;
-                drive(0, 0, 0);
+                setSpeeds(0, 0, 0);
         }
 
         public Translation2d getTranslationTarget() {
@@ -120,7 +120,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
         public void setBalanceTarget(Rotation2d balanceTarget) {
                 this.balanceTarget = balanceTarget;
                 balanceTargetOriginalPose = getPose();
-                drive(0, 0, 0);
+                setSpeeds(0, 0, 0);
         }
 
         public void setBalanceTargetDefault() {
@@ -174,10 +174,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
                         }
 
                 }
-                swerveDrive.drive(
-                                new Translation2d(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond),
-                                chassisSpeeds.omegaRadiansPerSecond,
-                                true, true);
+                swerveDrive.setChassisSpeeds(chassisSpeeds);
                 swerveDrive.updateOdometry();
         }
 }
