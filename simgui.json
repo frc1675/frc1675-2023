@@ -2,6 +2,10 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Auto/Auto Location": "String Chooser",
+      "/Shuffleboard/Auto/Auto Path Action": "String Chooser",
+      "/Shuffleboard/Auto/Auto Start Action": "String Chooser",
+      "/Shuffleboard/Auto/Current Auto Trajectory (Always appears on blue side)": "Field2d",
       "/SmartDashboard/Field Sim": "Field2d"
     },
     "windows": {
