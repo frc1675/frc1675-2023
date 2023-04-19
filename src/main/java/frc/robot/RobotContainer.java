@@ -22,6 +22,7 @@ import frc.robot.commands.intake.armIntake.IntakeCone;
 import frc.robot.commands.intake.armIntake.IntakeCube;
 import frc.robot.commands.intake.floor.FloorDrop;
 import frc.robot.commands.intake.floor.FloorPickup;
+import frc.robot.commands.testing.TestingMessage;
 import frc.robot.commands.vision.ChangeVisionPipeline;
 import frc.robot.commands.vision.ToggleLED;
 import frc.robot.subsystems.ArmSubsystem;
@@ -33,6 +34,7 @@ import frc.robot.subsystems.Vision;
 import frc.robot.util.AutoGenerator;
 import frc.robot.util.DPadButton;
 import frc.robot.util.JoystickModification;
+import frc.robot.util.DPadButton.Direction;
 
 public class RobotContainer {
   private final Vision vision = new Vision();
@@ -47,6 +49,7 @@ public class RobotContainer {
 
   private final Joystick driverController = new Joystick(Constants.DRIVER_CONTROLLER);
   private final Joystick operatorController = new Joystick(Constants.OPERATOR_CONTROLLER);
+  private final Joystick adaptiveController = new Joystick(Constants.ADAPTIVE_CONTROLLER);
   
   private final JoystickButton driverControllerBackButton = new JoystickButton(driverController, Constants.BACK_BUTTON);
   private final JoystickButton driverControllerXButton = new JoystickButton(driverController, Constants.X_BUTTON);
@@ -68,6 +71,20 @@ public class RobotContainer {
   private final DPadButton operatorDPadRight = new DPadButton(operatorController, DPadButton.Direction.RIGHT);
   private final DPadButton operatorDPadLeft = new DPadButton(operatorController, DPadButton.Direction.LEFT);
   private final DPadButton operatorDPadDown = new DPadButton(operatorController, DPadButton.Direction.DOWN);
+
+  // Declaration of unused buttons will later be mapped depending upon control changes
+  private final JoystickButton adaptiveAButton = new JoystickButton(adaptiveController, Constants.A_BUTTON);
+  private final JoystickButton adaptiveBButton = new JoystickButton(adaptiveController, Constants.B_BUTTON);
+  private final JoystickButton adaptiveXButton = new JoystickButton(adaptiveController, Constants.X_BUTTON);
+  private final JoystickButton adaptiveYButton = new JoystickButton(adaptiveController, Constants.Y_BUTTON);
+  private final JoystickButton adaptiveLeftBumper = new JoystickButton(adaptiveController, Constants.LEFT_BUMPER);
+  private final JoystickButton adaptiveRightBumper = new JoystickButton(adaptiveController, Constants.RIGHT_BUMPER);
+  
+  private final DPadButton adaptiveDPadUp =  new DPadButton(adaptiveController, DPadButton.Direction.UP);
+  private final DPadButton adaptiveDPadRight =  new DPadButton(adaptiveController, DPadButton.Direction.RIGHT);
+  private final DPadButton adaptiveDPadLeft =  new DPadButton(adaptiveController, DPadButton.Direction.LEFT);
+  private final DPadButton adaptiveDPadDown =  new DPadButton(adaptiveController, DPadButton.Direction.DOWN);
+
 
   public RobotContainer() {
     configureBindings();
@@ -187,6 +204,14 @@ public class RobotContainer {
             ()-> armIsExtended()
           )
         );
+        //adaptive controls
+        adaptiveAButton.onTrue();
+        adaptiveBButton.onTrue();
+        adaptiveDPadUp.onTrue();
+        adaptiveDPadRight.onTrue();
+        adaptiveDPadLeft.onTrue();
+        adaptiveDPadDown.onTrue();
+
         //vision
         operatorControllerStartButton.toggleOnTrue(new ToggleLED(vision));
         operatorControllerBackButton.toggleOnTrue(new ChangeVisionPipeline(vision));
