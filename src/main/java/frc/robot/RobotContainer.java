@@ -16,10 +16,8 @@ import frc.robot.commands.arm.MoveArmToPosition;
 import frc.robot.commands.drive.DefaultDriveUpdatePose;
 import frc.robot.commands.drive.SetDriveRotationTarget;
 import frc.robot.commands.floorArm.FloorMoveArmToPostion;
-import frc.robot.commands.intake.armIntake.DropCone;
-import frc.robot.commands.intake.armIntake.DropCube;
-import frc.robot.commands.intake.armIntake.IntakeCone;
-import frc.robot.commands.intake.armIntake.IntakeCube;
+import frc.robot.commands.intake.armIntake.ArmIntake;
+import frc.robot.commands.intake.armIntake.ArmDrop;
 import frc.robot.commands.intake.floor.FloorDrop;
 import frc.robot.commands.intake.floor.FloorPickup;
 import frc.robot.commands.vision.ChangeVisionPipeline;
@@ -105,7 +103,7 @@ public class RobotContainer {
         //main intake
         driverControllerAButton.whileTrue(
           new ConditionalCommand(
-            new DropCube(intake),
+            new ArmDrop(intake),
             new ConditionalCommand(
               new FloorDrop(floorIntake, Constants.FLOOR_INTAKE_NORMAL_SPEED),
               new PrintCommand("Cannot output"),
@@ -116,7 +114,7 @@ public class RobotContainer {
 
         driverControllerXButton.whileTrue(
           new ConditionalCommand(
-            new DropCone(intake),
+            new ArmIntake(intake),
             new PrintCommand("Arm inside robot"), 
             () -> armIsExtended()
         ));
@@ -172,17 +170,17 @@ public class RobotContainer {
         //mildly goofy but this makes sense to me
         operatorControllerLeftBumper.whileTrue(
           new ConditionalCommand(
-            new IntakeCube(intake),
-            new IntakeCube(intake, Constants.INTAKE_SPEED_SLOW),
+            new ArmIntake(intake),
+            new ArmIntake(intake, Constants.INTAKE_SPEED_SLOW),
             ()-> armIsExtended()
           )
         );
         operatorControllerRightBumper.whileTrue(
           new ConditionalCommand(
-            new IntakeCone(intake),
+            new ArmDrop(intake),
             new ConditionalCommand(
               new FloorPickup(floorIntake),
-              new IntakeCone(intake, Constants.INTAKE_SPEED_SLOW),
+              new ArmDrop(intake, Constants.INTAKE_SPEED_SLOW),
               ()-> floorArmIsExtended()),
             ()-> armIsExtended()
           )

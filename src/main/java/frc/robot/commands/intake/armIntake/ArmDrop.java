@@ -3,36 +3,35 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands.intake.armIntake;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Intake;
 
-public class DropCone extends CommandBase {
-  /** Creates a new DropCone. */
+public class ArmDrop extends CommandBase {
   private final Intake intake;
-  public DropCone(Intake intake) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  private final double speed;
+
+  public ArmDrop(Intake intake) {
     this.intake = intake;
-    addRequirements(this.intake);
+    this.speed = Constants.INTAKE_SPEED;
   }
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {}
+  public ArmDrop(Intake intake, double speed) {
+    this.intake = intake;
+    this.speed = Math.abs(speed);
+  }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.coneDrop(Constants.INTAKE_SPEED);
+    intake.setIntakeSpeed(-speed);
   }
 
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     intake.intakeStop();
   }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;
