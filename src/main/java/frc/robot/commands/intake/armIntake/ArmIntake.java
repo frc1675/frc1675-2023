@@ -3,44 +3,36 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands.intake.armIntake;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Intake;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class IntakeCube extends CommandBase {
-  private double speed;
-  /** Creates a new CubeUtil. */
+public class ArmIntake extends CommandBase {
+
   private final Intake intake;
-  public IntakeCube(Intake intake) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  private final double speed;
+
+  public ArmIntake(Intake intake) {
     this.intake = intake;
     this.speed = Constants.INTAKE_SPEED;
     addRequirements(this.intake);
   }
 
-  public IntakeCube(Intake intake, double speed) {
+  public ArmIntake(Intake intake, double speed) {
     this.intake = intake;
-    this.speed = speed;
-    addRequirements(this.intake);
+    this.speed = Math.abs(speed);
   }
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {}
-
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.coneDrop(speed);
+    intake.setIntakeSpeed(speed);
   }
 
-  // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     intake.intakeStop();
   }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     return false;

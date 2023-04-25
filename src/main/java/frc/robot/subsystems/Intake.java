@@ -12,15 +12,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
 
-  /** Creates a new Intake. */
   private ShuffleboardTab armIntakeTab = Shuffleboard.getTab("Intake");
   private CANSparkMax intakeMotor = new CANSparkMax( Constants.INTAKE_MOTOR, MotorType.kBrushless);
-  
+  private CANSparkMax inverseIntakeMotor = new CANSparkMax(Constants.INVERSE_INTAKE_MOTOR, MotorType.kBrushless);
 
   public Intake() {
-    intakeMotor.setInverted(true);
+    intakeMotor.setInverted(false);
+    inverseIntakeMotor.setInverted(true);
+    inverseIntakeMotor.follow(intakeMotor);
     armIntakeTab.addNumber("Current", () -> getCurrent());
     intakeMotor.setSmartCurrentLimit(Constants.INTAKE_CURRENT_LIMIT);  
+    inverseIntakeMotor.setSmartCurrentLimit(Constants.INTAKE_CURRENT_LIMIT);
   }
 
   public double getCurrent(){
@@ -31,24 +33,7 @@ public class Intake extends SubsystemBase {
     intakeMotor.set(0);
   }
 
-  public void conePickup(double speed){
-    intakeMotor.set(speed * 1);
-  }
-
-  public void coneDrop(double speed){
-    intakeMotor.set(speed * -1); 
-  }
-
-  public void cubeDrop(double speed){
-    intakeMotor.set(speed * 1);
-  }
-
-  public void cubePickup(double speed){
-    intakeMotor.set(speed * -1);
-  }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
+  public void setIntakeSpeed(double speed) {
+    intakeMotor.set(speed);
   }
 }

@@ -112,6 +112,7 @@ public final class Constants {
       public static final double INTAKE_SPEED = 1;
       public static final double INTAKE_SPEED_SLOW = 0.25;
       public static final int INTAKE_MOTOR = 15;
+      public static final int INVERSE_INTAKE_MOTOR = 17;
 
       //floor arm constants
       public static final double FLOOR_ARM_POWER_SCALING = 0.1;

@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.commands.arm.MoveArmToPosition;
 import frc.robot.commands.floorArm.FloorMoveArmToPostion;
-import frc.robot.commands.intake.armIntake.DropCone;
+import frc.robot.commands.intake.armIntake.ArmIntake;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.FloorArmSubsystem;
@@ -22,11 +22,11 @@ public class ExtendAndScoreCone extends SequentialCommandGroup {
       new WaitCommand(0.5),
       new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_INSIDE_ROBOT_POSITION),
       new MoveArmToPosition(arm, Constants.ARM_SCORE_HIGH_POSITION),
-      new InstantCommand(() -> intake.conePickup(0.5)),
+      new InstantCommand(() -> intake.setIntakeSpeed(0.5)),
       new WaitCommand(1),
       driveDistance(drive, 0.5, -1),
       new WaitCommand(1),
-      new DropCone(intake).withTimeout(0.5),
+      new ArmIntake(intake).withTimeout(0.5),
       driveDistance(drive, 0.4, 1),
       new MoveArmToPosition(arm, Constants.ARM_INSIDE_ROBOT_POSITION)
     );
