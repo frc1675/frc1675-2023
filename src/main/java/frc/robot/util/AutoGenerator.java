@@ -43,7 +43,7 @@ public class AutoGenerator {
 
     private HashMap<String, Command> eventMap = new HashMap<String, Command>();
     private HashMap<String, Command> startActionMap = new HashMap<String, Command>();
-    private PathConstraints defaulPathConstraints = new PathConstraints(Constants.AUTO_MAX_VELOCITY, Constants.AUTO_MAX_ACCELERATION);
+    private PathConstraints defaultPathConstraints = new PathConstraints(Constants.AUTO_MAX_VELOCITY, Constants.AUTO_MAX_ACCELERATION);
 
     private SendableChooser<PathActions> pathActionSelector = new SendableChooser<PathActions>();
     private SendableChooser<StartActions> startActionSelector = new SendableChooser<StartActions>();
@@ -134,7 +134,7 @@ public class AutoGenerator {
     }
 
     public Pose2d getCurrentStartingPose() {
-        return PathPlanner.loadPath(getSelectedPath(), defaulPathConstraints).getInitialPose();
+        return PathPlanner.loadPath(getSelectedPath(), defaultPathConstraints).getInitialPose();
     }
 
     private String getSelectedPath() {
@@ -142,7 +142,7 @@ public class AutoGenerator {
     }
 
     public Command getAutoCommand() {
-        return builder.fullAuto(PathPlanner.loadPath(getSelectedPath(), defaulPathConstraints));
+        return builder.fullAuto(PathPlanner.loadPath(getSelectedPath(), defaultPathConstraints));
     }
 
     public String getSelectedStartAction() {
@@ -152,7 +152,7 @@ public class AutoGenerator {
 
     /* Called periodically while disabled */
     public void updateSelectorPose() {
-        PathPlannerTrajectory path = PathPlanner.loadPath(getSelectedPath(), defaulPathConstraints);
+        PathPlannerTrajectory path = PathPlanner.loadPath(getSelectedPath(), defaultPathConstraints);
         if(path != null) {
             field.setRobotPose(path.getInitialPose());
             field.getObject("traj").setTrajectory(path);   
@@ -172,7 +172,7 @@ public class AutoGenerator {
     public Command generateTrajectory(Pose2d endpoint) {
         List<Double> headings = calculateHeadings(drive.getPose().getTranslation(), endpoint.getTranslation());
         PathPlannerTrajectory t = PathPlanner.generatePath(
-                defaulPathConstraints,
+                defaultPathConstraints,
                 //new PathPoint(drive.getPose().getTranslation(), Rotation2d.fromDegrees(headings.get(0)), drive.getCurrentSpeed()),
                 new PathPoint(drive.getPose().getTranslation(), Rotation2d.fromDegrees(0), drive.getCurrentSpeed()),
                 //new PathPoint(endpoint.getTranslation(), Rotation2d.fromDegrees(headings.get(1)), endpoint.getRotation()));
