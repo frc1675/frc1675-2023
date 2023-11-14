@@ -16,25 +16,21 @@ public class DefaultDriveCommand extends CommandBase {
     private final DoubleSupplier translationYSupplier;
     private final DoubleSupplier rotationSupplier;
     private final DoubleSupplier triggerSupplier;
-    private final BooleanSupplier forceSlowSupplier;
 
     private double x;
     private double y;
     private double rotation;
     private double trigger;
-    private boolean forceSlow;
     private SlewRateLimiter filterX = new SlewRateLimiter(Constants.SLEW_RATE_LIMIT);
     private SlewRateLimiter filterY = new SlewRateLimiter(Constants.SLEW_RATE_LIMIT);
 
     public DefaultDriveCommand(DrivetrainSubsystem drivetrainSubsystem, DoubleSupplier translationXSupplier,
-            DoubleSupplier translationYSupplier, DoubleSupplier rotationSupplier, DoubleSupplier triggerSupplier, BooleanSupplier forceSlowSupplier) {
+            DoubleSupplier translationYSupplier, DoubleSupplier rotationSupplier, DoubleSupplier triggerSupplier) {
         this.drivetrainSubsystem = drivetrainSubsystem;
         this.translationXSupplier = translationXSupplier;
         this.translationYSupplier = translationYSupplier;
         this.rotationSupplier = rotationSupplier;
         this.triggerSupplier = triggerSupplier;
-        this.forceSlowSupplier = forceSlowSupplier;
-
         addRequirements(drivetrainSubsystem);
     }
 
@@ -44,7 +40,6 @@ public class DefaultDriveCommand extends CommandBase {
         y = translationYSupplier.getAsDouble();
         rotation = rotationSupplier.getAsDouble()*Constants.SLOW_ROTATION_SCALING;
         trigger = triggerSupplier.getAsDouble();
-        forceSlow = forceSlowSupplier.getAsBoolean();
 
 
         // Slew-rate limits the forward/backward input, limiting forward/backward acceleration
@@ -59,11 +54,7 @@ public class DefaultDriveCommand extends CommandBase {
             drivetrainSubsystem.setRotationTarget(null);
         }
 
-        if(forceSlow && trigger == 0) {
-            drivetrainSubsystem.drive(filterX.calculate(x)*Constants.SLOW_DRIVE_SCALING, filterY.calculate(y)*Constants.SLOW_DRIVE_SCALING, rotation*Constants.SLOW_DRIVE_SCALING);
-        } else {
-            drivetrainSubsystem.drive(filterX.calculate(x), filterY.calculate(y), rotation);
-        }
+        drivetrainSubsystem.drive(filterX.calculate(x), filterY.calculate(y), rotation);
         
     }
 
