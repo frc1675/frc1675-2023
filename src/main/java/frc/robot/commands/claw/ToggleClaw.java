@@ -5,28 +5,25 @@
 package frc.robot.commands.claw;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.ClawIntake;
 
-public class ExtendClaw extends CommandBase {
-  /** Creates a new ExtendClaw. */
-  public ExtendClaw() {
-    // Use addRequirements() here to declare subsystem dependencies.
+public class ToggleClaw extends CommandBase {
+  private ClawIntake intake;
+
+  public ToggleClaw(ClawIntake intake) {
+    this.intake = intake;
+    addRequirements(intake);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {}
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {}
+  public void initialize() {
+    intake.setIsExtended(!intake.getIsExtended());
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

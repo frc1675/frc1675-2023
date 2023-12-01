@@ -4,18 +4,19 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ClawIntake extends SubsystemBase {
   /** Creates a new ClawIntake. */
   private boolean isExtended;
-  private Solenoid clawIntake;
+  private DoubleSolenoid clawIntake;
 
-  public ClawIntake(PneumaticsModuleType moduleType, int channel) {
+  public ClawIntake(int f, int r) {
     this.isExtended = false;
-    clawIntake = new Solenoid(moduleType, channel);
+    clawIntake = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, f, r);
   }
 
   public boolean getIsExtended(){
@@ -23,19 +24,13 @@ public class ClawIntake extends SubsystemBase {
   }
 
   public void setIsExtended(boolean extendValue){
+    if(extendValue) {
+      clawIntake.set(Value.kForward);
+    }else {
+      clawIntake.set(Value.kReverse);
+    }
     this.isExtended = extendValue;
+    
   }
 
-  public int getChannel(){
-    return this.clawIntake.getChannel();
-  }
-
-  public void endSolenoidConnection(){
-    this.clawIntake.close();
-  }
-
-  @Override
-  public void periodic() {
-    this.clawIntake.set(this.isExtended);
-  }
 }
