@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
@@ -15,6 +17,7 @@ import frc.robot.commands.arm.IncrementArm;
 import frc.robot.commands.arm.MoveArmToPosition;
 import frc.robot.commands.drive.DefaultDriveUpdatePose;
 import frc.robot.commands.drive.SetDriveRotationTarget;
+import frc.robot.commands.drive.TrajectoryDrive;
 import frc.robot.commands.floorArm.FloorMoveArmToPostion;
 import frc.robot.commands.intake.armIntake.DropCone;
 import frc.robot.commands.intake.armIntake.DropCube;
@@ -56,6 +59,8 @@ public class RobotContainer {
   private final JoystickButton driverControllerRightBumper = new JoystickButton(driverController, Constants.RIGHT_BUMPER);
   private final JoystickButton driverControllerStartButton = new JoystickButton(driverController, Constants.START_BUTTON);
 
+  private final DPadButton driverDPadUp = new DPadButton(driverController, DPadButton.Direction.UP);
+
   private final JoystickButton operatorControllerBButton = new JoystickButton(operatorController, Constants.B_BUTTON);
   private final JoystickButton operatorControllerYButton = new JoystickButton(operatorController, Constants.Y_BUTTON);
   private final JoystickButton operatorControllerAButton = new JoystickButton(operatorController, Constants.A_BUTTON);
@@ -84,8 +89,9 @@ public class RobotContainer {
   private void configureBindings() {
     //driver
     {
-        driverControllerStartButton.onTrue(new InstantCommand(drivetrainSubsystem::setBalanceTargetDefault));
-        //drivetrain
+        driverControllerStartButton.onTrue(new InstantCommand(() -> drivetrainSubsystem.resetPose(new Pose2d(0, 0, drivetrainSubsystem.getPose().getRotation()))));
+        driverDPadUp.toggleOnTrue(new TrajectoryDrive(autoGenerator, drivetrainSubsystem, new Pose2d(0, 0, Rotation2d.fromDegrees(0))));
+        //drivetrain  
         drivetrainSubsystem.setDefaultCommand(new DefaultDriveUpdatePose(
             vision, 
             drivetrainSubsystem,
@@ -98,7 +104,8 @@ public class RobotContainer {
             () -> mod.modifyAxis(driverController.getRawAxis(Constants.RIGHT_TRIGGER)),
             () -> armIsExtended())
         );
-        driverControllerBackButton.onTrue(new InstantCommand(drivetrainSubsystem::zeroRotation));
+         
+        driverControllerBackButton.onTrue(new InstantCommand(drivetrainSubsystem::zeroGyroscope));
         driverControllerLeftBumper.onTrue(new SetDriveRotationTarget(drivetrainSubsystem, 0));
         driverControllerRightBumper.onTrue(new SetDriveRotationTarget(drivetrainSubsystem, 180));
 

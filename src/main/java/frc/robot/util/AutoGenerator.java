@@ -1,15 +1,19 @@
 package frc.robot.util;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPoint;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -35,9 +39,11 @@ import frc.robot.subsystems.Intake;
 public class AutoGenerator {
     private SwerveAutoBuilder builder;
 
+    private DrivetrainSubsystem drive;
+
     private HashMap<String, Command> eventMap = new HashMap<String, Command>();
     private HashMap<String, Command> startActionMap = new HashMap<String, Command>();
-    private PathConstraints defaulPathConstraints = new PathConstraints(Constants.AUTO_MAX_VELOCITY, Constants.AUTO_MAX_ACCELERATION);
+    private PathConstraints defaultPathConstraints = new PathConstraints(Constants.AUTO_MAX_VELOCITY, Constants.AUTO_MAX_ACCELERATION);
 
     private SendableChooser<PathActions> pathActionSelector = new SendableChooser<PathActions>();
     private SendableChooser<StartActions> startActionSelector = new SendableChooser<StartActions>();
@@ -80,7 +86,8 @@ public class AutoGenerator {
         }
     }
 
-    public AutoGenerator(DrivetrainSubsystem drivetrainSubsystem, FloorArmSubsystem floorArmSubsystem, ArmSubsystem armSubsystem, Intake intake, FloorIntake floorIntake) {   
+    public AutoGenerator(DrivetrainSubsystem drivetrainSubsystem, FloorArmSubsystem floorArmSubsystem, ArmSubsystem armSubsystem, Intake intake, FloorIntake floorIntake) {
+        this.drive = drivetrainSubsystem;
         startActionMap.put("scoreConeLow", new ScoreLow(drivetrainSubsystem, floorArmSubsystem, intake, true));
         startActionMap.put("scoreCubeLow", new ScoreLow(drivetrainSubsystem, floorArmSubsystem, intake, false));
         startActionMap.put("scoreConeHigh", new ExtendAndScoreCone(drivetrainSubsystem, floorArmSubsystem, armSubsystem, intake));
@@ -127,7 +134,7 @@ public class AutoGenerator {
     }
 
     public Pose2d getCurrentStartingPose() {
-        return PathPlanner.loadPath(getSelectedPath(), defaulPathConstraints).getInitialPose();
+        return PathPlanner.loadPath(getSelectedPath(), defaultPathConstraints).getInitialPose();
     }
 
     private String getSelectedPath() {
@@ -135,7 +142,7 @@ public class AutoGenerator {
     }
 
     public Command getAutoCommand() {
-        return builder.fullAuto(PathPlanner.loadPath(getSelectedPath(), defaulPathConstraints));
+        return builder.fullAuto(PathPlanner.loadPath(getSelectedPath(), defaultPathConstraints));
     }
 
     public String getSelectedStartAction() {
@@ -145,10 +152,54 @@ public class AutoGenerator {
 
     /* Called periodically while disabled */
     public void updateSelectorPose() {
-        PathPlannerTrajectory path = PathPlanner.loadPath(getSelectedPath(), defaulPathConstraints);
+        PathPlannerTrajectory path = PathPlanner.loadPath(getSelectedPath(), defaultPathConstraints);
         if(path != null) {
             field.setRobotPose(path.getInitialPose());
             field.getObject("traj").setTrajectory(path);   
         }
+    }
+
+    /**
+     * Returns a command which drives the robot from the current position to the
+     * given position. The rotation component of the pose is the holonomic rotation,
+     * not the heading. The target heading of the trajectory is the same as the
+     * current robot heading.
+     * 
+     * @param endpoint the destination pose
+     * @return a command which will move the robot through a trajectory ending at
+     *         the given pose
+     */
+    public Command generateTrajectory(Pose2d endpoint) {
+        List<Double> headings = calculateHeadings(drive.getPose().getTranslation(), endpoint.getTranslation());
+        PathPlannerTrajectory t = PathPlanner.generatePath(
+                defaultPathConstraints,
+                //new PathPoint(drive.getPose().getTranslation(), Rotation2d.fromDegrees(headings.get(0)), drive.getCurrentSpeed()),
+                new PathPoint(drive.getPose().getTranslation(), Rotation2d.fromDegrees(0), drive.getCurrentSpeed()),
+                //new PathPoint(endpoint.getTranslation(), Rotation2d.fromDegrees(headings.get(1)), endpoint.getRotation()));
+                new PathPoint(endpoint.getTranslation(), Rotation2d.fromDegrees(0), endpoint.getRotation()));
+        field.setRobotPose(drive.getPose());
+        field.getObject("traj").setTrajectory(t);
+        return builder.followPath(t);
+    }
+
+    /**
+     * Returns a command which drives the robot from the current position to the
+     * given position. Since no holonomic rotation is supplied, the robots current
+     * rotation will be preserved.
+     * 
+     * @param endpoint the destination translation
+     * @return a command which will move the robot through a trajectory ending at
+     *         the given translation
+     */
+    public Command generateTrajectory(Translation2d endpoint) {
+        return generateTrajectory(new Pose2d(endpoint, drive.getPose().getRotation()));
+    }
+
+    private List<Double> calculateHeadings(Translation2d start, Translation2d end) {
+        //We want the headings to face each other (I think). Best way to do this is to find the hypotenuse and then use trig
+        double hyp = start.getDistance(end);
+        double leg = Math.abs(start.getX() - end.getX());
+        double startHeading = Math.toDegrees(Math.asin(leg / hyp));
+        return List.of(startHeading, 90.0 - startHeading); 
     }
 }

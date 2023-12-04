@@ -34,8 +34,8 @@ public class ExtendAndScoreCone extends SequentialCommandGroup {
 
   private Command driveDistance(DrivetrainSubsystem drive, double distance, double velocity) {
     return new StartEndCommand(
-      () -> drive.drive(velocity, 0, 0),
-      () -> drive.drive(0, 0, 0),
+      () -> drive.setSpeeds(velocity, 0, 0),
+      () -> drive.setSpeeds(0, 0, 0),
       drive
       ).withTimeout(Math.abs(distance / velocity));// (m / ms^-1 = s)
   }

@@ -19,7 +19,7 @@ public class AutoBalance extends SequentialCommandGroup {
       new RepeatCommand(
         new SequentialCommandGroup(
           new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_SHOOTING_POSITION),
-          new InstantCommand(() -> drive.drive(1, 0, 0)),
+          new InstantCommand(() -> drive.setSpeeds(1, 0, 0)),
           new WaitCommand(0.15),
           new FloorMoveArmToPostion(floorArm, Constants.FLOOR_ARM_AUTO_GROUND_POSITION),
           new WaitCommand(0.65)
@@ -35,10 +35,10 @@ public class AutoBalance extends SequentialCommandGroup {
         && drive.getGyroscopeRoll().getDegrees() <= Constants.AUTO_BALANCE_TOLERANCE_DEGREES
       ),
       new InstantCommand(() -> drive.setBalanceTarget(null)),
-      new RunCommand(() -> drive.drive(-1, 0, 0)).withTimeout(0.35),
+      new RunCommand(() -> drive.setSpeeds(-1, 0, 0)).withTimeout(0.35),
       new StartEndCommand(
-        () -> drive.drive(0,0,1),
-        ()-> drive.drive(0, 0, 0), 
+        () -> drive.setSpeeds(0,0,1),
+        ()-> drive.setSpeeds(0, 0, 0), 
         drive
       ).withTimeout(0.01)
     );

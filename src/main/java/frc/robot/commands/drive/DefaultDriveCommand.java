@@ -4,7 +4,6 @@ import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -60,15 +59,15 @@ public class DefaultDriveCommand extends CommandBase {
         }
 
         if(forceSlow && trigger == 0) {
-            drivetrainSubsystem.drive(filterX.calculate(x)*Constants.SLOW_DRIVE_SCALING, filterY.calculate(y)*Constants.SLOW_DRIVE_SCALING, rotation*Constants.SLOW_DRIVE_SCALING);
+            drivetrainSubsystem.setSpeeds(filterX.calculate(x)*Constants.SLOW_DRIVE_SCALING, filterY.calculate(y)*Constants.SLOW_DRIVE_SCALING, rotation*Constants.SLOW_DRIVE_SCALING);
         } else {
-            drivetrainSubsystem.drive(filterX.calculate(x), filterY.calculate(y), rotation);
+            drivetrainSubsystem.setSpeeds(filterX.calculate(x), filterY.calculate(y), rotation);
         }
         
     }
 
     @Override
     public void end(boolean interrupted) {
-        drivetrainSubsystem.drive(new ChassisSpeeds(0.0, 0.0, 0.0));
+        drivetrainSubsystem.setSpeeds(0, 0, 0);
     }
 }
